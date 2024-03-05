@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRoleWishRoomRepository extends JpaRepository<UserRoleWishRoomEntity, Long> {
+public interface UserRoleWishRoomRepository extends JpaRepository<UserRoleWishRoomEntity, Integer> {
 }
