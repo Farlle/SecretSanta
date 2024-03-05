@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_role_wish_room")
-public class UserRoleWishRoom {
+public class UserRoleWishRoomEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
