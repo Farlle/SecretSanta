@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<h2>Add New User</h2>
+<form th:action="@{/create}" th:object="${userInfoDto}" method="post">
+    <label for="name">Username:</label><br>
+    <input type="text" id="name" name="username" th:field="*{name}"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password" th:field="*{password}"><br>
+    <label for="telegram">Telegram:</label><br>
+    <input type="telegram" id="telegram" name="telegram" th:field="*{telegram}"><br>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

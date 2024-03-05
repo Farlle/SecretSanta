@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update User Info</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div>
+    <h1>Update User Info</h1>
+    <form action="#" th:action="@{/update/{id}(id=${userInfo.id})}" th:object="${userInfo}" method="post">
+        <p>Name: <input type="text" th:field="*{name}" /></p>
+        <p>Password: <input type="text" th:field="*{password}" /></p>
+        <p>Telegram: <input type="text" th:field="*{telegram}" /></p>
+        <p><input type="submit" value="Update" /></p>
+    </form>
+</div>
+</body>
+</html>
