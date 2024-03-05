@@ -1,18 +1,27 @@
-package org.example.secretsanta.model;
+package org.example.secretsanta.model.entity;
 
-public class UserEntity {
+import javax.persistence.*;
 
-    private int idUser;
+@Entity
+@Table(name="user_info")
+public class UserInfoEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user_info")
+    private int idUserInfo;
+    @Column(name ="name", nullable = false)
     private String name;
+    @Column(name ="password", nullable = false)
     private String password;
+    @Column(name ="telegram", nullable = false)
     private String telegram;
 
     public int getId() {
-        return idUser;
+        return idUserInfo;
     }
-
     public void setId(int id) {
-        this.idUser = id;
+        this.idUserInfo = id;
     }
 
     public String getName() {

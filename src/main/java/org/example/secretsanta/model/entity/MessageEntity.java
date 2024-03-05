@@ -1,13 +1,23 @@
-package org.example.secretsanta.model;
+package org.example.secretsanta.model.entity;
 
-import java.util.Date;
-
+import javax.persistence.*;
+import java.sql.Date;
+@Entity
+@Table(name = "message")
 public class MessageEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_message")
     private int idMessage;
-    private int idSender;
+    @ManyToOne
+    @JoinColumn(name = "id_sender", nullable = false)
+    private UserInfoEntity sender;
+    @Column(name = "id_recipient", nullable = false)
     private int idRecipient;
+    @Column(name = "message", nullable = false)
     private String message;
+    @Column(name = "departure_date", nullable = false)
     private Date departureDate;
 
     public int getIdMessage() {
@@ -18,12 +28,12 @@ public class MessageEntity {
         this.idMessage = idMessage;
     }
 
-    public int getIdSender() {
-        return idSender;
+    public UserInfoEntity getSender() {
+        return sender;
     }
 
-    public void setIdSender(int idSender) {
-        this.idSender = idSender;
+    public void setSender(UserInfoEntity sender) {
+        this.sender = sender;
     }
 
     public int getIdRecipient() {

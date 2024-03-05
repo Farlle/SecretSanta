@@ -1,8 +1,18 @@
-package org.example.secretsanta.model;
+package org.example.secretsanta.model.entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "result")
 public class ResultEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name ="id_result")
     private int idResult;
+    @Column(name = "id_santa", nullable = false)
     private int idSanta;
+    @Column(name = "id_ward", nullable = false)
     private int idWard;
 
     public int getIdResult() {
