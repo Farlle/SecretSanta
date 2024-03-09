@@ -3,15 +3,13 @@ package org.example.secretsanta.controller;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.service.UserInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
-import java.util.List;
-
 @Controller
+@RequestMapping("/userInfo")
 public class UserInfoController {
 
     private final UserInfoService userInfoService;
@@ -21,7 +19,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/create")
-    public String showAddUserForm(Model model) {
+    public String showAddUserPage(Model model) {
         model.addAttribute("userInfoDto", new UserInfoDTO());
         return "add-user-info";
     }
@@ -48,7 +46,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/show")
-    public String getAllUsersIndo(Model model){
+    public String getAllUsersInfo(Model model){
         model.addAttribute("userInfoEntity", userInfoService.readAll());
         return "user-info-list";
     }
