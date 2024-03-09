@@ -22,7 +22,7 @@ public class RoomEntity {
     @Column(name = "place", nullable = false)
     private String place;
     @OneToOne
-    @JoinColumn(name = "id_result_draw", nullable = false)
+    @JoinColumn(name = "id_result_draw")
     private ResultEntity result;
 
     public int getIdRoom() {

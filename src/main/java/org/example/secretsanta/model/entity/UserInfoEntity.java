@@ -17,6 +17,16 @@ public class UserInfoEntity {
     @Column(name ="telegram", nullable = false)
     private String telegram;
 
+    public UserInfoEntity() {
+    }
+
+    public UserInfoEntity(int idUserInfo, String name, String password, String telegram) {
+        this.idUserInfo = idUserInfo;
+        this.name = name;
+        this.password = password;
+        this.telegram = telegram;
+    }
+
     public int getId() {
         return idUserInfo;
     }
