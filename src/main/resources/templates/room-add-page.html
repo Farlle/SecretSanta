@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Room</title>
+</head>
+<body>
+<h2>Create a New Room</h2>
+<form action="#" th:action="@{/room/create}" th:object="${roomDto}" method="post">
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" th:field="*{name}" />
+    </div>
+    <div>
+        <label for="idOrganizer">Organizer ID:</label>
+        <input type="number" id="idOrganizer" th:field="*{idOrganizer}" readonly="readonly"/>
+    </div>
+    <div>
+        <label for="tossDate">Toss Date:</label>
+        <input type="date" id="tossDate" th:field="*{tossDate}" />
+    </div>
+    <div>
+        <label for="drawDate">Draw Date:</label>
+        <input type="date" id="drawDate" th:field="*{drawDate}" />
+    </div>
+    <div>
+        <label for="place">Place:</label>
+        <input type="text" id="place" th:field="*{place}" />
+    </div>
+    <div>
+        <button type="submit">Create Room</button>
+    </div>
+</form>
+</body>
+</html>

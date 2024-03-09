@@ -51,5 +51,9 @@ public class RoomService {
         roomRepository.deleteById(id);
     }
 
+    public RoomEntity getRoomEntityById(int id) {
+        return roomRepository.findById(id).orElseThrow();
+    }
+
 
 }
