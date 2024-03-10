@@ -6,11 +6,19 @@ import java.sql.Date;
 
 public class MessageDTO {
 
+    private int idMessage;
     private UserInfoEntity sender;
-    private int idRedirect;
     private int idRecipient;
     private String message;
     private Date departureDate;
+
+    public int getIdMessage() {
+        return idMessage;
+    }
+
+    public void setIdMessage(int idMessage) {
+        this.idMessage = idMessage;
+    }
 
     public UserInfoEntity getSender() {
         return sender;
@@ -18,14 +26,6 @@ public class MessageDTO {
 
     public void setSender(UserInfoEntity sender) {
         this.sender = sender;
-    }
-
-    public int getIdRedirect() {
-        return idRedirect;
-    }
-
-    public void setIdRedirect(int idRedirect) {
-        this.idRedirect = idRedirect;
     }
 
     public int getIdRecipient() {

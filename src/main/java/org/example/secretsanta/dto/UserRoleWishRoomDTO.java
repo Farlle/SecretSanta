@@ -7,10 +7,22 @@ import org.example.secretsanta.model.entity.WishEntity;
 
 public class UserRoleWishRoomDTO {
 
+    private int idUserRleWishRoom;
     private UserInfoEntity userInfoEntity;
     private RoleEntity roleEntity;
     private RoomEntity roomEntity;
     private WishEntity wishEntity;
+
+    public int getIdUserRleWishRoom() {
+        return idUserRleWishRoom;
+    }
+
+    public void setIdUserRleWishRoom(int idUserRleWishRoom) {
+        this.idUserRleWishRoom = idUserRleWishRoom;
+    }
+
+    public UserRoleWishRoomDTO() {
+    }
 
     public UserInfoEntity getUserInfoEntity() {
         return userInfoEntity;

@@ -1,9 +1,18 @@
 package org.example.secretsanta.dto;
 
 public class UserInfoDTO {
+    private int idUserInfo;
     private String name;
     private String password;
     private String telegram;
+
+    public int getIdUserInfo() {
+        return idUserInfo;
+    }
+
+    public void setIdUserInfo(int idUserInfo) {
+        this.idUserInfo = idUserInfo;
+    }
 
     public String getName() {
         return name;

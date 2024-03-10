@@ -5,6 +5,7 @@ import org.example.secretsanta.model.enums.Status;
 
 public class InviteDTO {
 
+    private int idInvite;
     private UserInfoEntity userInfoEntity;
     private String telegram;
     private Status status;
@@ -31,5 +32,13 @@ public class InviteDTO {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public int getIdInvite() {
+        return idInvite;
+    }
+
+    public void setIdInvite(int idInvite) {
+        this.idInvite = idInvite;
     }
 }

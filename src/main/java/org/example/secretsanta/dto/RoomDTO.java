@@ -6,13 +6,32 @@ import java.sql.Date;
 
 public class RoomDTO {
 
+    private int idRoom;
     private String name;
     private int idOrganizer;
     private Date tossDate;
     private Date drawDate;
     private String place;
-    private ResultEntity resultEntity;
 
+    public RoomDTO(int idRoom, String name, int idOrganizer, Date tossDate, Date drawDate, String place) {
+        this.idRoom = idRoom;
+        this.name = name;
+        this.idOrganizer = idOrganizer;
+        this.tossDate = tossDate;
+        this.drawDate = drawDate;
+        this.place = place;
+    }
+
+    public int getIdRoom() {
+        return idRoom;
+    }
+
+    public void setIdRoom(int idRoom) {
+        this.idRoom = idRoom;
+    }
+
+    public RoomDTO() {
+    }
 
     public String getName() {
         return name;
@@ -54,11 +73,4 @@ public class RoomDTO {
         this.place = place;
     }
 
-    public ResultEntity getResultEntity() {
-        return resultEntity;
-    }
-
-    public void setResultEntity(ResultEntity resultEntity) {
-        this.resultEntity = resultEntity;
-    }
 }
