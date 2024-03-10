@@ -5,6 +5,7 @@
 </head>
 <body>
 <h2>Create a New Room</h2>
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 <form action="#" th:action="@{/room/create}" th:object="${roomDto}" method="post">
     <div>
         <label for="name">Name:</label>

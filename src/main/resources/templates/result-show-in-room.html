@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Результаты в комнате</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Результаты в комнате</h1>
+
+<div th:if="${resultWrappers.isEmpty()}">
+    <p>Результатов в этой комнате нет.</p>
+</div>
+
+<div th:unless="${resultWrappers.isEmpty()}">
+    <table>
+        <thead>
+        <tr>
+            <th>Санта</th>
+            <th>Получатель</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="wrapper : ${resultWrappers}">
+            <td th:text="${wrapper.santa.name}">Имя Санты</td>
+            <td th:text="${wrapper.ward.name}">Имя Получателя</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

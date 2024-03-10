@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Присоединение к комнате</title>
+</head>
+<body>
+<h1>Введите желание</h1>
+<form th:action="@{/room/{id}/join(id=${idRoom})}" th:object="${wishDto}" th:method="post">
+    <input type="text" th:field="*{wish}" placeholder="Введите желание" required/>
+    <button type="submit">Подтвердить</button>
+</form>
+</body>
+</html>

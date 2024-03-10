@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Room List</title>
+</head>
+<body>
+<h2>Пользователи и роли в комнате</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Роль</th>
+        <th>Комната</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="userAndRole : ${usersAndRoles}">
+        <td th:text="${userAndRole[0]}"></td>
+        <td th:text="${userAndRole[1]}"></td>
+        <td th:text="${userAndRole[2]}"></td>
+    </tr>
+    </tbody>
+</table>
+<!--
+<a href="#" th:href="@{/{idRoom}/users-and-roles(idRoom=${idRoom})}">Refresh</a>
+-->
+</body>
+</html>
