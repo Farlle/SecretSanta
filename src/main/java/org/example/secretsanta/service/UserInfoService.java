@@ -2,6 +2,7 @@ package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
+import org.example.secretsanta.repository.RoomRepository;
 import org.example.secretsanta.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,10 +16,12 @@ public class UserInfoService {
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoomRepository roomRepository;
 
-    public UserInfoService(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder) {
+    public UserInfoService(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder, RoomRepository roomRepository) {
         this.userInfoRepository = userInfoRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roomRepository = roomRepository;
     }
 
     public UserInfoEntity getUserInfoEntityById(int id) {
@@ -59,5 +62,11 @@ public class UserInfoService {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         create(dto);
     }
+
+    public List<UserInfoEntity> getUsersInfoById(int idRoom) {
+        List<Integer> usersIds = roomRepository.findUserInfoInRoom(idRoom);
+        return userInfoRepository.findAllById(usersIds);
+    }
+
 
 }

@@ -1,9 +1,7 @@
 package org.example.secretsanta.service;
 
-import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoleDTO;
 import org.example.secretsanta.model.entity.RoleEntity;
-import org.example.secretsanta.model.enums.Role;
 import org.example.secretsanta.repository.RoleRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +39,12 @@ public class RoleService {
 
     public  void delete(int id){
         roleRepository.deleteById(id);
+    }
+
+    public RoleEntity getRoleById(int id){
+        RoleEntity role = roleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
+        return role;
     }
 
 }
