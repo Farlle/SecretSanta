@@ -21,9 +21,7 @@ public class RoomEntity {
     private Date drawDate;
     @Column(name = "place", nullable = false)
     private String place;
-    @OneToOne
-    @JoinColumn(name = "id_result_draw")
-    private ResultEntity result;
+
 
     public int getIdRoom() {
         return idRoom;
@@ -73,11 +71,4 @@ public class RoomEntity {
         this.place = place;
     }
 
-    public ResultEntity getResult() {
-        return result;
-    }
-
-    public void setResult(ResultEntity result) {
-        this.result = result;
-    }
 }

@@ -15,6 +15,10 @@ public class ResultEntity {
     @Column(name = "id_ward", nullable = false)
     private int idWard;
 
+    @ManyToOne
+    @JoinColumn(name = "id_room")
+    private RoomEntity room;
+
     public int getIdResult() {
         return idResult;
     }
@@ -37,5 +41,13 @@ public class ResultEntity {
 
     public void setIdWard(int idWard) {
         this.idWard = idWard;
+    }
+
+    public RoomEntity getRoom() {
+        return room;
+    }
+
+    public void setRoom(RoomEntity room) {
+        this.room = room;
     }
 }
