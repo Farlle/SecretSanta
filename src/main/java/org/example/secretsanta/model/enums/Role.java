@@ -1,7 +1,19 @@
 package org.example.secretsanta.model.enums;
 
 public enum Role {
-     ORGANIZER,
-    PARTICIPANT,
 
+    PARTICIPANT(1),
+    ORGANIZER(2),
+    ;
+
+    private int id;
+
+    Role(int id) {
+        this.id = id;
+    }
+
+
+    public int getId() {
+        return id;
+    }
 }
