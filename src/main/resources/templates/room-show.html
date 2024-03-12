@@ -23,7 +23,7 @@
     <p>Место проведения: <span th:text="${roomAndOrganizerWrapper.room.place}">Место проведения</span></p>
     <a th:href="@{/result/show/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Просмотр результатов</a>
     <a href="#" th:href="@{/room/{id}/join(id=${roomAndOrganizerWrapper.room.idRoom})}" target="_blank">Присоединиться</a>
-    <a href="#" th:href="@{/result/drawing/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Провести жеребьевку</a>
+    <a href="#" th:if="${loginUser.name == roomAndOrganizerWrapper.userInfo.name}" th:href="@{/result/drawing/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Провести жеребьевку</a>
     <a href="#" th:href="@{/room/{idRoom}/users-and-roles(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Участники</a>
 
 </div>

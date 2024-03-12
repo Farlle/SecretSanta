@@ -1,11 +1,14 @@
 package org.example.secretsanta.controller;
 
+import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
+import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.ResultEntity;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.entity.WishEntity;
+import org.example.secretsanta.model.enums.Role;
 import org.example.secretsanta.service.ResultService;
 import org.example.secretsanta.service.RoomService;
 import org.example.secretsanta.service.UserInfoService;
@@ -17,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -65,8 +69,18 @@ public class ResultController {
     }
 
     @GetMapping("/drawing/{idRoom}")
-    public String drawingLots(@PathVariable("idRoom") int id) {
-        RoomEntity room = roomService.getRoomEntityById(id);
+    public String drawingLots(@PathVariable("idRoom") int idRoom, Principal principal,
+                              RedirectAttributes redirectAttributes) {
+
+        UserInfoDTO currentUser = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName( principal.getName()));
+        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomEntityById(idRoom));
+
+        if (!UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(roomDTO)).equals(currentUser)) {
+            redirectAttributes.addFlashAttribute("error", "Вы не можете проводить жеребьевку");
+            return "redirect:/room/show/" + idRoom;
+        }
+
+        RoomEntity room = roomService.getRoomEntityById(idRoom);
         resultService.performDraw(room);
         return "redirect:/result/show/{idRoom}";
     }
