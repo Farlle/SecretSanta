@@ -5,18 +5,9 @@ import org.example.secretsanta.model.entity.RoomEntity;
 public class ResultDTO {
 
     private int idResult;
-    private int idRoom;
     private int idSanta;
     private int idWard;
     private RoomEntity roomEntity;
-
-    public int getIdRoom() {
-        return idRoom;
-    }
-
-    public void setIdRoom(int idRoom) {
-        this.idRoom = idRoom;
-    }
 
     public int getIdResult() {
         return idResult;

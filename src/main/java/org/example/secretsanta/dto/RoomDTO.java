@@ -1,7 +1,5 @@
 package org.example.secretsanta.dto;
 
-import org.example.secretsanta.model.entity.ResultEntity;
-
 import java.sql.Date;
 
 public class RoomDTO {
