@@ -4,6 +4,9 @@ import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class UserInfoMapper {
 
@@ -33,6 +36,17 @@ public class UserInfoMapper {
         userInfoEntity.setTelegram(userInfoDTO.getTelegram());
 
         return userInfoEntity;
+    }
+
+    public static List<UserInfoDTO> toUserInfoDTOList(List<UserInfoEntity> userInfoEntityList) {
+        if (userInfoEntityList == null) {
+            return null;
+        }
+
+        return userInfoEntityList.stream()
+                .map(UserInfoMapper::toUserInfoDTO)
+                .collect(Collectors.toList());
+
     }
 
 }

@@ -1,10 +1,11 @@
 package org.example.secretsanta.mapper;
 
 import org.example.secretsanta.dto.MessageDTO;
-import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.model.entity.MessageEntity;
-import org.example.secretsanta.model.entity.RoomEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MessageMapper {
@@ -37,6 +38,17 @@ public class MessageMapper {
         messageEntity.setIdRecipient(messageDTO.getIdRecipient());
 
         return messageEntity;
+    }
+
+    public static List<MessageDTO> toMessageDTOList(List<MessageEntity> messageEntityList) {
+        if (messageEntityList == null) {
+            return null;
+        }
+
+        return messageEntityList.stream()
+                .map(MessageMapper::toMessageDTO)
+                .collect(Collectors.toList());
+
     }
 
 }
