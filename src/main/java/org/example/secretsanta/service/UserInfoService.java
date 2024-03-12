@@ -1,8 +1,8 @@
 package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.UserInfoDTO;
+import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.UserInfoEntity;
-import org.example.secretsanta.repository.RoomRepository;
 import org.example.secretsanta.repository.UserInfoRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,19 +15,20 @@ public class UserInfoService {
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RoomRepository roomRepository;
+    private final RoomService roomService;
 
-    public UserInfoService(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder, RoomRepository roomRepository) {
+    public UserInfoService(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder,
+                           RoomService roomService) {
         this.userInfoRepository = userInfoRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roomRepository = roomRepository;
+        this.roomService = roomService;
     }
 
-    public UserInfoEntity getUserInfoEntityById(int id) {
-        return userInfoRepository.findById(id).orElseThrow();
+    public UserInfoDTO getUserInfoEntityById(int id) {
+        return UserInfoMapper.toUserInfoDTO(userInfoRepository.findById(id).orElseThrow());
     }
 
-    public UserInfoEntity update(int id, UserInfoDTO dto) {
+    public UserInfoDTO update(int id, UserInfoDTO dto) {
         UserInfoEntity userInfoEntity = userInfoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
 
@@ -35,19 +36,19 @@ public class UserInfoService {
         userInfoEntity.setTelegram(dto.getTelegram());
         userInfoEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        return userInfoRepository.save(userInfoEntity);
+        return UserInfoMapper.toUserInfoDTO(userInfoRepository.save(userInfoEntity));
     }
 
-    public UserInfoEntity create(UserInfoDTO dto) {
+    public UserInfoDTO create(UserInfoDTO dto) {
         UserInfoEntity userInfo = new UserInfoEntity();
         userInfo.setName(dto.getName());
         userInfo.setPassword(dto.getPassword());
         userInfo.setTelegram(dto.getTelegram());
-        return userInfoRepository.save(userInfo);
+        return UserInfoMapper.toUserInfoDTO(userInfoRepository.save(userInfo));
     }
 
-    public List<UserInfoEntity> readAll() {
-        return userInfoRepository.findAll();
+    public List<UserInfoDTO> readAll() {
+        return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAll());
     }
 
     public void delete(int id) {
@@ -62,9 +63,9 @@ public class UserInfoService {
         create(dto);
     }
 
-    public List<UserInfoEntity> getUsersInfoById(int idRoom) {
-        List<Integer> usersIds = roomRepository.findUserInfoInRoom(idRoom);
-        return userInfoRepository.findAllById(usersIds);
+    public List<UserInfoDTO> getUsersInfoById(int idRoom) {
+        List<Integer> usersIds = roomService.getUserIndoIdInRoom(idRoom);
+        return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAllById(usersIds));
     }
 
 

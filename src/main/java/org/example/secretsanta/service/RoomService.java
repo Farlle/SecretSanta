@@ -1,16 +1,16 @@
 package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.RoomDTO;
-import org.example.secretsanta.dto.UserRoleWishRoomDTO;
+import org.example.secretsanta.dto.UserInfoDTO;
+import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.RoomEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
-import org.example.secretsanta.model.entity.UserRoleWishRoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.sql.Date;
+
 
 @Service
 public class RoomService {
@@ -23,7 +23,7 @@ public class RoomService {
         this.userInfoService = userInfoService;
     }
 
-    public RoomEntity create(RoomDTO dto) {
+    public RoomDTO create(RoomDTO dto) {
         RoomEntity room = new RoomEntity();
         room.setName(dto.getName());
         room.setDrawDate(dto.getDrawDate());
@@ -31,14 +31,14 @@ public class RoomService {
         room.setIdOrganizer(dto.getIdOrganizer());
         room.setTossDate(dto.getTossDate());
 
-        return roomRepository.save(room);
+        return RoomMapper.toRoomDTO(roomRepository.save(room));
     }
 
-    public List<RoomEntity> readAll() {
-        return roomRepository.findAll();
+    public List<RoomDTO> readAll() {
+        return RoomMapper.toRoomDTOList(roomRepository.findAll());
     }
 
-    public RoomEntity update(int id, RoomDTO dto) {
+    public RoomDTO update(int id, RoomDTO dto) {
         RoomEntity room = roomRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Room not found with id: " + id));
 
@@ -48,39 +48,51 @@ public class RoomService {
         room.setIdOrganizer(dto.getIdOrganizer());
         room.setTossDate(dto.getTossDate());
 
-        return roomRepository.save(room);
+        return RoomMapper.toRoomDTO(roomRepository.save(room));
     }
 
     public void delete(int id) {
         roomRepository.deleteById(id);
     }
 
-    public RoomEntity getRoomEntityById(int id) {
-        return roomRepository.findById(id).orElseThrow();
+    public RoomDTO getRoomEntityById(int id) {
+        return RoomMapper.toRoomDTO(roomRepository.findById(id).orElseThrow());
     }
 
-    public UserInfoEntity getRoomOrganizer(RoomDTO dto) {
+    public UserInfoDTO getRoomOrganizer(RoomDTO dto) {
         return userInfoService.getUserInfoEntityById(dto.getIdOrganizer());
     }
 
-    public RoomEntity findRoomByName(String name) {
+    public RoomDTO findRoomByName(String name) {
         List<RoomEntity> allUsers = roomRepository.findAll();
-        return allUsers.stream()
+        return RoomMapper.toRoomDTO(allUsers.stream()
                 .filter(user -> user.getName().equals(name))
                 .findFirst()
-                .orElse(null);
+                .orElse(null));
     }
 
     public List<Object[]> getUsersAndRolesByRoomId(int idRoom) {
         return roomRepository.findUserRoleInRoom(idRoom);
     }
 
-    public List<RoomEntity> getRoomsWhereUserJoin(int idUserInfo) {
-        return roomRepository.findAllById(roomRepository.findRoomsWhereUserJoin(idUserInfo));
+    public List<RoomDTO> getRoomsWhereUserJoin(int idUserInfo) {
+        return RoomMapper.toRoomDTOList(roomRepository.findAllById(roomRepository.findRoomsWhereUserJoin(idUserInfo)));
     }
 
-    public  RoomEntity getRoomByName(String name) {
-        return roomRepository.findRoomEntitiesByName(name);
+    public RoomDTO getRoomByName(String name) {
+        return RoomMapper.toRoomDTO(roomRepository.findRoomEntitiesByName(name));
+    }
+
+    public List<RoomDTO> getRoomByUserName(String name) {
+        return RoomMapper.toRoomDTOList(roomRepository.findRoomsByUserName(name));
+    }
+
+    public List<Integer> getUserIndoIdInRoom(int idRoom) {
+        return roomRepository.findUserInfoIdInRoom(idRoom);
+    }
+
+    public List<RoomDTO> getByDrawDateLessThanEqual(Date date) {
+
     }
 
 

@@ -1,7 +1,7 @@
 package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.WishDTO;
-import org.example.secretsanta.model.entity.InviteEntity;
+import org.example.secretsanta.mapper.WishMapper;
 import org.example.secretsanta.model.entity.WishEntity;
 import org.example.secretsanta.repository.WishRepository;
 import org.springframework.stereotype.Service;
@@ -18,25 +18,25 @@ public class WishService {
         this.wishRepository = wishRepository;
     }
 
-    public WishEntity create(WishDTO dto) {
+    public WishDTO create(WishDTO dto) {
         WishEntity wish = new WishEntity();
         wish.setWish(dto.getWish());
-        return wishRepository.save(wish);
+        return WishMapper.toWishDTO(wishRepository.save(wish));
     }
 
-    public List<WishEntity> readAll() {
-        return wishRepository.findAll();
+    public List<WishDTO> readAll() {
+        return WishMapper.toWishDTOList(wishRepository.findAll());
     }
 
-    public WishEntity update(int id, WishDTO dto) {
+    public WishDTO update(int id, WishDTO dto) {
         WishEntity wish = wishRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Wish not found with id: " + id));
         wish.setWish(dto.getWish());
-        return wishRepository.save(wish);
+        return WishMapper.toWishDTO(wishRepository.save(wish));
     }
 
-    public WishEntity getUserWishInRoom(int idRoom, int idUserInfo) {
-        return wishRepository.findWishesByRoomAndUser(idRoom,idUserInfo);
+    public WishDTO getUserWishInRoom(int idRoom, int idUserInfo) {
+        return WishMapper.toWishDTO(wishRepository.findWishesByRoomAndUser(idRoom, idUserInfo));
     }
 
 }

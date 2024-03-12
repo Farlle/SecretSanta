@@ -1,6 +1,7 @@
 package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.RoleDTO;
+import org.example.secretsanta.mapper.RoleMapper;
 import org.example.secretsanta.model.entity.RoleEntity;
 import org.example.secretsanta.repository.RoleRepository;
 import org.springframework.stereotype.Service;
@@ -17,34 +18,34 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public RoleEntity create(RoleDTO dto) {
+    public RoleDTO create(RoleDTO dto) {
         RoleEntity role = new RoleEntity();
         role.setRole(dto.getRole());
 
-        return roleRepository.save(role);
+        return RoleMapper.toRoleDTO(roleRepository.save(role));
     }
 
-    public List<RoleEntity> readAll() {
-        return roleRepository.findAll();
+    public List<RoleDTO> readAll() {
+        return RoleMapper.toRoleDTOList(roleRepository.findAll());
     }
 
-    public RoleEntity update(int id, RoleDTO dto) {
+    public RoleDTO update(int id, RoleDTO dto) {
         RoleEntity role = roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
 
         role.setRole(dto.getRole());
 
-        return roleRepository.save(role);
+        return RoleMapper.toRoleDTO(roleRepository.save(role));
     }
 
-    public  void delete(int id){
+    public void delete(int id) {
         roleRepository.deleteById(id);
     }
 
-    public RoleEntity getRoleById(int id){
+    public RoleDTO getRoleById(int id) {
         RoleEntity role = roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
-        return role;
+        return RoleMapper.toRoleDTO(role);
     }
 
 

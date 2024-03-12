@@ -1,5 +1,7 @@
 package org.example.secretsanta.service.security;
 
+import org.example.secretsanta.dto.UserInfoDTO;
+import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.UserInfoRepository;
 import org.springframework.security.core.userdetails.User;
@@ -20,18 +22,18 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userInfoRepository = userRepository;
     }
 
-    public UserInfoEntity findUserByName(String name) {
+    public UserInfoDTO findUserByName(String name) {
         List<UserInfoEntity> allUsers = userInfoRepository.findAll();
-        return allUsers.stream()
+        return UserInfoMapper.toUserInfoDTO(allUsers.stream()
                 .filter(user -> user.getName().equals(name))
                 .findFirst()
-                .orElse(null);
+                .orElse(null));
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        UserInfoEntity userInfo = findUserByName(name);
+        UserInfoDTO userInfo = findUserByName(name);
         if (userInfo == null) {
             throw new UsernameNotFoundException("UserInfo not found with name:" + name);
         }

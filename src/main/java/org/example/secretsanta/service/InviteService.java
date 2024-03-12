@@ -1,8 +1,8 @@
 package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.InviteDTO;
+import org.example.secretsanta.mapper.InviteMapper;
 import org.example.secretsanta.model.entity.InviteEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.InviteRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +18,20 @@ public class InviteService {
         this.inviteRepository = inviteRepository;
     }
 
-    public InviteEntity create(InviteDTO dto) {
+    public InviteDTO create(InviteDTO dto) {
         InviteEntity invite = new InviteEntity();
         invite.setTelegram(dto.getTelegram());
         invite.setStatus(dto.getStatus());
         invite.setUserInfo(dto.getUserInfoEntity());
 
-        return inviteRepository.save(invite);
+        return InviteMapper.toInviteDTO(inviteRepository.save(invite));
     }
 
-    public List<InviteEntity> readAll() {
-        return inviteRepository.findAll();
+    public List<InviteDTO> readAll() {
+        return InviteMapper.toInviteDTOList(inviteRepository.findAll());
     }
 
-    public InviteEntity update(int id, InviteDTO dto) {
+    public InviteDTO update(int id, InviteDTO dto) {
         InviteEntity inviteEntity = inviteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Invite not found with id: " + id));
 
@@ -39,7 +39,7 @@ public class InviteService {
         inviteEntity.setStatus(dto.getStatus());
         inviteEntity.setTelegram(dto.getTelegram());
 
-        return inviteRepository.save(inviteEntity);
+        return InviteMapper.toInviteDTO(inviteRepository.save(inviteEntity));
     }
 
     public  void delete(int id){
