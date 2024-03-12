@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registration</title>
+    <title>Регистрация</title>
 </head>
 <body>
+<div th:include="navbar :: navbar"></div>
+
 <form th:action="@{/register}" method="post">
-    <input type="text" name="name" placeholder="Username" required/>
-    <input type="password" name="password" placeholder="Password" required/>
+    <input type="text" name="name" placeholder="Имя" required/>
+    <input type="password" name="password" placeholder="Пароль" required/>
     <input type="text" name="telegram" placeholder="Telegram" required/>
     <input type="submit" value="Register"/>
 </form>

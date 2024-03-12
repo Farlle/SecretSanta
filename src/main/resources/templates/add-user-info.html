@@ -7,6 +7,8 @@
 
 </head>
 <body>
+<div th:include="navbar :: navbar"></div>
+
 <h2>Add New User</h2>
 <form th:action="@{/create}" th:object="${userInfoDto}" method="post">
     <label for="name">Username:</label><br>

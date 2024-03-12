@@ -4,6 +4,8 @@
     <title>Room List</title>
 </head>
 <body>
+<div th:include="navbar :: navbar"></div>
+
 <h2>Пользователи и роли в комнате</h2>
 <table>
     <thead>
@@ -18,11 +20,14 @@
         <td th:text="${userAndRole[0]}"></td>
         <td th:text="${userAndRole[1]}"></td>
         <td th:text="${userAndRole[2]}"></td>
+        <td th:if="${user!=null}">
+            <form th:action="@{/room/{idRoom}/users/{idUserInfo}(idRoom=${userAndRole[2]}, idUserInfo=${userAndRole[0]})}" method="post">
+            <button type="submit">Удалить</button>
+        </form>
+        </td>
     </tr>
     </tbody>
 </table>
-<!--
-<a href="#" th:href="@{/{idRoom}/users-and-roles(idRoom=${idRoom})}">Refresh</a>
--->
+
 </body>
 </html>

@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Room</title>
+    <title>Создать комнату</title>
 </head>
 <body>
-<h2>Create a New Room</h2>
+<div th:include="navbar :: navbar"></div>
+
+<h2>Создание комнаты</h2>
 <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 <form action="#" th:action="@{/room/create}" th:object="${roomDto}" method="post">
     <div>
-        <label for="name">Name:</label>
+        <label for="name">Название:</label>
         <input type="text" id="name" th:field="*{name}" />
     </div>
     <div>
-        <label for="idOrganizer">Organizer ID:</label>
+        <label for="idOrganizer">Создатель:</label>
         <input type="number" id="idOrganizer" th:field="*{idOrganizer}" readonly="readonly"/>
     </div>
     <div>
-        <label for="tossDate">Toss Date:</label>
+        <label for="tossDate">Дата обмена:</label>
         <input type="date" id="tossDate" th:field="*{tossDate}" />
     </div>
     <div>
-        <label for="drawDate">Draw Date:</label>
+        <label for="drawDate">Дата жеребьевки:</label>
         <input type="date" id="drawDate" th:field="*{drawDate}" />
     </div>
     <div>
-        <label for="place">Place:</label>
+        <label for="place">Место:</label>
         <input type="text" id="place" th:field="*{place}" />
     </div>
     <div>
-        <button type="submit">Create Room</button>
+        <button type="submit">Создать комнату</button>
     </div>
 </form>
 </body>

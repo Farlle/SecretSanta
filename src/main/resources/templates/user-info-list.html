@@ -5,16 +5,18 @@
     <title>Title</title>
 </head>
 <body>
+<div th:include="navbar :: navbar"></div>
+
 <div>
-    <h1>User List</h1>
+    <h1>Список пользователей</h1>
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Password</th>
+            <th>Имя</th>
+            <th>Пароль</th>
             <th>Telegram</th>
-            <th>Actions</th>
+            <th>Действие</th>
         </tr>
         </thead>
         <tbody>

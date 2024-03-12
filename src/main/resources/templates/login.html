@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
+
+    <title>Логин</title>
 </head>
 <body>
+<div th:replace="~{navbar :: navbar}"></div>
+
 <div th:if="${param.error}">
-    Invalid username and password.
+    Неправильное имя пользователя или пароль.
 </div>
 <div th:if="${param.logout}">
-    You have been logged out.
+    Вы вышли.
 </div>
 <form th:action="@{/login}" method="post">
     <input type="text" name="username" placeholder="username" required/>
     <input type="password" name="password" placeholder="Password" required/>
     <input type="submit" value="Login"/>
 </form>
-<a th:href="@{/register}">Register</a>
+<a th:href="@{/register}">Регистрация</a>
 </body>
 </html>

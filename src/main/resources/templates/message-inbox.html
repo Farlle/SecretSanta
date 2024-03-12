@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Сообщения</title>
+    <style>
+        .inbox-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #f8f8f8;
+            border-left: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .inbox-container h2 {
+            margin-top: 0;
+        }
+        .inbox-container div {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div th:include="navbar :: navbar"></div>
+
+<h1>Сообщения</h1>
+
+<form th:action="@{/message/send}" th:object="${message}" method="post">
+    <div>
+        <label for="sender">Отправитель:</label>
+        <input type="text" id="sender" name="sender" th:value="${sender.idUserInfo}" readonly required/>
+    </div>
+    <div>
+        <label for="recipient">Получатель:</label>
+        <input type="text" id="recipient" name="idRecipient" th:value="${recipient.idUserInfo}" readonly required/>
+
+    </div>
+    <div>
+        <label for="message">Сообщение:</label>
+        <textarea id="message" name="message" required></textarea>
+    </div>
+    <div>
+        <button type="submit">Отправить</button>
+    </div>
+</form>
+
+<div class="inbox-container">
+    <h2>Inbox</h2>
+    <form th:action="@{/message/send}" th:object="${message}" method="post">
+    <div th:each="message : ${messages}">
+      <!--  <p>From: <span th:text="${message.sender.name}"></span></p>-->
+        <p>Сообщение: <span th:text="${message.message}"></span></p>
+        <p>Дата: <span th:text="${message.departureDate}"></span></p>
+        <button type="submit">Ответить</button>
+    </div>
+    </form>
+        <!--
+                <p>Дата: <span th:text="${message.idRecipient}"></span></p>
+        -->
+</div>
+</body>
+</html>

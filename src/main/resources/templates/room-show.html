@@ -11,18 +11,21 @@
     </style>
 </head>
 <body>
+<div th:include="navbar :: navbar"></div>
+
 <h1>Список комнат</h1>
 
 <div th:each="room : ${roomAndOrganizerWrapper}" class="room-info">
     <h2 th:text="${roomAndOrganizerWrapper.room.name }">Название комнаты</h2>
     <p>Организатор: <span th:text="${roomAndOrganizerWrapper.userInfo.name}">Организатор</span></p>
-    <p>Дата жеребьевки: <span th:text="${roomAndOrganizerWrapper.room.tossDate}">Дата жеребьевки</span></p>
-    <p>Дата дарения: <span th:text="${roomAndOrganizerWrapper.room.drawDate}">Дата дарения</span></p>
+    <p>Дата жеребьевки: <span th:text="${roomAndOrganizerWrapper.room.tossDate}">Дата дарения</span></p>
+    <p>Дата дарения: <span th:text="${roomAndOrganizerWrapper.room.drawDate}">Дата жеребьевки </span></p>
     <p>Место проведения: <span th:text="${roomAndOrganizerWrapper.room.place}">Место проведения</span></p>
     <a th:href="@{/result/show/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Просмотр результатов</a>
     <a href="#" th:href="@{/room/{id}/join(id=${roomAndOrganizerWrapper.room.idRoom})}" target="_blank">Присоединиться</a>
-    <a href="#" th:href="@{/room/{idRoom}/users-and-roles(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Участники</a>
     <a href="#" th:href="@{/result/drawing/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Провести жеребьевку</a>
+    <a href="#" th:href="@{/room/{idRoom}/users-and-roles(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Участники</a>
+
 </div>
 </body>
 </html>

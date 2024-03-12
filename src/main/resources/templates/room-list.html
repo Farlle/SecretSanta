@@ -4,14 +4,18 @@
     <title>Список комнат</title>
 </head>
 <body>
+<div th:include="navbar :: navbar"></div>
+
+
+
 <h1>Список комнат</h1>
 <table>
     <thead>
     <tr>
         <th>ID</th>
         <th>ID организатора</th>
+        <th>Дата обмена</th>
         <th>Дата жеребьевки</th>
-        <th>Дата дарения</th>
         <th>Место проведения</th>
         <th>Результаты</th>
         <th>Присоединиться</th>
@@ -20,23 +24,23 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="room : ${roomEntity}">
+    <tr th:each="room : ${roomsDto}">
         <td th:text="${room.idRoom}">ID</td>
         <td th:text="${room.idOrganizer}">ID организатора</td>
-        <td th:text="${room.tossDate}">Дата начала</td>
-        <td th:text="${room.drawDate}">Дата окончания</td>
+        <td th:text="${room.tossDate}">Дата жеребьевки</td>
+        <td th:text="${room.drawDate}">Дата обмена</td>
         <td th:text="${room.place}">Место проведения</td>
         <td>
-            <a th:href="@{/result/show/{idRoom}(idRoom=${room.idRoom})}">Просмотр результатов</a>
+            <a href="#" th:href="@{/room/show/{idRoom}(idRoom=${room.idRoom})}">Подробнее</a>
         </td>
         <td>
-        <td>
+        <!--<td>
             <a href="#" th:href="@{/room/{id}/join(id=${room.idRoom})}" target="_blank">Присоединиться</a>
         </td>
 
         <td>
             <a href="#" th:href="@{/room/{idRoom}/users-and-roles(idRoom=${room.idRoom})}">Участники</a>
-        </td>
+        </td>-->
 
     </tr>
     </tbody>

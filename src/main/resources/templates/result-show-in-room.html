@@ -18,24 +18,30 @@
     </style>
 </head>
 <body>
+<div th:include="navbar :: navbar"></div>
+
 <h1>Результаты в комнате</h1>
 
-<div th:if="${resultWrappers.isEmpty()}">
+<div th:if="${resultWrappers==null}">
     <p>Результатов в этой комнате нет.</p>
 </div>
 
-<div th:unless="${resultWrappers.isEmpty()}">
+<div th:unless="${resultWrappers==null}">
     <table>
         <thead>
         <tr>
             <th>Санта</th>
             <th>Получатель</th>
+            <th>Желание получателя</th>
+            <th>Сообщение</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="wrapper : ${resultWrappers}">
-            <td th:text="${wrapper.santa.name}">Имя Санты</td>
-            <td th:text="${wrapper.ward.name}">Имя Получателя</td>
+        <tr>
+            <td th:text="${resultWrappers.santa.name}">Имя Санты</td>
+            <td th:text="${resultWrappers.ward.name}">Имя Получателя</td>
+            <td th:text="${resultWrappers.wish.wish}">Желание получателя</td>
+            <td> <a th:href="@{/message/inbox/{idRecipient}(idRecipient=${resultWrappers.ward.getId()})}">Сообщение</a></td>
         </tr>
         </tbody>
     </table>
