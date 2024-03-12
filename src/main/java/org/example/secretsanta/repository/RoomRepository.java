@@ -27,7 +27,7 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
             " room.idRoom = user_role_wish_room.room.idRoom " +
             "join UserInfoEntity user_info on user_role_wish_room.userInfoEntity.idUserInfo = user_info.idUserInfo " +
             "where room.idRoom= :idRoom")
-    List<Integer> findUserInfoInRoom(@Param("idRoom") int idRoom);
+    List<Integer> findUserInfoIdInRoom(@Param("idRoom") int idRoom);
     @Query("select room.idRoom " +
             "from RoomEntity room join UserRoleWishRoomEntity user_role_wish_room on" +
             " room.idRoom = user_role_wish_room.room.idRoom " +
