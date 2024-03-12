@@ -170,11 +170,12 @@ public class RoomController {
     public String getUsersAndRoles(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
         UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
         RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomEntityById(idRoom));
-        if (UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(roomDTO)).equals(userInfoDTO)) {
-            model.addAttribute("user", userInfoDTO);
-        }
+
+        UserInfoDTO organizer = UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(roomDTO));
 
         List<Object[]> usersAndRoles = roomService.getUsersAndRolesByRoomId(idRoom);
+        model.addAttribute("user", userInfoDTO);
+        model.addAttribute("organizer", organizer);
         model.addAttribute("usersAndRoles", usersAndRoles);
         return "user-in-room";
     }
@@ -190,12 +191,20 @@ public class RoomController {
 
     @PostMapping("/{nameRoom}/users/{UserInfoName}")
     public String deleteUserFromRoom(@PathVariable("nameRoom") String nameRoom,
-                                     @PathVariable("UserInfoName") String userInfoName) {
+                                     @PathVariable("UserInfoName") String userInfoName, Principal principal,
+                                     RedirectAttributes redirectAttributes) {
 
-        UserInfoDTO user = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(userInfoName));
-        RoomDTO room = RoomMapper.toRoomDTO(roomService.getRoomByName(nameRoom));
-        userRoleWishRoomService.deleteUserEntityFromRoom(room.getIdRoom(), user.getIdUserInfo());
-        return "redirect:/room/" + room.getIdRoom() + "/users-and-roles";
+        UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(userInfoName));
+        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomByName(nameRoom));
+        UserInfoDTO loginUser = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
+
+        if (!UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(roomDTO)).equals(loginUser)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Не можешь удалять");
+            return "redirect:/room/" + roomDTO.getIdRoom() + "/users-and-roles";
+        }
+
+        userRoleWishRoomService.deleteUserEntityFromRoom(roomDTO.getIdRoom(), userInfoDTO.getIdUserInfo());
+        return "redirect:/room/" + roomDTO.getIdRoom() + "/users-and-roles";
     }
 
 }

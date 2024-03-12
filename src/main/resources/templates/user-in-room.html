@@ -20,10 +20,10 @@
         <td th:text="${userAndRole[0]}"></td>
         <td th:text="${userAndRole[1]}"></td>
         <td th:text="${userAndRole[2]}"></td>
-        <td th:if="${user!=null}">
+        <td th:if="${user.name==organizer.name}">
             <form th:action="@{/room/{idRoom}/users/{idUserInfo}(idRoom=${userAndRole[2]}, idUserInfo=${userAndRole[0]})}" method="post">
             <button type="submit">Удалить</button>
-        </form>
+            </form>
         </td>
     </tr>
     </tbody>
