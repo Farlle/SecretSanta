@@ -22,12 +22,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public UserInfoEntity findUserByName(String name) {
         List<UserInfoEntity> allUsers = userInfoRepository.findAll();
-            return allUsers.stream()
+        return allUsers.stream()
                 .filter(user -> user.getName().equals(name))
                 .findFirst()
                 .orElse(null);
-
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
