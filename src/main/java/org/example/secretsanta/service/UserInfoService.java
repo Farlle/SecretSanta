@@ -4,7 +4,6 @@ import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.RoomRepository;
 import org.example.secretsanta.repository.UserInfoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
