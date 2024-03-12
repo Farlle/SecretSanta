@@ -40,7 +40,7 @@ public class UserRoleWishRoomMapper {
         return userRoleWishRoomEntity;
     }
 
-    public static List<UserRoleWishRoomDTO> toUserInfoDTOList(List<UserRoleWishRoomEntity> userRoleWishRoomEntityList) {
+    public static List<UserRoleWishRoomDTO> toUserRoleWishRoomDTOList(List<UserRoleWishRoomEntity> userRoleWishRoomEntityList) {
         if (userRoleWishRoomEntityList == null) {
             return null;
         }
