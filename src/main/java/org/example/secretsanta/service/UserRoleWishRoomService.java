@@ -2,10 +2,13 @@ package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.UserRoleWishRoomDTO;
 import org.example.secretsanta.model.entity.InviteEntity;
+import org.example.secretsanta.model.entity.RoomEntity;
+import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.entity.UserRoleWishRoomEntity;
 import org.example.secretsanta.repository.UserInfoRepository;
 import org.example.secretsanta.repository.UserRoleWishRoomRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -45,8 +48,15 @@ public class UserRoleWishRoomService {
         return userRoleWishRoomRepository.save(userRoleWishRoom);
     }
 
-    public  void delete(int id){
+    public void delete(int id) {
         userRoleWishRoomRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteUserEntityFromRoom(int idRoom, int idUserInfo) {
+        UserRoleWishRoomEntity userRoleWishRoom =
+                userRoleWishRoomRepository.findByIdUserInfoAndIdRoom(idUserInfo, idRoom);
+        delete(userRoleWishRoom.getIdUserRoleWishRoom());
     }
 
 }

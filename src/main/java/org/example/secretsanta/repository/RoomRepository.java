@@ -20,15 +20,31 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
             "where room.idRoom= :idRoom")
     List<Object[]> findUserRoleInRoom(@Param("idRoom") int idRoom);
 
+
+
     @Query("select user_info.idUserInfo " +
             "from RoomEntity room join UserRoleWishRoomEntity user_role_wish_room on" +
             " room.idRoom = user_role_wish_room.room.idRoom " +
             "join UserInfoEntity user_info on user_role_wish_room.userInfoEntity.idUserInfo = user_info.idUserInfo " +
             "where room.idRoom= :idRoom")
     List<Integer> findUserInfoInRoom(@Param("idRoom") int idRoom);
+    @Query("select room.idRoom " +
+            "from RoomEntity room join UserRoleWishRoomEntity user_role_wish_room on" +
+            " room.idRoom = user_role_wish_room.room.idRoom " +
+            "join UserInfoEntity user_info on user_role_wish_room.userInfoEntity.idUserInfo = user_info.idUserInfo " +
+            "where user_info.idUserInfo= :idUserInfo")
+    List<Integer> findRoomsWhereUserJoin(@Param("idUserInfo") int idUserInfo);
 
 
 
     List<RoomEntity> findByDrawDateLessThanEqual(Date drawDate);
+
+    @Query("SELECT room FROM RoomEntity room " +
+            "JOIN UserRoleWishRoomEntity userRoleWishRoom ON room.idRoom = userRoleWishRoom.room.idRoom " +
+            "JOIN UserInfoEntity userInfo ON userRoleWishRoom.userInfoEntity.idUserInfo = userInfo.idUserInfo " +
+            "WHERE userInfo.name = :userName")
+    List<RoomEntity> findRoomsByUserName(@Param("userName") String userName);
+
+    RoomEntity findRoomEntitiesByName(String name);
 
 }

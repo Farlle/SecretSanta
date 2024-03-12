@@ -35,4 +35,8 @@ public class WishService {
         return wishRepository.save(wish);
     }
 
+    public WishEntity getUserWishInRoom(int idRoom, int idUserInfo) {
+        return wishRepository.findWishesByRoomAndUser(idRoom,idUserInfo);
+    }
+
 }

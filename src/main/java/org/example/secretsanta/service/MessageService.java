@@ -2,10 +2,14 @@ package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.model.entity.MessageEntity;
+import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -45,6 +49,20 @@ public class MessageService {
 
     public  void delete(int id){
         messageRepository.deleteById(id);
+    }
+
+    public List<MessageEntity> getMessages(int idRecipient) {
+        return messageRepository.findByIdRecipient(idRecipient);
+    }
+
+    public List<MessageEntity> getConversation(int idSender, int idRecipient) {
+        return messageRepository.findByIdSenderAndIdRecipient(idSender, idRecipient);
+    }
+
+
+
+    public List<Integer> getAllUserDialog(int idUserInfo) {
+        return messageRepository.findDistinctRecipientsByIdSender(idUserInfo);
     }
 
 }

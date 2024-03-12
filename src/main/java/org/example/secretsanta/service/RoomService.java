@@ -1,10 +1,13 @@
 package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.RoomDTO;
+import org.example.secretsanta.dto.UserRoleWishRoomDTO;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.model.entity.UserInfoEntity;
+import org.example.secretsanta.model.entity.UserRoleWishRoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -70,6 +73,14 @@ public class RoomService {
 
     public List<Object[]> getUsersAndRolesByRoomId(int idRoom) {
         return roomRepository.findUserRoleInRoom(idRoom);
+    }
+
+    public List<RoomEntity> getRoomsWhereUserJoin(int idUserInfo) {
+        return roomRepository.findAllById(roomRepository.findRoomsWhereUserJoin(idUserInfo));
+    }
+
+    public  RoomEntity getRoomByName(String name) {
+        return roomRepository.findRoomEntitiesByName(name);
     }
 
 
