@@ -1,9 +1,7 @@
 package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.model.entity.UserInfoEntity;
-import org.example.secretsanta.repository.UserInfoRepository;
-import org.example.secretsanta.service.UserInfoService;
+import org.example.secretsanta.service.impl.UserInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

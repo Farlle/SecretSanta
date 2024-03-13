@@ -1,4 +1,4 @@
-package org.example.secretsanta.service;
+package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.telegram.SantaTelegramBot;
 import org.springframework.stereotype.Service;

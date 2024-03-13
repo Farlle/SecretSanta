@@ -3,7 +3,7 @@ package org.example.secretsanta.service.scheduler;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
-import org.example.secretsanta.service.ResultService;
+import org.example.secretsanta.service.impl.ResultService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

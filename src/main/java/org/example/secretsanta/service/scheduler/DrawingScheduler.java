@@ -4,7 +4,7 @@ import org.example.secretsanta.convertor.DateConvertor;
 import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
-import org.example.secretsanta.service.ResultService;
+import org.example.secretsanta.service.impl.ResultService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
