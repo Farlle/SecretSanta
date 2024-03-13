@@ -1,5 +1,6 @@
 package org.example.secretsanta.service.scheduler;
 
+import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
 import org.example.secretsanta.service.ResultService;
@@ -38,6 +39,6 @@ class DrawingSchedulerTest {
 
         drawingScheduler.scheduleDrawings();
 
-        verify(resultService, times(roomsToDraw.size())).performDraw(any(RoomEntity.class));
+        verify(resultService, times(roomsToDraw.size())).performDraw(any(RoomDTO.class));
     }
 }
