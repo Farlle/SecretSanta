@@ -1,4 +1,4 @@
-package org.example.secretsanta.service;
+package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
@@ -51,7 +51,12 @@ public class UserInfoTelegramChatsService {
     public UserInfoTelegramChatsDTO getRegisterUserByIdChats(Long idChat) {
         return UserInfoTelegramChatsMapper
                 .toUserInfoTelegramChatsDTO(userInfoTelegramChatsRepository
-                        .findUserInfoTelegramChatsEntitiesByIdChat(idChat));
+                        .findFirstUserInfoTelegramChatsEntitiesByIdChat(idChat));
+    }
+
+    public List<UserInfoTelegramChatsDTO> getAllIdChatsUsersWhoNeedNotify(int idRoom) {
+       return UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(
+               userInfoTelegramChatsRepository.findAllUserIdChatsWhoNeedNotify(idRoom));
     }
 
 }

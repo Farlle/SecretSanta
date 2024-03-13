@@ -17,7 +17,7 @@ public class loggerControllerAspect {
 
         @After("execution(* org.example.secretsanta.controller.*.*(..))")
         public void logAfter(JoinPoint joinPoint) {
-            logger.info("Method executed  " + joinPoint.getSignature().getName());
+            logger.info("Method executed in Controller " + joinPoint.getSignature().getName());
         }
 
 }

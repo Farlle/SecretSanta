@@ -4,10 +4,10 @@ import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.WishDTO;
-import org.example.secretsanta.service.ResultService;
-import org.example.secretsanta.service.RoomService;
-import org.example.secretsanta.service.UserInfoService;
-import org.example.secretsanta.service.WishService;
+import org.example.secretsanta.service.impl.ResultService;
+import org.example.secretsanta.service.impl.RoomService;
+import org.example.secretsanta.service.impl.UserInfoService;
+import org.example.secretsanta.service.impl.WishService;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.example.secretsanta.wrapper.ResultWrapper;
 import org.springframework.stereotype.Controller;
@@ -77,7 +77,7 @@ public class ResultController {
 
         RoomDTO room = roomService.getRoomById(idRoom);
         resultService.performDraw(room);
-        return "redirect:/result/show/{idRoom}";
+        return "redirect:/result/show/" + idRoom;
     }
 
 }

@@ -1,4 +1,4 @@
-package org.example.secretsanta.service;
+package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.mapper.MessageMapper;
