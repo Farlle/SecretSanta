@@ -31,4 +31,5 @@ public class UserInfoTelegramChatsDTO {
     public void setUserInfoEntity(UserInfoEntity userInfoEntity) {
         this.userInfoEntity = userInfoEntity;
     }
+
 }

@@ -1,5 +1,6 @@
 package org.example.secretsanta.service;
 
+import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.mapper.UserInfoTelegramChatsMapper;
 import org.example.secretsanta.model.entity.UserInfoTelegramChatsEntity;
@@ -47,5 +48,10 @@ public class UserInfoTelegramChatsService {
         userInfoTelegramChatsRepository.deleteById(id);
     }
 
+    public UserInfoTelegramChatsDTO getRegisterUserByIdChats(Long idChat) {
+        return UserInfoTelegramChatsMapper
+                .toUserInfoTelegramChatsDTO(userInfoTelegramChatsRepository
+                        .findUserInfoTelegramChatsEntitiesByIdChat(idChat));
+    }
 
 }
