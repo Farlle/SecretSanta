@@ -72,7 +72,7 @@ public class RoomController {
         }
         RoomDTO room = roomServiceImpl.create(dto);
         model.addAttribute("room", room);
-        return "redirect:/room/show";
+        return "redirect:/room/" + room.getIdRoom() + "/join";
     }
 
     @GetMapping("/update/{id}")
