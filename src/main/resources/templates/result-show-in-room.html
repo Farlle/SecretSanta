@@ -41,7 +41,8 @@
             <td th:text="${resultWrappers.santa.name}">Имя Санты</td>
             <td th:text="${resultWrappers.ward.name}">Имя Получателя</td>
             <td th:text="${resultWrappers.wish.wish}">Желание получателя</td>
-            <td> <a th:href="@{/message/inbox/{idRecipient}(idRecipient=${resultWrappers.ward.getId()})}">Сообщение</a></td>
+            <td> <a th:href="@{/message/inbox/{idRecipient}(idRecipient=${resultWrappers.ward.getIdUserInfo()})}">
+                Сообщение</a></td>
         </tr>
         </tbody>
     </table>

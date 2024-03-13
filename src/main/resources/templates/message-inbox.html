@@ -54,15 +54,11 @@
     <h2>Inbox</h2>
     <form th:action="@{/message/send}" th:object="${message}" method="post">
     <div th:each="message : ${messages}">
-      <!--  <p>From: <span th:text="${message.sender.name}"></span></p>-->
         <p>Сообщение: <span th:text="${message.message}"></span></p>
         <p>Дата: <span th:text="${message.departureDate}"></span></p>
         <button type="submit">Ответить</button>
     </div>
     </form>
-        <!--
-                <p>Дата: <span th:text="${message.idRecipient}"></span></p>
-        -->
 </div>
 </body>
 </html>

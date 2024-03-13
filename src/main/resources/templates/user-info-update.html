@@ -10,7 +10,7 @@
 
 <div>
     <h1>Обновить информацию о пользователе</h1>
-    <form action="#" th:action="@{/update/{id}(id=${userInfo.id})}" th:object="${userInfo}" method="post">
+    <form action="#" th:action="@{/update/{id}(id=${userInfo.idUserInfo})}" th:object="${userInfo}" method="post">
         <p>Name: <input type="text" th:field="*{name}" /></p>
         <p>Password: <input type="text" th:field="*{password}" /></p>
         <p>Telegram: <input type="text" th:field="*{telegram}" /></p>
