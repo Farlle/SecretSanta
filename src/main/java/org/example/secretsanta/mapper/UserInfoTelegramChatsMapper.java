@@ -1,8 +1,6 @@
 package org.example.secretsanta.mapper;
 
-import org.example.secretsanta.dto.InviteDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
-import org.example.secretsanta.model.entity.InviteEntity;
 import org.example.secretsanta.model.entity.UserInfoTelegramChatsEntity;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +20,6 @@ public class UserInfoTelegramChatsMapper {
         UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
         userInfoTelegramChatsDTO.setIdChat(userInfoTelegramChatsEntity.getIdChat());
         userInfoTelegramChatsDTO.setUserInfoEntity(userInfoTelegramChatsEntity.getUserInfo());
-        userInfoTelegramChatsDTO.setIdUserInfo(userInfoTelegramChatsEntity.getIdUserInfo());
         userInfoTelegramChatsDTO.setIdUserInfoTelegramChat(userInfoTelegramChatsEntity.getIdUserInfoTelegramChat());
 
         return userInfoTelegramChatsDTO;
@@ -38,7 +35,6 @@ public class UserInfoTelegramChatsMapper {
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
         userInfoTelegramChatsEntity.setIdChat(userInfoTelegramChatsDTO.getIdChat());
         userInfoTelegramChatsEntity.setUserInfo(userInfoTelegramChatsDTO.getUserInfoEntity());
-        userInfoTelegramChatsEntity.setIdUserInfo(userInfoTelegramChatsDTO.getIdUserInfo());
         userInfoTelegramChatsEntity.setIdUserInfoTelegramChat(userInfoTelegramChatsDTO.getIdUserInfoTelegramChat());
 
         return userInfoTelegramChatsEntity;
