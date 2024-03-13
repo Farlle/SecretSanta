@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .notification-info {
+            margin-bottom: 20px;
+        }
+        .join-link {
+            display: inline-block;
+            background-color: #0088cc;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .join-link:hover {
+            background-color: #005580;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="notification-info">
+        <h1>Присоединяйтесь к нашему боту!</h1>
+        <p>Чтобы получать уведомления в Telegram, перейдите по ссылке ниже и присоединитесь к нашему боту.</p>
+    </div>
+    <a href="https://t.me/HomeSecretSantaBot" class="join-link" target="_blank" onclick="changePageAfterDelay();">Присоединиться к боту</a>
+</div>
+
+<script>
+    function changePageAfterDelay() {
+        setTimeout(function() {
+            window.location.href = '/login';
+        }, 2000);
+    }
+</script>
+
+</body>
+</html>

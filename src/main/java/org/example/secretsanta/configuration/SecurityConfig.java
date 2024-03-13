@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/register").permitAll()
+                    .antMatchers("register/telegram").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

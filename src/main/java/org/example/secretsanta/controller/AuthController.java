@@ -31,9 +31,7 @@ public class AuthController {
     @PostMapping("/register")
     public String registrationUserInfo(@ModelAttribute("userInfo") UserInfoDTO dto) throws Exception {
         userInfoServiceImpl.registerNewUserInfoAccount(dto);
-        return "redirect:/login?success";
+        return "register-telegram";
     }
-
-
 
 }
