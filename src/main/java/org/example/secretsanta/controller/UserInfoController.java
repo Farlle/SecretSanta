@@ -1,7 +1,7 @@
 package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.service.impl.UserInfoService;
+import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/userInfo")
 public class UserInfoController {
 
-    private final UserInfoService userInfoService;
+    private final UserInfoServiceImpl userInfoServiceImpl;
 
-    public UserInfoController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
+    public UserInfoController(UserInfoServiceImpl userInfoServiceImpl) {
+        this.userInfoServiceImpl = userInfoServiceImpl;
     }
 
     @GetMapping("/create")
@@ -24,34 +24,34 @@ public class UserInfoController {
 
     @PostMapping("/create")
     public String createUserInfo(@ModelAttribute UserInfoDTO dto, Model model) {
-        UserInfoDTO userInfo = userInfoService.create(dto);
+        UserInfoDTO userInfo = userInfoServiceImpl.create(dto);
         model.addAttribute("userInfo", userInfo);
         return "redirect:/show";
     }
 
     @GetMapping("/update/{id}")
     public String updateUserInfo(@PathVariable int id,Model model) {
-        UserInfoDTO userInfo = userInfoService.getUserInfoById(id);
+        UserInfoDTO userInfo = userInfoServiceImpl.getUserInfoById(id);
         model.addAttribute("userInfo", userInfo);
         return "user-info-update";
     }
 
     @PostMapping ("/update/{id}")
     public String updateUserInfo(@PathVariable int id, @ModelAttribute("userInfo") UserInfoDTO dto, Model model) {
-        userInfoService.update(id, dto);
+        userInfoServiceImpl.update(id, dto);
         model.addAttribute("userInfo", dto);
         return "redirect:/show";
     }
 
     @GetMapping("/show")
     public String getAllUsersInfo(Model model){
-        model.addAttribute("userInfo", userInfoService.readAll());
+        model.addAttribute("userInfo", userInfoServiceImpl.readAll());
         return "user-info-list";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUserInfo(@PathVariable int id){
-        userInfoService.delete(id);
+        userInfoServiceImpl.delete(id);
         return "redirect:/show";
 
     }

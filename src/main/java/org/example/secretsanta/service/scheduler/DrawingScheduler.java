@@ -4,7 +4,7 @@ import org.example.secretsanta.convertor.DateConvertor;
 import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
-import org.example.secretsanta.service.impl.ResultService;
+import org.example.secretsanta.service.impl.ResultServiceImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,11 @@ import java.util.List;
 public class DrawingScheduler {
 
     private final RoomRepository roomRepository;
-    private final ResultService resultService;
+    private final ResultServiceImpl resultServiceImpl;
 
-    public DrawingScheduler(RoomRepository roomRepository, ResultService resultService) {
+    public DrawingScheduler(RoomRepository roomRepository, ResultServiceImpl resultServiceImpl) {
         this.roomRepository = roomRepository;
-        this.resultService = resultService;
+        this.resultServiceImpl = resultServiceImpl;
     }
 
     @Scheduled(fixedDelay = 24 * 60 * 60 * 1000)
@@ -27,7 +27,7 @@ public class DrawingScheduler {
         List<RoomEntity> roomsToDraw = roomRepository.
                 findByDrawDateLessThanEqual(DateConvertor.convertDateToSqlDate(LocalDateTime.now()));
         for (RoomEntity room : roomsToDraw) {
-            resultService.performDraw(RoomMapper.toRoomDTO(room));
+            resultServiceImpl.performDraw(RoomMapper.toRoomDTO(room));
         }
     }
 

@@ -3,8 +3,8 @@ package org.example.secretsanta.telegram;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.service.impl.UserInfoService;
-import org.example.secretsanta.service.impl.UserInfoTelegramChatsService;
+import org.example.secretsanta.service.impl.UserInfoServiceImpl;
+import org.example.secretsanta.service.impl.UserInfoTelegramChatsServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -16,18 +16,18 @@ import java.util.List;
 
 @Component
 public class SantaTelegramBot extends TelegramLongPollingBot {
-    private final UserInfoTelegramChatsService userInfoTelegramChatsService;
+    private final UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
     private final CustomUserDetailsService userDetailsService;
-    private final UserInfoService userInfoService;
+    private final UserInfoServiceImpl userInfoServiceImpl;
 
     private final String BOT_TOKEN = System.getenv("token");
     private final String BOT_USERNAME = "HomeSecretSantaBot";
 
-    public SantaTelegramBot(UserInfoTelegramChatsService userInfoTelegramChatsService,
-                            CustomUserDetailsService userDetailsService, UserInfoService userInfoService) {
-        this.userInfoTelegramChatsService = userInfoTelegramChatsService;
+    public SantaTelegramBot(UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl,
+                            CustomUserDetailsService userDetailsService, UserInfoServiceImpl userInfoServiceImpl) {
+        this.userInfoTelegramChatsServiceImpl = userInfoTelegramChatsServiceImpl;
         this.userDetailsService = userDetailsService;
-        this.userInfoService = userInfoService;
+        this.userInfoServiceImpl = userInfoServiceImpl;
     }
 
     @Override
@@ -35,9 +35,9 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
 
             Long idChat = update.getMessage().getChatId();
-            if(userInfoTelegramChatsService.getRegisterUserByIdChats(idChat)==null) {
+            if(userInfoTelegramChatsServiceImpl.getRegisterUserByIdChats(idChat)==null) {
                 String telegram = update.getMessage().getFrom().getUserName();
-                UserInfoDTO currentUser = userInfoService.getUsersInfoByTelegram(telegram);
+                UserInfoDTO currentUser = userInfoServiceImpl.getUsersInfoByTelegram(telegram);
                 if(currentUser==null){
                     sendMessage(idChat, "Не зарегистрирован");
                     throw new IllegalArgumentException("не зарегистрирован");
@@ -45,7 +45,7 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
                 UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
                 userInfoTelegramChatsDTO.setIdChat(idChat);
                 userInfoTelegramChatsDTO.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(currentUser));
-                userInfoTelegramChatsService.create(userInfoTelegramChatsDTO);
+                userInfoTelegramChatsServiceImpl.create(userInfoTelegramChatsDTO);
             }
             String messageText = update.getMessage().getText();
             String telegram = update.getMessage().getFrom().getUserName();

@@ -3,7 +3,7 @@ package org.example.secretsanta.service.scheduler;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
-import org.example.secretsanta.service.impl.ResultService;
+import org.example.secretsanta.service.impl.ResultServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ class DrawingSchedulerTest {
     private RoomRepository roomRepository;
 
     @Mock
-    private ResultService resultService;
+    private ResultServiceImpl resultServiceImpl;
 
     @InjectMocks
     private DrawingScheduler drawingScheduler;
@@ -39,6 +39,6 @@ class DrawingSchedulerTest {
 
         drawingScheduler.scheduleDrawings();
 
-        verify(resultService, times(roomsToDraw.size())).performDraw(any(RoomDTO.class));
+        verify(resultServiceImpl, times(roomsToDraw.size())).performDraw(any(RoomDTO.class));
     }
 }

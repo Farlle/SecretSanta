@@ -4,8 +4,8 @@ import org.example.secretsanta.convertor.DateConvertor;
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.service.impl.MessageService;
-import org.example.secretsanta.service.impl.UserInfoService;
+import org.example.secretsanta.service.impl.MessageServiceImpl;
+import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,23 +20,23 @@ import java.util.List;
 @RequestMapping("/message")
 public class MessageController {
 
-    private final MessageService messageService;
-    private final UserInfoService userInfoService;
+    private final MessageServiceImpl messageServiceImpl;
+    private final UserInfoServiceImpl userInfoServiceImpl;
     private final CustomUserDetailsService userDetailsService;
 
-    public MessageController(MessageService messageService, UserInfoService userInfoService, CustomUserDetailsService userDetailsService) {
-        this.messageService = messageService;
-        this.userInfoService = userInfoService;
+    public MessageController(MessageServiceImpl messageServiceImpl, UserInfoServiceImpl userInfoServiceImpl, CustomUserDetailsService userDetailsService) {
+        this.messageServiceImpl = messageServiceImpl;
+        this.userInfoServiceImpl = userInfoServiceImpl;
         this.userDetailsService = userDetailsService;
     }
 
     @GetMapping("/inbox/{idRecipient}")
     public String getInbox(@PathVariable("idRecipient") int idRecipient,Model model, Principal principal) {
         UserInfoDTO sender = (userDetailsService.findUserByName(principal.getName()));
-        UserInfoDTO recipient = userInfoService.getUserInfoById(idRecipient);
+        UserInfoDTO recipient = userInfoServiceImpl.getUserInfoById(idRecipient);
         int currentUserId = sender.getIdUserInfo();
 
-        List<MessageDTO> messages = messageService.getConversation(currentUserId, idRecipient);
+        List<MessageDTO> messages = messageServiceImpl.getConversation(currentUserId, idRecipient);
 
         model.addAttribute("messages", messages);
         model.addAttribute("sender", sender);
@@ -55,7 +55,7 @@ public class MessageController {
         message.setSender(UserInfoMapper.toUserInfoEntity(userInfoDTO));
 
         message.setDepartureDate(DateConvertor.convertDateToSqlDate(LocalDateTime.now()));
-        messageService.create(message);
+        messageServiceImpl.create(message);
 
         return "redirect:/message/inbox/" + message.getIdRecipient();
     }
