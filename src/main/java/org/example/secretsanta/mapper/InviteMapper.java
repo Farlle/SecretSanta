@@ -2,10 +2,12 @@ package org.example.secretsanta.mapper;
 
 import org.example.secretsanta.dto.InviteDTO;
 import org.example.secretsanta.model.entity.InviteEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class InviteMapper {
 
     public static InviteDTO toInviteDTO(InviteEntity inviteEntity) {

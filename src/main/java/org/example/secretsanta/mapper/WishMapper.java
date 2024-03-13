@@ -2,10 +2,12 @@ package org.example.secretsanta.mapper;
 
 import org.example.secretsanta.dto.WishDTO;
 import org.example.secretsanta.model.entity.WishEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class WishMapper {
 
     public static WishDTO toWishDTO(WishEntity wishEntity) {
