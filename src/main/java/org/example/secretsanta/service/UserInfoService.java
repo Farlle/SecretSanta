@@ -64,5 +64,8 @@ public class UserInfoService {
         return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAllById(usersIds));
     }
 
+    public UserInfoDTO getUsersInfoByTelegram(String telegram) {
+        return UserInfoMapper.toUserInfoDTO(userInfoRepository.findByTelegram("@" + telegram));
+    }
 
 }
