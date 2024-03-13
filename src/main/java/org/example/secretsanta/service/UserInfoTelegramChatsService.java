@@ -51,7 +51,12 @@ public class UserInfoTelegramChatsService {
     public UserInfoTelegramChatsDTO getRegisterUserByIdChats(Long idChat) {
         return UserInfoTelegramChatsMapper
                 .toUserInfoTelegramChatsDTO(userInfoTelegramChatsRepository
-                        .findUserInfoTelegramChatsEntitiesByIdChat(idChat));
+                        .findFirstUserInfoTelegramChatsEntitiesByIdChat(idChat));
+    }
+
+    public List<UserInfoTelegramChatsDTO> getAllIdChatsUsersWhoNeedNotify(int idRoom) {
+       return UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(
+               userInfoTelegramChatsRepository.findAllUserIdChatsWhoNeedNotify(idRoom));
     }
 
 }

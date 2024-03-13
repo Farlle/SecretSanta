@@ -77,7 +77,7 @@ public class ResultController {
 
         RoomDTO room = roomService.getRoomById(idRoom);
         resultService.performDraw(room);
-        return "redirect:/result/show/{idRoom}";
+        return "redirect:/result/show/" + idRoom;
     }
 
 }

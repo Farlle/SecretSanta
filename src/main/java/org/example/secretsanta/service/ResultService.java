@@ -3,6 +3,7 @@ package org.example.secretsanta.service;
 import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
+import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.mapper.ResultMapper;
 import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.ResultEntity;
@@ -19,11 +20,16 @@ public class ResultService {
 
     private final ResultRepository resultRepository;
     private final UserInfoService userInfoService;
+    private final UserInfoTelegramChatsService userInfoTelegramChatsService;
+    private final TelegramService telegramService;
+    private final String MESSAGE_DRAW = "Была проведена жеребьевка";
 
     private final RoomService roomService;
-    public ResultService(ResultRepository resultRepository, UserInfoService userInfoService, RoomService roomService) {
+    public ResultService(ResultRepository resultRepository, UserInfoService userInfoService, UserInfoTelegramChatsService userInfoTelegramChatsService, TelegramService telegramService, RoomService roomService) {
         this.resultRepository = resultRepository;
         this.userInfoService = userInfoService;
+        this.userInfoTelegramChatsService = userInfoTelegramChatsService;
+        this.telegramService = telegramService;
         this.roomService = roomService;
     }
 
@@ -58,12 +64,15 @@ public class ResultService {
     public void performDraw(RoomDTO room) {
 
         List<UserInfoDTO> users = userInfoService.getUsersInfoById(roomService.getUserIndoIdInRoom(room.getIdRoom()));
+        List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsService
+                .getAllIdChatsUsersWhoNeedNotify(room.getIdRoom());
 
         List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
                 resultRepository.findByRoomIdRoom(room.getIdRoom()));
-        if (!existingResults.isEmpty()) {
+
+ /*       if (!existingResults.isEmpty()) {
             throw new IllegalStateException("Drawing has already been performed in this room");
-        }
+        }*/
 
         if (users.size() < 2) {
             throw new IllegalStateException("Not enough users for drawing");
@@ -80,6 +89,10 @@ public class ResultService {
             result.setRoomEntity(RoomMapper.toRoomEntity(room));
             resultRepository.save(ResultMapper.toResultEntity(result));
         }
+        for (UserInfoTelegramChatsDTO dto: userInfoTelegramChatsDTO ) {
+            telegramService.sendMessage(dto.getIdChat(), MESSAGE_DRAW);
+        }
+
 
     }
 
