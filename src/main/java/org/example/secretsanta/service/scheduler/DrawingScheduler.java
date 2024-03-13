@@ -1,5 +1,7 @@
 package org.example.secretsanta.service.scheduler;
 
+import org.example.secretsanta.convertor.dateConvertor;
+import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
 import org.example.secretsanta.service.ResultService;
@@ -22,15 +24,12 @@ public class DrawingScheduler {
         this.resultService = resultService;
     }
 
-    @Scheduled(fixedDelay =24 * 60 * 60 * 1000)
+    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000)
     public void scheduleDrawings() {
-        LocalDateTime now = LocalDateTime.now();
-        java.util.Date currentDate = java.util.Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-        Date sqlDate = new Date(currentDate.getTime());
-
-        List<RoomEntity> roomsToDraw = roomRepository.findByDrawDateLessThanEqual(sqlDate);
+        List<RoomEntity> roomsToDraw = roomRepository.
+                findByDrawDateLessThanEqual(dateConvertor.convertDateToSqlDate(LocalDateTime.now()));
         for (RoomEntity room : roomsToDraw) {
-            resultService.performDraw(room);
+            resultService.performDraw(RoomMapper.toRoomDTO(room));
         }
     }
 

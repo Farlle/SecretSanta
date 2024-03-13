@@ -1,10 +1,9 @@
 package org.example.secretsanta.controller;
 
+import org.example.secretsanta.convertor.DateConvertor;
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.model.entity.MessageEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.service.MessageService;
 import org.example.secretsanta.service.UserInfoService;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
@@ -14,9 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -35,17 +32,17 @@ public class MessageController {
 
     @GetMapping("/inbox/{idRecipient}")
     public String getInbox(@PathVariable("idRecipient") int idRecipient,Model model, Principal principal) {
-        UserInfoDTO sender = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
-        UserInfoDTO recipient = UserInfoMapper.toUserInfoDTO(userInfoService.getUserInfoEntityById(idRecipient));
+        UserInfoDTO sender = (userDetailsService.findUserByName(principal.getName()));
+        UserInfoDTO recipient = userInfoService.getUserInfoById(idRecipient);
         int currentUserId = sender.getIdUserInfo();
 
-        List<MessageEntity> messages = messageService.getConversation(currentUserId, idRecipient);
+        List<MessageDTO> messages = messageService.getConversation(currentUserId, idRecipient);
 
         model.addAttribute("messages", messages);
         model.addAttribute("sender", sender);
         model.addAttribute("recipient", recipient);
 
-        model.addAttribute("message", new MessageEntity());
+        model.addAttribute("message", new MessageDTO());
 
         return "message-inbox";
     }
@@ -53,29 +50,14 @@ public class MessageController {
     @PostMapping("/send")
     @Transactional
     public String sendMessage(@ModelAttribute("message") MessageDTO message, Principal principal) {
-        UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
+        UserInfoDTO userInfoDTO = userDetailsService.findUserByName(principal.getName());
 
         message.setSender(UserInfoMapper.toUserInfoEntity(userInfoDTO));
 
-        LocalDateTime now = LocalDateTime.now();
-        java.util.Date currentDate = java.util.Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-        Date sqlDate = new Date(currentDate.getTime());
-        message.setDepartureDate(sqlDate);
+        message.setDepartureDate(DateConvertor.convertDateToSqlDate(LocalDateTime.now()));
         messageService.create(message);
 
         return "redirect:/message/inbox/" + message.getIdRecipient();
     }
-
- /*   @GetMapping("/postbox")
-    public String getPostBox(Principal principal, Model model){
-        UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
-        List<Integer> idRecipient = messageService.getAllUserDialog(userInfoDTO.getIdUserInfo());
-        List<MessageEntity> postBox;
-        for (int i = 0; i < idRecipient.size(); i++) {
-            postBox.add(messageService.getConversation(userInfoDTO.getIdUserInfo(), idRecipient.get(i)));
-        }
-        model.addAttribute("postBox", postBox);
-        return "post-box";
-    }*/
 
 }
