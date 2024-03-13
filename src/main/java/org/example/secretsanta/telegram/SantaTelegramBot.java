@@ -3,11 +3,9 @@ package org.example.secretsanta.telegram;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.service.UserInfoService;
-import org.example.secretsanta.service.UserInfoTelegramChatsService;
+import org.example.secretsanta.service.impl.UserInfoService;
+import org.example.secretsanta.service.impl.UserInfoTelegramChatsService;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.hibernate.cfg.Environment;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -40,13 +38,16 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
             if(userInfoTelegramChatsService.getRegisterUserByIdChats(idChat)==null) {
                 String telegram = update.getMessage().getFrom().getUserName();
                 UserInfoDTO currentUser = userInfoService.getUsersInfoByTelegram(telegram);
+                if(currentUser==null){
+                    sendMessage(idChat, "Не зарегистрирован");
+                    throw new IllegalArgumentException("не зарегистрирован");
+                }
                 UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
                 userInfoTelegramChatsDTO.setIdChat(idChat);
                 userInfoTelegramChatsDTO.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(currentUser));
                 userInfoTelegramChatsService.create(userInfoTelegramChatsDTO);
             }
             String messageText = update.getMessage().getText();
-            //Long idChat = update.getMessage().getChatId();
             String telegram = update.getMessage().getFrom().getUserName();
 
             System.out.println(messageText + "  " + idChat + " " + telegram + " ");

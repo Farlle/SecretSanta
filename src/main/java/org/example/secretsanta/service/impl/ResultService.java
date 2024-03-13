@@ -1,4 +1,4 @@
-package org.example.secretsanta.service;
+package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoomDTO;
@@ -22,7 +22,9 @@ public class ResultService {
     private final UserInfoService userInfoService;
     private final UserInfoTelegramChatsService userInfoTelegramChatsService;
     private final TelegramService telegramService;
-    private final String MESSAGE_DRAW = "Была проведена жеребьевка";
+    private final String MESSAGE_DRAW = "Была проведена жеребьевка, ваш подопечный: ";
+    private String RECIPIENT;
+    private String WISH;
 
     private final RoomService roomService;
     public ResultService(ResultRepository resultRepository, UserInfoService userInfoService, UserInfoTelegramChatsService userInfoTelegramChatsService, TelegramService telegramService, RoomService roomService) {
