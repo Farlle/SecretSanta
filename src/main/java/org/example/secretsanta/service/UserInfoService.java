@@ -15,16 +15,13 @@ public class UserInfoService {
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RoomService roomService;
 
-    public UserInfoService(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder,
-                           RoomService roomService) {
+    public UserInfoService(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder) {
         this.userInfoRepository = userInfoRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roomService = roomService;
     }
 
-    public UserInfoDTO getUserInfoEntityById(int id) {
+    public UserInfoDTO getUserInfoById(int id) {
         return UserInfoMapper.toUserInfoDTO(userInfoRepository.findById(id).orElseThrow());
     }
 
@@ -63,8 +60,7 @@ public class UserInfoService {
         create(dto);
     }
 
-    public List<UserInfoDTO> getUsersInfoById(int idRoom) {
-        List<Integer> usersIds = roomService.getUserIndoIdInRoom(idRoom);
+    public List<UserInfoDTO> getUsersInfoById(List<Integer> usersIds) {
         return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAllById(usersIds));
     }
 

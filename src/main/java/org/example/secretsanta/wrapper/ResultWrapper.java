@@ -1,42 +1,44 @@
 package org.example.secretsanta.wrapper;
 
+import org.example.secretsanta.dto.UserInfoDTO;
+import org.example.secretsanta.dto.WishDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.entity.WishEntity;
 
 public class ResultWrapper {
 
-    private UserInfoEntity santa;
-    private UserInfoEntity ward;
+    private UserInfoDTO santa;
+    private UserInfoDTO ward;
 
-    private WishEntity wish;
+    private WishDTO wish;
 
-    public ResultWrapper(UserInfoEntity santa, UserInfoEntity ward, WishEntity wish) {
+    public ResultWrapper(UserInfoDTO santa, UserInfoDTO ward, WishDTO wish) {
         this.santa = santa;
         this.ward = ward;
         this.wish = wish;
     }
 
-    public UserInfoEntity getSanta() {
+    public UserInfoDTO getSanta() {
         return santa;
     }
 
-    public void setSanta(UserInfoEntity santa) {
+    public void setSanta(UserInfoDTO santa) {
         this.santa = santa;
     }
 
-    public UserInfoEntity getWard() {
+    public UserInfoDTO getWard() {
         return ward;
     }
 
-    public void setWard(UserInfoEntity ward) {
+    public void setWard(UserInfoDTO ward) {
         this.ward = ward;
     }
 
-    public WishEntity getWish() {
+    public WishDTO getWish() {
         return wish;
     }
 
-    public void setWish(WishEntity wish) {
+    public void setWish(WishDTO wish) {
         this.wish = wish;
     }
 }

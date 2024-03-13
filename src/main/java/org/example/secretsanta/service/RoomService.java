@@ -55,12 +55,12 @@ public class RoomService {
         roomRepository.deleteById(id);
     }
 
-    public RoomDTO getRoomEntityById(int id) {
+    public RoomDTO getRoomById(int id) {
         return RoomMapper.toRoomDTO(roomRepository.findById(id).orElseThrow());
     }
 
     public UserInfoDTO getRoomOrganizer(RoomDTO dto) {
-        return userInfoService.getUserInfoEntityById(dto.getIdOrganizer());
+        return userInfoService.getUserInfoById(dto.getIdOrganizer());
     }
 
     public RoomDTO findRoomByName(String name) {
@@ -92,7 +92,7 @@ public class RoomService {
     }
 
     public List<RoomDTO> getByDrawDateLessThanEqual(Date date) {
-
+        return RoomMapper.toRoomDTOList(roomRepository.findByDrawDateLessThanEqual(date));
     }
 
 

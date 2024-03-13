@@ -50,7 +50,7 @@ public class UserRoleWishRoomService {
     }
 
     @Transactional
-    public void deleteUserEntityFromRoom(int idRoom, int idUserInfo) {
+    public void deleteUserFromRoom(int idRoom, int idUserInfo) {
         UserRoleWishRoomEntity userRoleWishRoom =
                 userRoleWishRoomRepository.findByIdUserInfoAndIdRoom(idUserInfo, idRoom);
         delete(userRoleWishRoom.getIdUserRoleWishRoom());

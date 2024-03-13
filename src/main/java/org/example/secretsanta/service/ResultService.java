@@ -20,9 +20,11 @@ public class ResultService {
     private final ResultRepository resultRepository;
     private final UserInfoService userInfoService;
 
-    public ResultService(ResultRepository resultRepository, UserInfoService userInfoService) {
+    private final RoomService roomService;
+    public ResultService(ResultRepository resultRepository, UserInfoService userInfoService, RoomService roomService) {
         this.resultRepository = resultRepository;
         this.userInfoService = userInfoService;
+        this.roomService = roomService;
     }
 
     public ResultDTO create(ResultDTO dto) {
@@ -55,7 +57,7 @@ public class ResultService {
 
     public void performDraw(RoomDTO room) {
 
-        List<UserInfoDTO> users = userInfoService.getUsersInfoById(room.getIdRoom());
+        List<UserInfoDTO> users = userInfoService.getUsersInfoById(roomService.getUserIndoIdInRoom(room.getIdRoom()));
 
         List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
                 resultRepository.findByRoomIdRoom(room.getIdRoom()));
