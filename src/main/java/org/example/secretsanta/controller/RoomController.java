@@ -1,16 +1,11 @@
 package org.example.secretsanta.controller;
 
 
-import org.example.secretsanta.dto.RoomDTO;
-import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.dto.UserRoleWishRoomDTO;
-import org.example.secretsanta.dto.WishDTO;
+import org.example.secretsanta.dto.*;
+import org.example.secretsanta.mapper.RoleMapper;
 import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.model.entity.RoleEntity;
-import org.example.secretsanta.model.entity.RoomEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
-import org.example.secretsanta.model.entity.WishEntity;
+import org.example.secretsanta.mapper.WishMapper;
 import org.example.secretsanta.model.enums.Role;
 import org.example.secretsanta.service.RoleService;
 import org.example.secretsanta.service.RoomService;
@@ -58,11 +53,11 @@ public class RoomController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            UserInfoEntity user = userDetailsService.findUserByName(username);
+            UserInfoDTO user = userDetailsService.findUserByName(username);
             if (user == null) {
                 throw new UsernameNotFoundException("UserInfo not found with user:" + user);
             }
-            roomDTO.setIdOrganizer(user.getId());
+            roomDTO.setIdOrganizer(user.getIdUserInfo());
         }
 
         model.addAttribute("roomDto", roomDTO);
@@ -75,14 +70,14 @@ public class RoomController {
             redirectAttributes.addFlashAttribute("error", "Draw Date must be before Toss Date.");
             return "redirect:/room/create";
         }
-        RoomEntity room = roomService.create(dto);
-        model.addAttribute("roomEntity", room);
+        RoomDTO room = roomService.create(dto);
+        model.addAttribute("room", room);
         return "redirect:/room/show";
     }
 
     @GetMapping("/update/{id}")
     public String updateRoom(@PathVariable int id, Model model) {
-        RoomEntity room = roomService.getRoomEntityById(id);
+        RoomDTO room = roomService.getRoomById(id);
         model.addAttribute("room", room);
         return "room-update";
     }
@@ -102,16 +97,16 @@ public class RoomController {
 
     @GetMapping("/show")
     public String getAllRoom(Model model) {
-        model.addAttribute("roomsDto", RoomMapper.toRoomDTOList(roomService.readAll()));
+        model.addAttribute("roomsDto", roomService.readAll());
         return "room-list";
     }
 
     @GetMapping("/show/{idRoom}")
     public String getRoomById(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
 
-        RoomDTO room = RoomMapper.toRoomDTO(roomService.getRoomEntityById(idRoom));
-        UserInfoDTO loginUser = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
-        UserInfoDTO organizer = UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(room));
+        RoomDTO room = roomService.getRoomById(idRoom);
+        UserInfoDTO loginUser = userDetailsService.findUserByName(principal.getName());
+        UserInfoDTO organizer = roomService.getRoomOrganizer(room);
 
         RoomAndOrganizerWrapper roomAndOrganizerWrapper = new RoomAndOrganizerWrapper(room, organizer);
 
@@ -123,10 +118,11 @@ public class RoomController {
 
     @GetMapping("/{id}/join")
     public String joinRoomForm(@PathVariable("id") int idRoom, Model model, Principal principal) {
-        UserInfoEntity currentUser = userDetailsService.findUserByName(principal.getName());
+        UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
 
-        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomEntityById(idRoom));
-        if (roomService.getRoomsWhereUserJoin(currentUser.getId()).contains(roomService.getRoomEntityById(idRoom))) {
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
+        if (roomService.getRoomsWhereUserJoin(currentUser.getIdUserInfo())
+                .contains(roomService.getRoomById(idRoom))) {
             model.addAttribute("errorMessage", "Вы уже являетесь участником этой комнаты.");
         }
         model.addAttribute("roomDto", roomDTO);
@@ -140,27 +136,27 @@ public class RoomController {
     public String joinRoom(@PathVariable("id") int idRoom, @ModelAttribute WishDTO wishDto,
                            Model model, Principal principal) {
 
-        WishEntity savedWish = wishService.create(wishDto);
+        WishDTO savedWish = wishService.create(wishDto);
 
-        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomEntityById(idRoom));
-        UserInfoEntity currentUser = userDetailsService.findUserByName(principal.getName());
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
+        UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
         UserRoleWishRoomDTO userRoleWishRoomDTO = new UserRoleWishRoomDTO();
-        RoleEntity roleEntity;
+        RoleDTO roleDTO;
 
-        if (roomService.getRoomOrganizer(roomDTO).equals(currentUser)) {
-            roleEntity = roleService.getRoleById(Role.ORGANIZER.getId());
+        if ((roomService.getRoomOrganizer(roomDTO).getIdUserInfo()) == currentUser.getIdUserInfo()) {
+            roleDTO = roleService.getRoleById(Role.ORGANIZER.getId());
         } else {
-            roleEntity = roleService.getRoleById(Role.PARTICIPANT.getId());
+            roleDTO = roleService.getRoleById(Role.PARTICIPANT.getId());
         }
 
-        userRoleWishRoomDTO.setUserInfoEntity(currentUser);
-        userRoleWishRoomDTO.setWishEntity(savedWish);
-        userRoleWishRoomDTO.setRoleEntity(roleEntity);
-        userRoleWishRoomDTO.setRoomEntity(roomService.findRoomByName(roomDTO.getName()));
+        userRoleWishRoomDTO.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(currentUser));
+        userRoleWishRoomDTO.setWishEntity(WishMapper.toWishEntity(savedWish));
+        userRoleWishRoomDTO.setRoleEntity(RoleMapper.toRoleEntity(roleDTO));
+        userRoleWishRoomDTO.setRoomEntity(RoomMapper.toRoomEntity(roomService.findRoomByName(roomDTO.getName())));
 
         userRoleWishRoomService.create(userRoleWishRoomDTO);
 
-        model.addAttribute("roomEntity", roomService.readAll());
+        model.addAttribute("room", roomService.readAll());
 
 
         return "redirect:/room/show/" + idRoom;
@@ -168,10 +164,10 @@ public class RoomController {
 
     @GetMapping("/{idRoom}/users-and-roles")
     public String getUsersAndRoles(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
-        UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
-        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomEntityById(idRoom));
+        UserInfoDTO userInfoDTO = userDetailsService.findUserByName(principal.getName());
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
 
-        UserInfoDTO organizer = UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(roomDTO));
+        UserInfoDTO organizer = roomService.getRoomOrganizer(roomDTO);
 
         List<Object[]> usersAndRoles = roomService.getUsersAndRolesByRoomId(idRoom);
         model.addAttribute("user", userInfoDTO);
@@ -182,8 +178,8 @@ public class RoomController {
 
     @GetMapping("/show/participant")
     public String getRoomWhereJoin(Model model, Principal principal) {
-        int idUser = userDetailsService.findUserByName(principal.getName()).getId();
-        List<RoomDTO> rooms = RoomMapper.toRoomDTOList(roomService.getRoomsWhereUserJoin(idUser));
+        int idUser = userDetailsService.findUserByName(principal.getName()).getIdUserInfo();
+        List<RoomDTO> rooms = roomService.getRoomsWhereUserJoin(idUser);
         model.addAttribute("roomsDto", rooms);
         return "room-list";
 
@@ -194,16 +190,16 @@ public class RoomController {
                                      @PathVariable("UserInfoName") String userInfoName, Principal principal,
                                      RedirectAttributes redirectAttributes) {
 
-        UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(userInfoName));
-        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomByName(nameRoom));
-        UserInfoDTO loginUser = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName(principal.getName()));
+        UserInfoDTO userInfoDTO = userDetailsService.findUserByName(userInfoName);
+        RoomDTO roomDTO = roomService.getRoomByName(nameRoom);
+        UserInfoDTO loginUser = userDetailsService.findUserByName(principal.getName());
 
-        if (!UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(roomDTO)).equals(loginUser)) {
+        if (!(roomService.getRoomOrganizer(roomDTO).getIdUserInfo() == loginUser.getIdUserInfo())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Не можешь удалять");
             return "redirect:/room/" + roomDTO.getIdRoom() + "/users-and-roles";
         }
 
-        userRoleWishRoomService.deleteUserEntityFromRoom(roomDTO.getIdRoom(), userInfoDTO.getIdUserInfo());
+        userRoleWishRoomService.deleteUserFromRoom(roomDTO.getIdRoom(), userInfoDTO.getIdUserInfo());
         return "redirect:/room/" + roomDTO.getIdRoom() + "/users-and-roles";
     }
 

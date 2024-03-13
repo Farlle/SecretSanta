@@ -1,12 +1,10 @@
 package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.service.UserInfoService;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/userInfo")
@@ -26,14 +24,14 @@ public class UserInfoController {
 
     @PostMapping("/create")
     public String createUserInfo(@ModelAttribute UserInfoDTO dto, Model model) {
-        UserInfoEntity userInfo = userInfoService.create(dto);
-        model.addAttribute("userInfoEntity", userInfo);
+        UserInfoDTO userInfo = userInfoService.create(dto);
+        model.addAttribute("userInfo", userInfo);
         return "redirect:/show";
     }
 
     @GetMapping("/update/{id}")
     public String updateUserInfo(@PathVariable int id,Model model) {
-        UserInfoEntity userInfo = userInfoService.getUserInfoEntityById(id);
+        UserInfoDTO userInfo = userInfoService.getUserInfoById(id);
         model.addAttribute("userInfo", userInfo);
         return "user-info-update";
     }
@@ -47,7 +45,7 @@ public class UserInfoController {
 
     @GetMapping("/show")
     public String getAllUsersInfo(Model model){
-        model.addAttribute("userInfoEntity", userInfoService.readAll());
+        model.addAttribute("userInfo", userInfoService.readAll());
         return "user-info-list";
     }
 

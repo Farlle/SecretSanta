@@ -1,14 +1,9 @@
 package org.example.secretsanta.controller;
 
+import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.mapper.RoomMapper;
-import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.model.entity.ResultEntity;
-import org.example.secretsanta.model.entity.RoomEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
-import org.example.secretsanta.model.entity.WishEntity;
-import org.example.secretsanta.model.enums.Role;
+import org.example.secretsanta.dto.WishDTO;
 import org.example.secretsanta.service.ResultService;
 import org.example.secretsanta.service.RoomService;
 import org.example.secretsanta.service.UserInfoService;
@@ -46,21 +41,21 @@ public class ResultController {
 
     @GetMapping("/show/{idRoom}")
     public String showResultDraw(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
-        List<ResultEntity> results = resultService.showDrawInRoom(idRoom);
+        List<ResultDTO> results = resultService.showDrawInRoom(idRoom);
         List<ResultWrapper> resultWrapper = new ArrayList<>();
-       UserInfoDTO currentUser = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName( principal.getName()));
+       UserInfoDTO currentUser = userDetailsService.findUserByName( principal.getName());
 
-        for(ResultEntity result : results) {
-            UserInfoEntity santa = userInfoService.getUserInfoEntityById(result.getIdSanta());
-            UserInfoEntity ward = userInfoService.getUserInfoEntityById(result.getIdWard());
-            WishEntity wish = wishService.getUserWishInRoom(idRoom, ward.getId());
+        for(ResultDTO result : results) {
+            UserInfoDTO santa = userInfoService.getUserInfoById(result.getIdSanta());
+            UserInfoDTO ward = userInfoService.getUserInfoById(result.getIdWard());
+            WishDTO wish = wishService.getUserWishInRoom(idRoom, ward.getIdUserInfo());
             resultWrapper.add(new ResultWrapper(santa, ward, wish));
         }
 
 
 
         ResultWrapper wardResultWrapper = resultWrapper.stream()
-                .filter(wrapper -> wrapper.getSanta().getId() == currentUser.getIdUserInfo())
+                .filter(wrapper -> wrapper.getSanta().getIdUserInfo() == currentUser.getIdUserInfo())
                 .findFirst()
                 .orElse(null);
 
@@ -72,15 +67,15 @@ public class ResultController {
     public String drawingLots(@PathVariable("idRoom") int idRoom, Principal principal,
                               RedirectAttributes redirectAttributes) {
 
-        UserInfoDTO currentUser = UserInfoMapper.toUserInfoDTO(userDetailsService.findUserByName( principal.getName()));
-        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomService.getRoomEntityById(idRoom));
+        UserInfoDTO currentUser = userDetailsService.findUserByName( principal.getName());
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
 
-        if (!UserInfoMapper.toUserInfoDTO(roomService.getRoomOrganizer(roomDTO)).equals(currentUser)) {
+        if (!(roomService.getRoomOrganizer(roomDTO).getIdUserInfo() == currentUser.getIdUserInfo())) {
             redirectAttributes.addFlashAttribute("error", "Вы не можете проводить жеребьевку");
             return "redirect:/room/show/" + idRoom;
         }
 
-        RoomEntity room = roomService.getRoomEntityById(idRoom);
+        RoomDTO room = roomService.getRoomById(idRoom);
         resultService.performDraw(room);
         return "redirect:/result/show/{idRoom}";
     }
