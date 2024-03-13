@@ -37,8 +37,10 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
             Long idChat = update.getMessage().getChatId();
-
             String telegram = update.getMessage().getFrom().getUserName();
+
+
+
             UserInfoDTO currentUser = userInfoService.getUsersInfoByTelegram(telegram);
             UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
             userInfoTelegramChatsDTO.setIdChat(idChat);

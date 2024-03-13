@@ -56,6 +56,7 @@ public class UserInfoService {
         if (readAll().stream().anyMatch(userInfo -> userInfo.getName().equals(dto.getName()))) {
             throw new Exception("User already exists with this name:" + dto.getName());
         }
+        dto.setTelegram(dto.getTelegram().replaceAll("@", ""));
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         create(dto);
     }

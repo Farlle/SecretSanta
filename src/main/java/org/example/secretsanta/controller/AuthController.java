@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registrationUserInfo(@ModelAttribute("userINfo") UserInfoDTO dto) throws Exception {
+    public String registrationUserInfo(@ModelAttribute("userInfo") UserInfoDTO dto) throws Exception {
         userInfoService.registerNewUserInfoAccount(dto);
         return "redirect:/login?success";
     }
