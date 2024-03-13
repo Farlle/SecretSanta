@@ -22,6 +22,9 @@ public class InviteEntity {
     @Column(name = "status", nullable = false)
     private Status status;
 
+    @Column(name = "text", nullable = false)
+    private String text;
+
     public int getIdInvite() {
         return idInvite;
     }
@@ -52,5 +55,13 @@ public class InviteEntity {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

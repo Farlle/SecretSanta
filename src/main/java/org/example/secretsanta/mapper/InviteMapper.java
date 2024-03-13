@@ -20,6 +20,7 @@ public class InviteMapper {
         inviteDTO.setStatus(inviteEntity.getStatus());
         inviteDTO.setTelegram(inviteEntity.getTelegram());
         inviteDTO.setUserInfoEntity(inviteEntity.getUserInfo());
+        inviteDTO.setText(inviteDTO.getText());
 
         return inviteDTO;
     }
@@ -34,6 +35,7 @@ public class InviteMapper {
         inviteEntity.setStatus(inviteDTO.getStatus());
         inviteEntity.setTelegram(inviteDTO.getTelegram());
         inviteEntity.setUserInfo(inviteDTO.getUserInfoEntity());
+        inviteEntity.setText(inviteDTO.getText());
 
         return inviteEntity;
     }

@@ -25,6 +25,7 @@ public class InviteServiceImpl implements InviteService {
         invite.setTelegram(dto.getTelegram());
         invite.setStatus(dto.getStatus());
         invite.setUserInfo(dto.getUserInfoEntity());
+        invite.setText(dto.getText());
 
         return InviteMapper.toInviteDTO(inviteRepository.save(invite));
     }
@@ -42,6 +43,7 @@ public class InviteServiceImpl implements InviteService {
         inviteEntity.setUserInfo(dto.getUserInfoEntity());
         inviteEntity.setStatus(dto.getStatus());
         inviteEntity.setTelegram(dto.getTelegram());
+        inviteEntity.setText(dto.getText());
 
         return InviteMapper.toInviteDTO(inviteRepository.save(inviteEntity));
     }
@@ -50,5 +52,7 @@ public class InviteServiceImpl implements InviteService {
     public  void delete(int id){
         inviteRepository.deleteById(id);
     }
+
+
 
 }

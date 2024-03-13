@@ -9,6 +9,7 @@ public class InviteDTO {
     private UserInfoEntity userInfoEntity;
     private String telegram;
     private Status status;
+    private String text;
 
     public UserInfoEntity getUserInfoEntity() {
         return userInfoEntity;
@@ -40,5 +41,13 @@ public class InviteDTO {
 
     public void setIdInvite(int idInvite) {
         this.idInvite = idInvite;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
