@@ -12,13 +12,13 @@ public class UserInfoTelegramChatsEntity {
     private int idUserInfoTelegramChat;
 
     @Column(name = "id_chat")
-    private int idChat;
+    private Long idChat;
 
     @OneToOne
     @JoinColumn(name = "id_user_info", referencedColumnName = "id_user_info")
     private UserInfoEntity userInfo;
 
-    public UserInfoTelegramChatsEntity(int idUserInfoTelegramChat, int idChat, UserInfoEntity userInfo) {
+    public UserInfoTelegramChatsEntity(int idUserInfoTelegramChat, Long idChat, UserInfoEntity userInfo) {
         this.idUserInfoTelegramChat = idUserInfoTelegramChat;
         this.idChat = idChat;
         this.userInfo = userInfo;
@@ -36,11 +36,11 @@ public class UserInfoTelegramChatsEntity {
         this.idUserInfoTelegramChat = idUserInfoTelegramChat;
     }
 
-    public int getIdChat() {
+    public Long getIdChat() {
         return idChat;
     }
 
-    public void setIdChat(int idChat) {
+    public void setIdChat(Long idChat) {
         this.idChat = idChat;
     }
 

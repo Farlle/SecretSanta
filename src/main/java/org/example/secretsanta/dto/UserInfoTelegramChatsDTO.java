@@ -5,7 +5,7 @@ import org.example.secretsanta.model.entity.UserInfoEntity;
 public class UserInfoTelegramChatsDTO {
 
     private int idUserInfoTelegramChat;
-    private int idChat;
+    private Long idChat;
     private UserInfoEntity userInfoEntity;
 
     public int getIdUserInfoTelegramChat() {
@@ -16,11 +16,11 @@ public class UserInfoTelegramChatsDTO {
         this.idUserInfoTelegramChat = idUserInfoTelegramChat;
     }
 
-    public int getIdChat() {
+    public Long getIdChat() {
         return idChat;
     }
 
-    public void setIdChat(int idChat) {
+    public void setIdChat(Long idChat) {
         this.idChat = idChat;
     }
 

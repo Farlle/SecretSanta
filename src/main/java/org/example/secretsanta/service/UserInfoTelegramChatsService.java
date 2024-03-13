@@ -46,6 +46,6 @@ public class UserInfoTelegramChatsService {
     public void delete(int id) {
         userInfoTelegramChatsRepository.deleteById(id);
     }
-    
+
 
 }
