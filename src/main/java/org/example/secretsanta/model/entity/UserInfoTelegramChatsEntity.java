@@ -1,11 +1,10 @@
 package org.example.secretsanta.model.entity;
 
-import javax.naming.Name;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_info_telegram_chats")
-public class UserInfoTelegramChats {
+public class UserInfoTelegramChatsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +21,14 @@ public class UserInfoTelegramChats {
     @JoinColumn(name = "id_user_info", referencedColumnName = "id_user_info")
     private UserInfoEntity userInfo;
 
-    public UserInfoTelegramChats(int idUserInfoTelegramChat, int idUserInfo, int idChat, UserInfoEntity userInfo) {
+    public UserInfoTelegramChatsEntity(int idUserInfoTelegramChat, int idUserInfo, int idChat, UserInfoEntity userInfo) {
         this.idUserInfoTelegramChat = idUserInfoTelegramChat;
         this.idUserInfo = idUserInfo;
         this.idChat = idChat;
         this.userInfo = userInfo;
     }
 
-    public UserInfoTelegramChats() {
+    public UserInfoTelegramChatsEntity() {
 
     }
 
