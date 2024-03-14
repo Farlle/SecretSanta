@@ -65,4 +65,9 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
                userInfoTelegramChatsRepository.findAllUserIdChatsWhoNeedNotify(idRoom));
     }
 
+    @Override
+    public Long getIdChatByTelegramName(String telegramName) {
+        return userInfoTelegramChatsRepository.getIdChatByTelegramName(telegramName);
+    }
+
 }

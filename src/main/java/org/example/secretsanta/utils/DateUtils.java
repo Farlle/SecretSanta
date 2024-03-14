@@ -1,10 +1,10 @@
-package org.example.secretsanta.convertor;
+package org.example.secretsanta.utils;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-public class DateConvertor {
+public class DateUtils {
 
     public static Date convertDateToSqlDate (LocalDateTime now) {
         java.util.Date currentDate = java.util.Date.from(now.atZone(ZoneId.systemDefault()).toInstant());

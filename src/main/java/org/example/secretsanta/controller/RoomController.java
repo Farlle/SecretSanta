@@ -7,10 +7,7 @@ import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.mapper.WishMapper;
 import org.example.secretsanta.model.enums.Role;
-import org.example.secretsanta.service.impl.RoleServiceImpl;
-import org.example.secretsanta.service.impl.RoomServiceImpl;
-import org.example.secretsanta.service.impl.UserRoleWishRoomServiceImpl;
-import org.example.secretsanta.service.impl.WishServiceImpl;
+import org.example.secretsanta.service.impl.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.example.secretsanta.wrapper.RoomAndOrganizerWrapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,16 +31,18 @@ public class RoomController {
     private final WishServiceImpl wishServiceImpl;
     private final RoleServiceImpl roleServiceImpl;
     private final UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl;
+    private final InviteServiceImpl inviteServiceImpl;
 
     public RoomController(RoomServiceImpl roomServiceImpl, CustomUserDetailsService userDetailsService,
                           WishServiceImpl wishServiceImpl, RoleServiceImpl roleServiceImpl,
-                          UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl) {
+                          UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl, InviteServiceImpl inviteServiceImpl) {
 
         this.roomServiceImpl = roomServiceImpl;
         this.userDetailsService = userDetailsService;
         this.wishServiceImpl = wishServiceImpl;
         this.roleServiceImpl = roleServiceImpl;
         this.userRoleWishRoomServiceImpl = userRoleWishRoomServiceImpl;
+        this.inviteServiceImpl = inviteServiceImpl;
     }
 
     @GetMapping("/create")
@@ -121,10 +120,17 @@ public class RoomController {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
 
         RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
+        if ((!inviteServiceImpl.checkInvite(currentUser.getTelegram(), idRoom)) &&
+                (roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo()) != currentUser.getIdUserInfo()) {
+            model.addAttribute("errorMessage", "У вас нет приглашения!!!");
+            return "join-room-page";
+        }
         if (roomServiceImpl.getRoomsWhereUserJoin(currentUser.getIdUserInfo())
                 .contains(roomServiceImpl.getRoomById(idRoom))) {
             model.addAttribute("errorMessage", "Вы уже являетесь участником этой комнаты.");
+            return "join-room-page";
         }
+
         model.addAttribute("roomDto", roomDTO);
         model.addAttribute("idRoom", idRoom);
         model.addAttribute("wishDto", new WishDTO());
@@ -156,8 +162,12 @@ public class RoomController {
 
         userRoleWishRoomServiceImpl.create(userRoleWishRoomDTO);
 
+
         model.addAttribute("room", roomServiceImpl.readAll());
 
+        if ((roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo()) != currentUser.getIdUserInfo()) {
+            inviteServiceImpl.UserAcceptInvite(currentUser.getTelegram(), idRoom);
+        }
 
         return "redirect:/room/show/" + idRoom;
     }

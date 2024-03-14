@@ -12,5 +12,6 @@ public interface UserInfoTelegramChatsService {
     void delete(int id);
     UserInfoTelegramChatsDTO getRegisterUserByIdChats(Long idChat);
     List<UserInfoTelegramChatsDTO> getAllIdChatsUsersWhoNeedNotify(int idRoom);
+    Long getIdChatByTelegramName (String telegramName);
 
 }

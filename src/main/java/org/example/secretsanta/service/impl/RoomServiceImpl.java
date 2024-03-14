@@ -65,6 +65,7 @@ public class RoomServiceImpl implements RoomService {
         return RoomMapper.toRoomDTO(roomRepository.findById(id).orElseThrow());
     }
 
+
     @Override
     public UserInfoDTO getRoomOrganizer(RoomDTO dto) {
         return userInfoServiceImpl.getUserInfoById(dto.getIdOrganizer());

@@ -65,5 +65,5 @@ public class MessageDTO {
     public int hashCode() {
         return Objects.hash(idMessage, sender, idRecipient, message, departureDate);
     }
-    
+
 }

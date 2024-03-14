@@ -11,6 +11,5 @@ public interface UserRoleWishRoomService {
     UserRoleWishRoomDTO update(int id, UserRoleWishRoomDTO dto);
     void delete(int id);
     void deleteUserFromRoom(int idRoom, int idUserInfo);
-
-
+    
 }

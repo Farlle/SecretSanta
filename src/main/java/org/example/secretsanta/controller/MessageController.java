@@ -1,6 +1,6 @@
 package org.example.secretsanta.controller;
 
-import org.example.secretsanta.convertor.DateConvertor;
+import org.example.secretsanta.utils.DateUtils;
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.UserInfoMapper;
@@ -54,7 +54,7 @@ public class MessageController {
 
         message.setSender(UserInfoMapper.toUserInfoEntity(userInfoDTO));
 
-        message.setDepartureDate(DateConvertor.convertDateToSqlDate(LocalDateTime.now()));
+        message.setDepartureDate(DateUtils.convertDateToSqlDate(LocalDateTime.now()));
         messageServiceImpl.create(message);
 
         return "redirect:/message/inbox/" + message.getIdRecipient();

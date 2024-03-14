@@ -1,6 +1,6 @@
 package org.example.secretsanta.service.scheduler;
 
-import org.example.secretsanta.convertor.DateConvertor;
+import org.example.secretsanta.utils.DateUtils;
 import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
@@ -25,7 +25,7 @@ public class DrawingScheduler {
     @Scheduled(fixedDelay = 24 * 60 * 60 * 1000)
     public void scheduleDrawings() {
         List<RoomEntity> roomsToDraw = roomRepository.
-                findByDrawDateLessThanEqual(DateConvertor.convertDateToSqlDate(LocalDateTime.now()));
+                findByDrawDateLessThanEqual(DateUtils.convertDateToSqlDate(LocalDateTime.now()));
         for (RoomEntity room : roomsToDraw) {
             resultServiceImpl.performDraw(RoomMapper.toRoomDTO(room));
         }
