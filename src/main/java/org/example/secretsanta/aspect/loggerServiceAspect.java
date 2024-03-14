@@ -13,7 +13,7 @@ public class loggerServiceAspect {
 
     private static final Logger logger = Logger.getLogger(loggerServiceAspect.class.getName());
 
-    @After("execution(* org.example.secretsanta.service.*.*(..))")
+    @After("execution(* org.example.secretsanta.service.impl.*.*(..))")
     public void logAfter(JoinPoint joinPoint) {
         logger.info("Method executed in Service " + joinPoint.getSignature().getName());
     }
