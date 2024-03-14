@@ -3,6 +3,7 @@ package org.example.secretsanta.dto;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class MessageDTO {
 
@@ -51,4 +52,18 @@ public class MessageDTO {
     public void setDepartureDate(Date departureDate) {
         this.departureDate = departureDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MessageDTO)) return false;
+        MessageDTO that = (MessageDTO) o;
+        return idMessage == that.idMessage && idRecipient == that.idRecipient && Objects.equals(sender, that.sender) && Objects.equals(message, that.message) && Objects.equals(departureDate, that.departureDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idMessage, sender, idRecipient, message, departureDate);
+    }
+    
 }

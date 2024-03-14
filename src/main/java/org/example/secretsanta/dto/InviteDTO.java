@@ -3,6 +3,8 @@ package org.example.secretsanta.dto;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.enums.Status;
 
+import java.util.Objects;
+
 public class InviteDTO {
 
     private int idInvite;
@@ -49,5 +51,18 @@ public class InviteDTO {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InviteDTO inviteDTO = (InviteDTO) o;
+        return idInvite == inviteDTO.idInvite && Objects.equals(userInfoEntity, inviteDTO.userInfoEntity) && Objects.equals(telegram, inviteDTO.telegram) && status == inviteDTO.status && Objects.equals(text, inviteDTO.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idInvite, userInfoEntity, telegram, status, text);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.secretsanta.dto;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class RoomDTO {
 
@@ -71,4 +72,16 @@ public class RoomDTO {
         this.place = place;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoomDTO roomDTO = (RoomDTO) o;
+        return idRoom == roomDTO.idRoom && idOrganizer == roomDTO.idOrganizer && Objects.equals(name, roomDTO.name) && Objects.equals(tossDate, roomDTO.tossDate) && Objects.equals(drawDate, roomDTO.drawDate) && Objects.equals(place, roomDTO.place);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idRoom, name, idOrganizer, tossDate, drawDate, place);
+    }
 }
