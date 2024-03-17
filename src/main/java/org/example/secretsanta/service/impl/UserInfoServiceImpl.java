@@ -61,7 +61,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void registerNewUserInfoAccount(UserInfoDTO dto) throws Exception {
-        if (readAll().stream().anyMatch(userInfo -> userInfo.getName().equals(dto.getName()))) {
+        if (userInfoRepository.findAll().stream().anyMatch(userInfo -> userInfo.getName().equals(dto.getName()))) {
             throw new UserAlreadyExistsException("User already exists with this name:" + dto.getName());
         }
         dto.setTelegram(dto.getTelegram().replaceAll("@", ""));
