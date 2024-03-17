@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.UserInfoRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
