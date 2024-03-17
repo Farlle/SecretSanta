@@ -4,6 +4,8 @@ import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.WishDTO;
+import org.example.secretsanta.exception.DrawingAlreadyPerformedException;
+import org.example.secretsanta.exception.NotEnoughUsersException;
 import org.example.secretsanta.service.impl.ResultServiceImpl;
 import org.example.secretsanta.service.impl.RoomServiceImpl;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
@@ -43,16 +45,14 @@ public class ResultController {
     public String showResultDraw(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
         List<ResultDTO> results = resultServiceImpl.showDrawInRoom(idRoom);
         List<ResultWrapper> resultWrapper = new ArrayList<>();
-       UserInfoDTO currentUser = userDetailsService.findUserByName( principal.getName());
+        UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
 
-        for(ResultDTO result : results) {
+        for (ResultDTO result : results) {
             UserInfoDTO santa = userInfoServiceImpl.getUserInfoById(result.getIdSanta());
             UserInfoDTO ward = userInfoServiceImpl.getUserInfoById(result.getIdWard());
             WishDTO wish = wishServiceImpl.getUserWishInRoom(idRoom, ward.getIdUserInfo());
             resultWrapper.add(new ResultWrapper(santa, ward, wish));
         }
-
-
 
         ResultWrapper wardResultWrapper = resultWrapper.stream()
                 .filter(wrapper -> wrapper.getSanta().getIdUserInfo() == currentUser.getIdUserInfo())
@@ -67,16 +67,24 @@ public class ResultController {
     public String drawingLots(@PathVariable("idRoom") int idRoom, Principal principal,
                               RedirectAttributes redirectAttributes) {
 
-        UserInfoDTO currentUser = userDetailsService.findUserByName( principal.getName());
+        UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
         RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
 
         if (!(roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo() == currentUser.getIdUserInfo())) {
-            redirectAttributes.addFlashAttribute("error", "Вы не можете проводить жеребьевку");
+            redirectAttributes.addFlashAttribute("errorMessage", "Вы не можете проводить жеребьевку");
             return "redirect:/room/show/" + idRoom;
         }
 
         RoomDTO room = roomServiceImpl.getRoomById(idRoom);
-        resultServiceImpl.performDraw(room);
+        try {
+            resultServiceImpl.performDraw(room);
+        } catch (NotEnoughUsersException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Маловато гостей");
+            return "redirect:/room/show/" + idRoom;
+        }catch (DrawingAlreadyPerformedException e){
+            redirectAttributes.addFlashAttribute("errorMessage", "Упс, ты не организатор");
+            return "redirect:/room/show/" + idRoom;
+        }
         return "redirect:/result/show/" + idRoom;
     }
 

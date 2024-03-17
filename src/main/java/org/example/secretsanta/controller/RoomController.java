@@ -33,6 +33,7 @@ public class RoomController {
     private final UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl;
     private final InviteServiceImpl inviteServiceImpl;
 
+
     public RoomController(RoomServiceImpl roomServiceImpl, CustomUserDetailsService userDetailsService,
                           WishServiceImpl wishServiceImpl, RoleServiceImpl roleServiceImpl,
                           UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl, InviteServiceImpl inviteServiceImpl) {
@@ -82,16 +83,16 @@ public class RoomController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateRoom(@PathVariable int id, @ModelAttribute("room") RoomDTO dto, Model model) {
+    public String updateRoom(@PathVariable int id, RoomDTO dto, Model model) {
         roomServiceImpl.update(id, dto);
-        model.addAttribute("room", dto);
-        return "redirect:/show";
+        model.addAttribute("roomsDto", dto);
+        return "redirect:/room/show";
     }
 
     @DeleteMapping("delete/{id}")
     public String deleteRoom(@PathVariable int id) {
         roomServiceImpl.delete(id);
-        return "redirect:/show";
+        return "redirect:/room/show";
     }
 
     @GetMapping("/show")
@@ -161,7 +162,6 @@ public class RoomController {
         userRoleWishRoomDTO.setRoomEntity(RoomMapper.toRoomEntity(roomServiceImpl.findRoomByName(roomDTO.getName())));
 
         userRoleWishRoomServiceImpl.create(userRoleWishRoomDTO);
-
 
         model.addAttribute("room", roomServiceImpl.readAll());
 

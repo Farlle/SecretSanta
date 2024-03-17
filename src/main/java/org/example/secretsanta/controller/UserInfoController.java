@@ -26,7 +26,7 @@ public class UserInfoController {
     public String createUserInfo(@ModelAttribute UserInfoDTO dto, Model model) {
         UserInfoDTO userInfo = userInfoServiceImpl.create(dto);
         model.addAttribute("userInfo", userInfo);
-        return "redirect:/show";
+        return "redirect:/userInfo/show";
     }
 
     @GetMapping("/update/{id}")
@@ -40,7 +40,7 @@ public class UserInfoController {
     public String updateUserInfo(@PathVariable int id, @ModelAttribute("userInfo") UserInfoDTO dto, Model model) {
         userInfoServiceImpl.update(id, dto);
         model.addAttribute("userInfo", dto);
-        return "redirect:/show";
+        return "redirect:/userInfo/show";
     }
 
     @GetMapping("/show")
@@ -52,14 +52,8 @@ public class UserInfoController {
     @PostMapping("/delete/{id}")
     public String deleteUserInfo(@PathVariable int id){
         userInfoServiceImpl.delete(id);
-        return "redirect:/show";
+        return "redirect:/userInfo/show";
 
     }
-
-    @GetMapping("/test")
-    public String test() {
-        return "Test endpoint is working!";
-    }
-
 
 }
