@@ -13,6 +13,9 @@
 <div th:if="${param.logout}">
     Вы вышли.
 </div>
+<div th:if="${errorMessage !=null}">
+    <p th:text="${errorMessage}">Ошибка</p>
+</div>
 <form th:action="@{/login}" method="post">
     <input type="text" name="username" placeholder="username" required/>
     <input type="password" name="password" placeholder="Password" required/>

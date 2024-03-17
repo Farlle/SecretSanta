@@ -14,9 +14,9 @@
 <div th:include="navbar :: navbar"></div>
 
 <h1>Список комнат</h1>
-<!--<div th:if="${errorMessage !=null}">
+<div th:if="${errorMessage !=null}">
     <p th:text="${errorMessage}">Ошибка</p>
-</div>-->
+</div>
 <div th:each="room : ${roomAndOrganizerWrapper}" class="room-info">
     <h2 th:text="${roomAndOrganizerWrapper.room.name }">Название комнаты</h2>
     <p>Организатор: <span th:text="${roomAndOrganizerWrapper.userInfo.name}">Организатор</span></p>
