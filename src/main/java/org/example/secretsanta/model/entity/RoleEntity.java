@@ -16,6 +16,14 @@ public class RoleEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    public RoleEntity(int idRole, Role role) {
+        this.idRole = idRole;
+        this.role = role;
+    }
+
+    public RoleEntity() {
+    }
+
     public int getIdRole() {
         return idRole;
     }
@@ -31,4 +39,6 @@ public class RoleEntity {
     public void setRole(Role role) {
         this.role = role;
     }
+
+
 }
