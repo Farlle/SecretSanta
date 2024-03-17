@@ -1,6 +1,7 @@
 package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.UserInfoDTO;
+import org.example.secretsanta.exception.UserAlreadyExistsException;
 import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.UserInfoRepository;
@@ -61,7 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void registerNewUserInfoAccount(UserInfoDTO dto) throws Exception {
         if (readAll().stream().anyMatch(userInfo -> userInfo.getName().equals(dto.getName()))) {
-            throw new Exception("User already exists with this name:" + dto.getName());
+            throw new UserAlreadyExistsException("User already exists with this name:" + dto.getName());
         }
         dto.setTelegram(dto.getTelegram().replaceAll("@", ""));
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));

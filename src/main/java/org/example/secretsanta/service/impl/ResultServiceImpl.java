@@ -4,6 +4,8 @@ import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
+import org.example.secretsanta.exception.DrawingAlreadyPerformedException;
+import org.example.secretsanta.exception.NotEnoughUsersException;
 import org.example.secretsanta.mapper.ResultMapper;
 import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.ResultEntity;
@@ -71,20 +73,20 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public void performDraw(RoomDTO room) {
 
-        List<UserInfoDTO> users = userInfoServiceImpl.getUsersInfoById(roomServiceImpl.getUserIndoIdInRoom(room.getIdRoom()));
-        List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsServiceImpl
-                .getAllIdChatsUsersWhoNeedNotify(room.getIdRoom());
+            List<UserInfoDTO> users = userInfoServiceImpl.getUsersInfoById(roomServiceImpl.getUserIndoIdInRoom(room.getIdRoom()));
+            List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsServiceImpl
+                    .getAllIdChatsUsersWhoNeedNotify(room.getIdRoom());
 
-        List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
-                resultRepository.findByRoomIdRoom(room.getIdRoom()));
+            List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
+                    resultRepository.findByRoomIdRoom(room.getIdRoom()));
 
-        if (!existingResults.isEmpty()) {
-            throw new IllegalStateException("Drawing has already been performed in this room");
-        }
+            if (!existingResults.isEmpty()) {
+                throw new DrawingAlreadyPerformedException("Drawing has already been performed in this room");
+            }
 
-        if (users.size() < 2) {
-            throw new IllegalStateException("Not enough users for drawing");
-        }
+            if (users.size() < 2) {
+                throw new NotEnoughUsersException("Not enough users for drawing");
+            }
 
         Collections.shuffle(users);
 
@@ -100,7 +102,6 @@ public class ResultServiceImpl implements ResultService {
         for (UserInfoTelegramChatsDTO dto: userInfoTelegramChatsDTO ) {
             telegramServiceImpl.sendMessage(dto.getIdChat(), MESSAGE_DRAW);
         }
-
 
     }
 

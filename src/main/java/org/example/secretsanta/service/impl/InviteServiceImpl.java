@@ -105,7 +105,7 @@ public class InviteServiceImpl implements InviteService {
       }
     }
 
-    private String generatedTextInvite(int idRoom) {
+    String generatedTextInvite(int idRoom) {
         RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
         return "Тебя пригласили в комнату " + roomDTO.getName()
                 + " присоединяйся по ссылке " + HOST + roomDTO.getIdRoom() + "/join";
