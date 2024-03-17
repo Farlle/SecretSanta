@@ -2,6 +2,8 @@ package org.example.secretsanta.dto;
 
 import org.example.secretsanta.model.entity.RoomEntity;
 
+import java.util.Objects;
+
 public class ResultDTO {
 
     private int idResult;
@@ -39,5 +41,18 @@ public class ResultDTO {
 
     public void setRoomEntity(RoomEntity roomEntity) {
         this.roomEntity = roomEntity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ResultDTO)) return false;
+        ResultDTO resultDTO = (ResultDTO) o;
+        return idResult == resultDTO.idResult && idSanta == resultDTO.idSanta && idWard == resultDTO.idWard && Objects.equals(roomEntity, resultDTO.roomEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idResult, idSanta, idWard, roomEntity);
     }
 }

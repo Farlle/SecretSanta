@@ -6,6 +6,16 @@ public class UserInfoDTO {
     private String password;
     private String telegram;
 
+    public UserInfoDTO(int idUserInfo, String name, String password, String telegram) {
+        this.idUserInfo = idUserInfo;
+        this.name = name;
+        this.password = password;
+        this.telegram = telegram;
+    }
+
+    public UserInfoDTO() {
+    }
+
     public int getIdUserInfo() {
         return idUserInfo;
     }

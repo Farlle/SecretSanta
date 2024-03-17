@@ -5,6 +5,8 @@ import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.entity.WishEntity;
 
+import java.util.Objects;
+
 public class UserRoleWishRoomDTO {
 
     private int idUserRoleWishRoom;
@@ -13,15 +15,23 @@ public class UserRoleWishRoomDTO {
     private RoomEntity roomEntity;
     private WishEntity wishEntity;
 
+    public UserRoleWishRoomDTO(int idUserRoleWishRoom, UserInfoEntity userInfoEntity, RoleEntity roleEntity, RoomEntity roomEntity, WishEntity wishEntity) {
+        this.idUserRoleWishRoom = idUserRoleWishRoom;
+        this.userInfoEntity = userInfoEntity;
+        this.roleEntity = roleEntity;
+        this.roomEntity = roomEntity;
+        this.wishEntity = wishEntity;
+    }
+
+    public UserRoleWishRoomDTO() {
+    }
+
     public int getIdUserRoleWishRoom() {
         return idUserRoleWishRoom;
     }
 
     public void setIdUserRoleWishRoom(int idUserRoleWishRoom) {
         this.idUserRoleWishRoom = idUserRoleWishRoom;
-    }
-
-    public UserRoleWishRoomDTO() {
     }
 
     public UserInfoEntity getUserInfoEntity() {
@@ -54,5 +64,18 @@ public class UserRoleWishRoomDTO {
 
     public void setWishEntity(WishEntity wishEntity) {
         this.wishEntity = wishEntity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserRoleWishRoomDTO)) return false;
+        UserRoleWishRoomDTO that = (UserRoleWishRoomDTO) o;
+        return idUserRoleWishRoom == that.idUserRoleWishRoom && Objects.equals(userInfoEntity, that.userInfoEntity) && Objects.equals(roleEntity, that.roleEntity) && Objects.equals(roomEntity, that.roomEntity) && Objects.equals(wishEntity, that.wishEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUserRoleWishRoom, userInfoEntity, roleEntity, roomEntity, wishEntity);
     }
 }
