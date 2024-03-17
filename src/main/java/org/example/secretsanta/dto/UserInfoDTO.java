@@ -1,5 +1,7 @@
 package org.example.secretsanta.dto;
 
+import java.util.Objects;
+
 public class UserInfoDTO {
     private int idUserInfo;
     private String name;
@@ -46,5 +48,18 @@ public class UserInfoDTO {
 
     public void setTelegram(String telegram) {
         this.telegram = telegram;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserInfoDTO)) return false;
+        UserInfoDTO that = (UserInfoDTO) o;
+        return idUserInfo == that.idUserInfo && Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(telegram, that.telegram);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUserInfo, name, password, telegram);
     }
 }
