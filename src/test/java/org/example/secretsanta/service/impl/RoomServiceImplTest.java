@@ -36,7 +36,7 @@ class RoomServiceImplTest {
 
 
     @Test
-    void create() {
+    void createTest() {
         RoomDTO dto = new RoomDTO();
 
         RoomEntity room = new RoomEntity();
@@ -51,7 +51,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void readAll() {
+    void readAllTest() {
         List<RoomEntity> roomEntities = Arrays.asList(new RoomEntity(), new RoomEntity());
         when(roomRepository.findAll()).thenReturn(roomEntities);
 
@@ -62,7 +62,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void update() {
+    void updateTest() {
         int id = 1;
         RoomDTO dto = new RoomDTO();
 
@@ -80,7 +80,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void deleteTest() {
         int id = 1;
 
         roomService.delete(id);
@@ -89,7 +89,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getRoomById() {
+    void getRoomByIdTest() {
         int id = 1;
         RoomEntity room = new RoomEntity();
 
@@ -102,7 +102,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getRoomOrganizer() {
+    void getRoomOrganizerTest() {
         RoomDTO dto = new RoomDTO();
         dto.setIdOrganizer(1);
 
@@ -117,7 +117,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void findRoomByName() {
+    void findRoomByNameTest() {
         String name = "Test Room";
         RoomEntity room = new RoomEntity();
         room.setName(name);
@@ -131,7 +131,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getUsersAndRolesByRoomId() {
+    void getUsersAndRolesByRoomIdTest() {
         int idRoom = 1;
         List<Object[]> usersAndRoles = Arrays.asList(new Object[]{"User1", "Role1"}, new Object[]{"User2", "Role2"});
         when(roomRepository.findUserRoleInRoom(idRoom)).thenReturn(usersAndRoles);
@@ -143,7 +143,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getRoomsWhereUserJoin() {
+    void getRoomsWhereUserJoinTest() {
         int idUserInfo = 1;
         List<Integer> roomIds = Arrays.asList(1, 2);
         List<RoomEntity> roomEntities = Arrays.asList(new RoomEntity(), new RoomEntity());
@@ -158,7 +158,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getRoomByName() {
+    void getRoomByNameTest() {
         String name = "Test Room";
         RoomEntity room = new RoomEntity();
         room.setName(name);
@@ -172,7 +172,7 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getRoomByUserName() {
+    void getRoomByUserNameTest() {
         String name = "Test User";
         List<RoomEntity> roomEntities = Arrays.asList(new RoomEntity(), new RoomEntity());
         when(roomRepository.findRoomsByUserName(name)).thenReturn(roomEntities);
@@ -184,19 +184,19 @@ class RoomServiceImplTest {
     }
 
     @Test
-    void getUserIndoIdInRoom() {
+    void getUserIndoIdInRoomTest() {
         int idRoom = 1;
         List<Integer> userInfoIds = Arrays.asList(1, 2);
         when(roomRepository.findUserInfoIdInRoom(idRoom)).thenReturn(userInfoIds);
 
-        List<Integer> result = roomService.getUserIndoIdInRoom(idRoom);
+        List<Integer> result = roomService.getUserInfoIdInRoom(idRoom);
 
         verify(roomRepository, times(1)).findUserInfoIdInRoom(idRoom);
         assertEquals(userInfoIds, result);
     }
 
     @Test
-    void getByDrawDateLessThanEqual() {
+    void getByDrawDateLessThanEqualTest() {
         Date date = new Date(11L);
         List<RoomEntity> roomEntities = Arrays.asList(new RoomEntity(), new RoomEntity());
         when(roomRepository.findByDrawDateLessThanEqual(date)).thenReturn(roomEntities);

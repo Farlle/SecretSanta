@@ -37,7 +37,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void getUserInfoById() {
+    void getUserInfoByIdTest() {
         int id = 1;
         UserInfoEntity userInfoEntity = new UserInfoEntity();
 
@@ -50,7 +50,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void update() {
+    void updateTest() {
         int id = 1;
         UserInfoDTO dto = new UserInfoDTO();
 
@@ -69,7 +69,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void create() {
+    void createTest() {
         UserInfoDTO dto = new UserInfoDTO();
 
         UserInfoEntity userInfoEntity = new UserInfoEntity();
@@ -83,7 +83,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void readAll() {
+    void readAllTest() {
         List<UserInfoEntity> userInfoEntities = Arrays.asList(new UserInfoEntity(), new UserInfoEntity());
         when(userInfoRepository.findAll()).thenReturn(userInfoEntities);
 
@@ -94,7 +94,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void deleteTest() {
         int id = 1;
 
         userInfoService.delete(id);
@@ -103,7 +103,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void registerNewUserInfoAccount() {
+    void registerNewUserInfoAccountTest() {
         UserInfoDTO dto = new UserInfoDTO();
         dto.setName("New User");
         dto.setTelegram("123");
@@ -121,7 +121,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void testRegisterNewUserInfoAccount_UserAlreadyExists() {
+    void testRegisterNewUserInfoAccount_UserAlreadyExistsTest() {
         UserInfoDTO dto = new UserInfoDTO();
         dto.setName("New User");
         dto.setTelegram("123");
@@ -139,7 +139,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void getUsersInfoById() {
+    void getUsersInfoByIdTest() {
         List<Integer> usersIds = Arrays.asList(1, 2);
         List<UserInfoEntity> userInfoEntities = Arrays.asList(new UserInfoEntity(), new UserInfoEntity());
         when(userInfoRepository.findAllById(usersIds)).thenReturn(userInfoEntities);
@@ -151,7 +151,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void getUsersInfoByTelegram() {
+    void getUsersInfoByTelegramTest() {
         String telegram = "test_telegram";
         UserInfoEntity userInfoEntity = new UserInfoEntity();
 

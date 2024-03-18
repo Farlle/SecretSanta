@@ -23,7 +23,7 @@ class TelegramServiceImplTest {
     }
 
     @Test
-    void sendMessage() {
+    void sendMessageTest() {
         Long idChat = 123456789L;
         String message = "Test message";
 

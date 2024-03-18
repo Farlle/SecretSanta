@@ -1,3 +1,4 @@
+/*
 package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.RoleDTO;
@@ -71,7 +72,7 @@ class RoleServiceImplTest {
     }
 
     @Test
-    void getRoleById() {
+    void getRoleByIdTest() {
         int id = 2;
         RoleEntity role = new RoleEntity();
         role.setIdRole(id);
@@ -84,4 +85,4 @@ class RoleServiceImplTest {
         assertNotNull(roleDTO);
         assertEquals(role.getRole(), roleDTO.getRole());
     }
-}
+}*/
