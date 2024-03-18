@@ -38,7 +38,7 @@ class InviteControllerTest {
     private RoomServiceImpl roomServiceImpl;
 
     @Test
-    void inviteTelegramFormOrganizerTest() throws Exception {
+    void testInviteTelegramFormOrganizer() throws Exception {
         UserInfoDTO currentUser = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
 
@@ -59,7 +59,7 @@ class InviteControllerTest {
     }
 
     @Test
-    void inviteTelegramFormNonOrganizerTest() throws Exception {
+    void testInviteTelegramFormNonOrganizer() throws Exception {
         UserInfoDTO currentUser = new UserInfoDTO();
         UserInfoDTO loginUser = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
@@ -85,7 +85,7 @@ class InviteControllerTest {
 
 
     @Test
-    void inviteTelegramUserTest() throws Exception {
+    void testInviteTelegramUser() throws Exception {
         UserInfoDTO participantUser = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setIdRoom(1);
@@ -107,7 +107,7 @@ class InviteControllerTest {
     }
 
     @Test
-    void inviteTelegramUserNonTelegram() throws Exception {
+    void testInviteTelegramUserNonTelegram() throws Exception {
         UserInfoDTO participantUser = null;
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setIdRoom(1);

@@ -29,7 +29,7 @@ class UserInfoControllerTest {
     private CustomUserDetailsService userDetailsService;
 
     @Test
-    void showAddUserPageTest() throws Exception {
+    void testShowAddUserPage() throws Exception {
         mockMvc.perform(get("/userInfo/create").with(user("username").password("password")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("add-user-info"))
@@ -37,7 +37,7 @@ class UserInfoControllerTest {
     }
 
     @Test
-    void createUserInfoTest() throws Exception {
+    void testCreateUserInfo() throws Exception {
         UserInfoDTO dto = new UserInfoDTO(1, "test", "password", "telegram");
 
         when(userInfoServiceImpl.create(dto)).thenReturn(dto);
@@ -51,7 +51,7 @@ class UserInfoControllerTest {
     }
 
     @Test
-    void updateUserInfoPageTest() throws Exception {
+    void testUpdateUserInfoPage() throws Exception {
         int id = 1;
         UserInfoDTO dto = new UserInfoDTO(id, "test", "password", "telegram");
         when(userInfoServiceImpl.getUserInfoById(id)).thenReturn(dto);

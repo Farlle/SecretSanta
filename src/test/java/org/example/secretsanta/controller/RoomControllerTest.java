@@ -9,10 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +47,7 @@ class RoomControllerTest {
     private InviteServiceImpl inviteServiceImpl;
 
     @Test
-    void showAddRoomPageTest() throws Exception {
+    void testShowAddRoomPage() throws Exception {
         UserInfoDTO userInfoDTO = new UserInfoDTO(1, "username", "password", "telegram");
 
         when(userDetailsService.findUserByName("username")).thenReturn(userInfoDTO);
@@ -57,7 +62,7 @@ class RoomControllerTest {
 
 
     @Test
-    void createRoomWithInvalidDateTest() throws Exception {
+    void testCreateRoomWithInvalidDate() throws Exception {
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setName("test");
         roomDTO.setPlace("test");
@@ -80,7 +85,7 @@ class RoomControllerTest {
     }
 
     @Test
-    public void createRoomWithValidDate() throws Exception {
+    public void testCreateRoomWithValidDate() throws Exception {
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setName("test");
         roomDTO.setPlace("test");
@@ -109,7 +114,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void deleteRoomTest() throws Exception {
+    void testDeleteRoom() throws Exception {
         int id = 1;
 
         mockMvc.perform(delete("/room/delete/" + id).with(user("username").password("password")))
@@ -120,20 +125,25 @@ class RoomControllerTest {
     }
 
     @Test
-    void getAllRoomTest() throws Exception {
-        List<RoomDTO> rooms = new ArrayList<>();
-        when(roomServiceImpl.readAll()).thenReturn(rooms);
+    void testGetAllRoom() throws Exception {
+        int page = 0;
+        int size = 5;
+        Page<RoomDTO> roomDTOPage = new PageImpl<>(Collections.emptyList());
 
-        mockMvc.perform(get("/room/show").with(user("username").password("password")))
+        when(roomServiceImpl.readAllRoom(PageRequest.of(page, size))).thenReturn(roomDTOPage);
+
+        mockMvc.perform(get("/room/show")
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                        .with(user("username").password("password")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("room-list"))
-                .andExpect(model().attributeExists("roomsDto"));
+                .andExpect(view().name("room-list"));
 
-        verify(roomServiceImpl, times(1)).readAll();
+        verify(roomServiceImpl).readAllRoom(PageRequest.of(page, size));
     }
 
     @Test
-    void getRoomByIdTest() throws Exception {
+    void testGetRoomById() throws Exception {
         int idRoom = 1;
         RoomDTO room = new RoomDTO();
         UserInfoDTO loginUser = new UserInfoDTO();
@@ -156,7 +166,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void joinRoomFormNoInviteTest() throws Exception {
+    void testJoinRoomFormNoInvite() throws Exception {
         int idRoom = 1;
         UserInfoDTO currentUser = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
@@ -178,7 +188,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void joinRoomFormNoInviteButOrganizerTest() throws Exception {
+    void testJoinRoomFormNoInviteButOrganizer() throws Exception {
         int idRoom = 1;
         UserInfoDTO currentUser = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
@@ -201,7 +211,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void joinRoomFormInviteTest() throws Exception {
+    void testJoinRoomFormInvite() throws Exception {
         int idRoom = 1;
         UserInfoDTO currentUser = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
@@ -229,7 +239,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void joinInRoomPostTest() throws Exception {
+    void testJoinInRoomPost() throws Exception {
         int idRoom = 1;
         WishDTO wishDto = new WishDTO();
         UserInfoDTO currentUser = new UserInfoDTO(1, "username", "pasw", "telegram");
@@ -263,7 +273,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void getUsersAndRolesTest() throws Exception {
+    void testGetUsersAndRoles() throws Exception {
         int idRoom = 1;
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
@@ -289,26 +299,29 @@ class RoomControllerTest {
     }
 
     @Test
-    void getRoomWhereJoinTest() throws Exception {
-        int idUserInfo = 1;
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        List<RoomDTO> rooms = new ArrayList<>();
-        userInfoDTO.setIdUserInfo(idUserInfo);
+    void testGetRoomWhereJoin() throws Exception {
+        int idUser = 1;
+        String username = "username";
+        int page = 0;
+        int size = 5;
+        Page<RoomDTO> roomDTOPage = new PageImpl<>(Collections.emptyList());
+        UserInfoDTO userInfoDTO = new UserInfoDTO(idUser,"username","password","telegram");
 
-        when(userDetailsService.findUserByName(anyString())).thenReturn(userInfoDTO);
-        when(roomServiceImpl.getRoomsWhereUserJoin(anyInt())).thenReturn(rooms);
+        when(userDetailsService.findUserByName(username)).thenReturn(userInfoDTO);
+        when(roomServiceImpl.getRoomsWhereUserJoin(idUser, PageRequest.of(page, size))).thenReturn(roomDTOPage);
 
         mockMvc.perform(get("/room/show/participant")
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
                         .with(user("username").password("password")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("room-list"));
-
-        verify(userDetailsService).findUserByName(anyString());
-        verify(roomServiceImpl).getRoomsWhereUserJoin(idUserInfo);
+        verify(userDetailsService).findUserByName(username);
+        verify(roomServiceImpl).getRoomsWhereUserJoin(idUser, PageRequest.of(page, size));
     }
 
     @Test
-    void deleteUserFromRoomTest() throws Exception {
+    void testDeleteUserFromRoom() throws Exception {
         int idRoom = 1;
         int idUser = 1;
         UserInfoDTO userInfoDTO = new UserInfoDTO();
@@ -333,7 +346,7 @@ class RoomControllerTest {
     }
 
     @Test
-    void deleteUserFromRoomNotOrganizerTest() throws Exception {
+    void testDeleteUserFromRoomNotOrganizer() throws Exception {
         int idRoom = 1;
         int idUser = 2;
         int idOrganizer = 1;

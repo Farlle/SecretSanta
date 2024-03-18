@@ -26,14 +26,14 @@ class AuthControllerTest {
     private CustomUserDetailsService userDetailsService;
 
     @Test
-    void loginTest() throws Exception {
+    void testLoginTest() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"));
     }
 
     @Test
-    void showRegistrationForm() throws Exception {
+    void testShowRegistrationForm() throws Exception {
         mockMvc.perform(get("/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("register"))
@@ -41,7 +41,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void registrationUserInfo() throws Exception {
+    void testRegistrationUserInfo() throws Exception {
         UserInfoDTO dto = new UserInfoDTO();
 
         mockMvc.perform(post("/register")

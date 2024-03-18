@@ -41,7 +41,7 @@ class ResultControllerTest {
     private WishServiceImpl wishServiceImpl;
 
     @Test
-    void showResultDrawTest() throws Exception {
+    void testShowResultDraw() throws Exception {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
         ResultDTO resultDTO = new ResultDTO();
@@ -65,7 +65,7 @@ class ResultControllerTest {
     }
 
     @Test
-    void drawingLotsOrganizerTest() throws Exception {
+    void testDrawingLotsOrganizer() throws Exception {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
 
@@ -85,7 +85,7 @@ class ResultControllerTest {
     }
 
     @Test
-    void drawingLotsNonOrganizer() throws Exception {
+    void testDrawingLotsNonOrganizer() throws Exception {
         UserInfoDTO currentUser = new UserInfoDTO();
         UserInfoDTO roomOrganizer = new UserInfoDTO();
         RoomDTO roomDTO = new RoomDTO();
