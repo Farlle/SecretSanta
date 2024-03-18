@@ -10,6 +10,8 @@ import org.example.secretsanta.model.enums.Role;
 import org.example.secretsanta.service.impl.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.example.secretsanta.wrapper.RoomAndOrganizerWrapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -96,8 +98,13 @@ public class RoomController {
     }
 
     @GetMapping("/show")
-    public String getAllRoom(Model model) {
-        model.addAttribute("roomsDto", roomServiceImpl.readAll());
+    public String getAllRoom(Model model,
+                             @RequestParam(value = "page", defaultValue = "0") int page,
+                             @RequestParam(value = "size", defaultValue = "5") int size) {
+        Page<RoomDTO> roomDTOPage = roomServiceImpl.readAllRoom(PageRequest.of(page, size));
+        model.addAttribute("roomsDto", roomDTOPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", roomDTOPage.getTotalPages());
         return "room-list";
     }
 
@@ -156,10 +163,10 @@ public class RoomController {
             roleDTO = roleServiceImpl.getRoleById(Role.PARTICIPANT.getId());
         }
 
-        userRoleWishRoomDTO.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(currentUser));
-        userRoleWishRoomDTO.setWishEntity(WishMapper.toWishEntity(savedWish));
-        userRoleWishRoomDTO.setRoleEntity(RoleMapper.toRoleEntity(roleDTO));
-        userRoleWishRoomDTO.setRoomEntity(RoomMapper.toRoomEntity(roomServiceImpl.findRoomByName(roomDTO.getName())));
+        userRoleWishRoomDTO.setUserInfoDTO(currentUser);
+        userRoleWishRoomDTO.setWishDTO(savedWish);
+        userRoleWishRoomDTO.setRoleDTO(roleDTO);
+        userRoleWishRoomDTO.setRoomDTO(roomServiceImpl.findRoomByName(roomDTO.getName()));
 
         userRoleWishRoomServiceImpl.create(userRoleWishRoomDTO);
 
@@ -187,12 +194,16 @@ public class RoomController {
     }
 
     @GetMapping("/show/participant")
-    public String getRoomWhereJoin(Model model, Principal principal) {
+    public String getRoomWhereJoin(Model model, Principal principal,
+                                   @RequestParam(value = "page", defaultValue = "0") int page,
+                                   @RequestParam(value = "size", defaultValue = "5") int size) {
         int idUser = userDetailsService.findUserByName(principal.getName()).getIdUserInfo();
-        List<RoomDTO> rooms = roomServiceImpl.getRoomsWhereUserJoin(idUser);
-        model.addAttribute("roomsDto", rooms);
-        return "room-list";
+        Page<RoomDTO> roomDTOPage = roomServiceImpl.getRoomsWhereUserJoin(idUser,PageRequest.of(page, size));
+        model.addAttribute("roomsDto", roomDTOPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", roomDTOPage.getTotalPages());
 
+        return "room-list";
     }
 
     @PostMapping("/{nameRoom}/users/{UserInfoName}")
