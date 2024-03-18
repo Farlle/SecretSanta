@@ -1,6 +1,9 @@
 package org.example.secretsanta.repository;
 
+import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.model.entity.RoomEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,6 +37,12 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
             "join UserInfoEntity user_info on user_role_wish_room.userInfoEntity.idUserInfo = user_info.idUserInfo " +
             "where user_info.idUserInfo= :idUserInfo")
     List<Integer> findRoomsWhereUserJoin(@Param("idUserInfo") int idUserInfo);
+    @Query("select room " +
+            "from RoomEntity room join UserRoleWishRoomEntity user_role_wish_room on" +
+            " room.idRoom = user_role_wish_room.room.idRoom " +
+            "join UserInfoEntity user_info on user_role_wish_room.userInfoEntity.idUserInfo = user_info.idUserInfo " +
+            "where user_info.idUserInfo= :idUserInfo")
+    Page<RoomEntity> findRoomsWhereUserJoinPage(@Param("idUserInfo") int idUserInfo, Pageable pageable);
 
 
 
