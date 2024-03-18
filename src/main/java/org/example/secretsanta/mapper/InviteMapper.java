@@ -19,7 +19,7 @@ public class InviteMapper {
         inviteDTO.setIdInvite(inviteEntity.getIdInvite());
         inviteDTO.setStatus(inviteEntity.getStatus());
         inviteDTO.setTelegram(inviteEntity.getTelegram());
-        inviteDTO.setUserInfoEntity(inviteEntity.getUserInfo());
+        inviteDTO.setUserInfoDTO(UserInfoMapper.toUserInfoDTO(inviteEntity.getUserInfo()));
         inviteDTO.setText(inviteEntity.getText());
 
         return inviteDTO;
@@ -34,7 +34,7 @@ public class InviteMapper {
         inviteEntity.setIdInvite(inviteDTO.getIdInvite());
         inviteEntity.setStatus(inviteDTO.getStatus());
         inviteEntity.setTelegram(inviteDTO.getTelegram());
-        inviteEntity.setUserInfo(inviteDTO.getUserInfoEntity());
+        inviteEntity.setUserInfo(UserInfoMapper.toUserInfoEntity(inviteDTO.getUserInfoDTO()));
         inviteEntity.setText(inviteDTO.getText());
 
         return inviteEntity;
@@ -47,6 +47,17 @@ public class InviteMapper {
 
         return inviteEntitiesList.stream()
                 .map(InviteMapper::toInviteDTO)
+                .collect(Collectors.toList());
+
+    }
+
+    public static List<InviteEntity> toInviteEntityList(List<InviteDTO> inveteDTOList) {
+        if (inveteDTOList == null) {
+            return null;
+        }
+
+        return inveteDTOList.stream()
+                .map(InviteMapper::toInviteEntity)
                 .collect(Collectors.toList());
 
     }

@@ -19,7 +19,7 @@ public class MessageMapper {
         messageDTO.setIdMessage(messageEntity.getIdMessage());
         messageDTO.setMessage(messageEntity.getMessage());
         messageDTO.setDepartureDate(messageEntity.getDepartureDate());
-        messageDTO.setSender(messageEntity.getSender());
+        messageDTO.setSender(UserInfoMapper.toUserInfoDTO(messageEntity.getSender()));
         messageDTO.setIdRecipient(messageEntity.getIdRecipient());
 
         return messageDTO;
@@ -34,7 +34,7 @@ public class MessageMapper {
         messageEntity.setIdMessage(messageDTO.getIdMessage());
         messageEntity.setMessage(messageDTO.getMessage());
         messageEntity.setDepartureDate(messageDTO.getDepartureDate());
-        messageEntity.setSender(messageDTO.getSender());
+        messageEntity.setSender(UserInfoMapper.toUserInfoEntity(messageDTO.getSender()));
         messageEntity.setIdRecipient(messageDTO.getIdRecipient());
 
         return messageEntity;

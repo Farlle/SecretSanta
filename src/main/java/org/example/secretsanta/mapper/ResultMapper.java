@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-
 public class ResultMapper {
 
     public static ResultDTO toResultDTO(ResultEntity resultEntity) {
@@ -20,7 +19,7 @@ public class ResultMapper {
         resultDTO.setIdResult(resultEntity.getIdResult());
         resultDTO.setIdSanta(resultEntity.getIdSanta());
         resultDTO.setIdWard(resultEntity.getIdWard());
-        resultDTO.setRoomEntity(resultEntity.getRoom());
+        resultDTO.setRoomDTO(RoomMapper.toRoomDTO(resultEntity.getRoom()));
 
         return resultDTO;
     }
@@ -35,7 +34,7 @@ public class ResultMapper {
         resultEntity.setIdResult(resultDTO.getIdResult());
         resultEntity.setIdSanta(resultDTO.getIdSanta());
         resultEntity.setIdWard(resultDTO.getIdWard());
-        resultEntity.setRoom(resultDTO.getRoomEntity());
+        resultEntity.setRoom(RoomMapper.toRoomEntity(resultDTO.getRoomDTO()));
 
         return resultEntity;
     }

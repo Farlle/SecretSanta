@@ -19,7 +19,7 @@ public class UserInfoTelegramChatsMapper {
 
         UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
         userInfoTelegramChatsDTO.setIdChat(userInfoTelegramChatsEntity.getIdChat());
-        userInfoTelegramChatsDTO.setUserInfoEntity(userInfoTelegramChatsEntity.getUserInfo());
+        userInfoTelegramChatsDTO.setUserInfoDTO(UserInfoMapper.toUserInfoDTO(userInfoTelegramChatsEntity.getUserInfo()));
         userInfoTelegramChatsDTO.setIdUserInfoTelegramChat(userInfoTelegramChatsEntity.getIdUserInfoTelegramChat());
 
         return userInfoTelegramChatsDTO;
@@ -34,7 +34,8 @@ public class UserInfoTelegramChatsMapper {
 
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
         userInfoTelegramChatsEntity.setIdChat(userInfoTelegramChatsDTO.getIdChat());
-        userInfoTelegramChatsEntity.setUserInfo(userInfoTelegramChatsDTO.getUserInfoEntity());
+        userInfoTelegramChatsEntity.setUserInfo(UserInfoMapper
+                .toUserInfoEntity(userInfoTelegramChatsDTO.getUserInfoDTO()));
         userInfoTelegramChatsEntity.setIdUserInfoTelegramChat(userInfoTelegramChatsDTO.getIdUserInfoTelegramChat());
 
         return userInfoTelegramChatsEntity;
