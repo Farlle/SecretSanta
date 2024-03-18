@@ -18,10 +18,11 @@ public class CustomErrorController {
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ModelAndView handleException(final Throwable throwable) {
+    public String handleException(final Throwable throwable) {
         logger.log(Level.SEVERE, "Произошла ошибка на сервере", throwable);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("error");
-        return modelAndView;
+
+        return "error";
     }
 }
