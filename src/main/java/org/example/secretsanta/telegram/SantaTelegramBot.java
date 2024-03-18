@@ -44,7 +44,7 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
                 }
                 UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
                 userInfoTelegramChatsDTO.setIdChat(idChat);
-                userInfoTelegramChatsDTO.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(currentUser));
+                userInfoTelegramChatsDTO.setUserInfoDTO(currentUser);
                 userInfoTelegramChatsServiceImpl.create(userInfoTelegramChatsDTO);
             }
             String messageText = update.getMessage().getText();
