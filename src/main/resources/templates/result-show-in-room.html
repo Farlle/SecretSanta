@@ -2,50 +2,78 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Результаты в комнате</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        body {
+            background-color: #f8f9fa;
         }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        table {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
+
         th {
-            background-color: #f2f2f2;
+            background-color: #f0f0f0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .btn-primary {
+            margin-top: 0px;
         }
     </style>
 </head>
 <body>
 <div th:include="navbar :: navbar"></div>
 
-<h1>Результаты в комнате</h1>
+<div class="container">
+    <h1 class="text-center mb-4">Результаты в комнате</h1>
 
-<div th:if="${resultWrappers==null}">
-    <p>Результатов в этой комнате нет.</p>
+    <div th:if="${resultWrappers==null}">
+        <p>Результатов в этой комнате нет.</p>
+    </div>
+
+    <div th:unless="${resultWrappers==null}">
+        <table class="table table-striped">
+            <thead>
+            <tr class="table-primary">
+                <th>Санта</th>
+                <th>Получатель</th>
+                <th>Желание получателя</th>
+                <th>Сообщение</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="resultWrapper : ${resultWrappers}">
+                <td th:text="${resultWrapper.santa.name}">Имя Санты</td>
+                <td th:text="${resultWrapper.ward.name}">Имя Получателя</td>
+                <td th:text="${resultWrapper.wish.wish}">Желание получателя</td>
+                <td><a class="btn btn-primary"
+                       th:href="@{/message/conversation/{idRecipient}(idRecipient=${resultWrapper.ward.getIdUserInfo()})}">
+                    Сообщение</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<div th:unless="${resultWrappers==null}">
-    <table>
-        <thead>
-        <tr>
-            <th>Санта</th>
-            <th>Получатель</th>
-            <th>Желание получателя</th>
-            <th>Сообщение</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td th:text="${resultWrappers.santa.name}">Имя Санты</td>
-            <td th:text="${resultWrappers.ward.name}">Имя Получателя</td>
-            <td th:text="${resultWrappers.wish.wish}">Желание получателя</td>
-            <td> <a th:href="@{/message/inbox/{idRecipient}(idRecipient=${resultWrappers.ward.getIdUserInfo()})}">
-                Сообщение</a></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

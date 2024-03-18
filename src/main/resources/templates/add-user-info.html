@@ -4,20 +4,48 @@
     <meta charset="UTF-8">
     <title>Add User</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <div th:include="navbar :: navbar"></div>
 
-<h2>Add New User</h2>
-<form th:action="@{/create}" th:object="${userInfoDto}" method="post">
-    <label for="name">Username:</label><br>
-    <input type="text" id="name" name="username" th:field="*{name}"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password" th:field="*{password}"><br>
-    <label for="telegram">Telegram:</label><br>
-    <input type="telegram" id="telegram" name="telegram" th:field="*{telegram}"><br>
-    <input type="submit" value="Submit">
-</form>
+<div class="container">
+    <h2 class="text-center mb-4">Add New User</h2>
+    <form th:action="@{/create}" th:object="${userInfoDto}" method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+        </div>
+        <div class="form-group">
+            <label for="telegram">Telegram:</label>
+            <input type="text" class="form-control" id="telegram" name="telegram" th:field="*{telegram}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

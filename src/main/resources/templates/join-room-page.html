@@ -2,18 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Присоединение к комнате</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 0px;
+        }
+        .form-group {
+            margin-bottom: 1px;
+        }
+        .btn-primary {
+            margin-top: 1px;
+        }
+        .alert-danger {
+            margin-top: 1px;
+        }
+    </style>
 </head>
 <body>
 <div th:include="navbar :: navbar"></div>
-<div th:if="${errorMessage !=null}">
-    <p th:text="${errorMessage}">Ошибка</p>
-</div>
-<div th:if="${errorMessage==null}">
-<h1>Введите желание</h1>
-<form th:action="@{/room/{id}/join(id=${idRoom})}" th:object="${wishDto}" th:method="post">
-    <input type="text" th:field="*{wish}" placeholder="Введите желание" required/>
-    <button type="submit">Подтвердить</button>
-</form>
+
+<div class="container">
+    <div th:if="${errorMessage !=null}">
+        <p class="alert alert-danger" th:text="${errorMessage}">Ошибка</p>
+    </div>
+    <div th:if="${errorMessage==null}">
+        <h1 class="mt-4 mb-3">Введите желание</h1>
+        <form th:action="@{/room/{id}/join(id=${idRoom})}" th:object="${wishDto}" th:method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" th:field="*{wish}" placeholder="Введите желание" required/>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Подтвердить</button>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

@@ -2,32 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Room List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 0px;
+        }
+        .table {
+            margin-top: 2px;
+        }
+        .btn-danger {
+            margin-top: 1px;
+        }
+    </style>
 </head>
 <body>
 <div th:include="navbar :: navbar"></div>
 
-<h2>Пользователи и роли в комнате</h2>
-<table>
-    <thead>
-    <tr>
-        <th>Имя</th>
-        <th>Роль</th>
-        <th>Комната</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="userAndRole : ${usersAndRoles}">
-        <td th:text="${userAndRole[0]}"></td>
-        <td th:text="${userAndRole[1]}"></td>
-        <td th:text="${userAndRole[2]}"></td>
-        <td th:if="${user.name==organizer.name}">
-            <form th:action="@{/room/{idRoom}/users/{idUserInfo}(idRoom=${userAndRole[2]}, idUserInfo=${userAndRole[0]})}" method="post">
-            <button type="submit">Удалить</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
+<div class="container">
+    <h2 class="mt-4 mb-3">Пользователи и роли в комнате</h2>
+    <table class="table table-striped">
+        <thead class="table-primary">
+        <tr>
+            <th>Имя</th>
+            <th>Роль</th>
+            <th>Комната</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userAndRole : ${usersAndRoles}">
+            <td th:text="${userAndRole[0]}"></td>
+            <td th:text="${userAndRole[1]}"></td>
+            <td th:text="${userAndRole[2]}"></td>
+            <td th:if="${user.name==organizer.name}">
+                <form th:action="@{/room/{idRoom}/users/{idUserInfo}(idRoom=${userAndRole[2]}, idUserInfo=${userAndRole[0]})}" method="post">
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

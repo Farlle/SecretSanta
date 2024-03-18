@@ -1,26 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Логин</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 400px;
+            margin-top: 50px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 20px;
+        }
+        .register-link {
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{navbar :: navbar}"></div>
 
-<div th:if="${param.error}">
-    Неправильное имя пользователя или пароль.
+<div class="container">
+    <div th:if="${param.error}" class="error-message">
+        Неправильное имя пользователя или пароль.
+    </div>
+    <div th:if="${param.logout}" class="error-message">
+        Вы вышли.
+    </div>
+    <div th:if="${errorMessage !=null}" class="error-message">
+        <p th:text="${errorMessage}">Ошибка</p>
+    </div>
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <input type="text" class="form-control" name="username" placeholder="Имя пользователя" required/>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="Пароль" required/>
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+    <div class="register-link">
+        <a class="btn btn-link" th:href="@{/register}">Регистрация</a>
+    </div>
 </div>
-<div th:if="${param.logout}">
-    Вы вышли.
-</div>
-<div th:if="${errorMessage !=null}">
-    <p th:text="${errorMessage}">Ошибка</p>
-</div>
-<form th:action="@{/login}" method="post">
-    <input type="text" name="username" placeholder="username" required/>
-    <input type="password" name="password" placeholder="Password" required/>
-    <input type="submit" value="Login"/>
-</form>
-<a th:href="@{/register}">Регистрация</a>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

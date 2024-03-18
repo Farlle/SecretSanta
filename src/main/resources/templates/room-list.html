@@ -1,42 +1,93 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Список комнат</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top:0px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        table {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .btn-primary {
+            margin-top: 20px;
+        }
+        .disabled {
+            pointer-events: none;
+            cursor: default;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
 <div th:include="navbar :: navbar"></div>
 
+<div class="container">
+    <h1 class="text-center mb-4">Список комнат</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>ID организатора</th>
+            <th>Дата обмена</th>
+            <th>Дата жеребьевки</th>
+            <th>Место проведения</th>
+            <th>Подробнее</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="room : ${roomsDto}">
+            <td th:text="${room.idRoom}">ID</td>
+            <td th:text="${room.idOrganizer}">ID организатора</td>
+            <td th:text="${room.tossDate}">Дата жеребьевки</td>
+            <td th:text="${room.drawDate}">Дата обмена</td>
+            <td th:text="${room.place}">Место проведения</td>
+            <td>
+                <a class="btn btn-primary" href="#" th:href="@{/room/show/{idRoom}(idRoom=${room.idRoom})}">Подробнее</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <ul class="pagination justify-content-center">
+        <li  class="page-item" th:class="${currentPage  == 0}? 'disabled'">
+            <a class="page-link" th:href="@{/room/show(page=${currentPage - 1}, size=${size})}"
+               th:classappend="${currentPage == 0}? 'disabled'">Назад</a>
+        </li>
+        <li  class="page-item" th:each="page : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == currentPage}? 'active'">
+            <a class="page-link" th:href="@{/room/show(page=${page}, size=${size})}" th:text="${page + 1}">Page</a>
+        </li>
+        <li  class="page-item" th:class="${currentPage == totalPages - 1}? 'disabled'">
+            <a class="page-link" th:href="@{/room/show(page=${currentPage + 1}, size=${size})}"
+               th:classappend="${currentPage == totalPages - 1}? 'disabled'">Вперед</a>
+        </li>
+    </ul>
+</div>
 
 
-<h1>Список комнат</h1>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>ID организатора</th>
-        <th>Дата обмена</th>
-        <th>Дата жеребьевки</th>
-        <th>Место проведения</th>
-        <th>Подробнее</th>
-
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="room : ${roomsDto}">
-        <td th:text="${room.idRoom}">ID</td>
-        <td th:text="${room.idOrganizer}">ID организатора</td>
-        <td th:text="${room.tossDate}">Дата жеребьевки</td>
-        <td th:text="${room.drawDate}">Дата обмена</td>
-        <td th:text="${room.place}">Место проведения</td>
-        <td>
-            <a href="#" th:href="@{/room/show/{idRoom}(idRoom=${room.idRoom})}">Подробнее</a>
-        </td>
-        <td>
-
-    </tr>
-    </tbody>
-</table>
-
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+

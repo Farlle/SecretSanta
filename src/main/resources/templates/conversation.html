@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Диалог</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            margin-top: 10px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Conversation</h2>
+    <div th:if="${messages.isEmpty()}">
+        No messages found.
+    </div>
+    <div th:unless="${messages.isEmpty()}">
+        <div class="table-container" id="tableContainer">
+            <table class="table table-striped">
+                <thead class="table-primary">
+                <tr>
+                    <th>Sender</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="message : ${messages}">
+                    <td th:text="${message.sender.name != sender.name} ? 'Anonymous' : ${message.sender.name}">Sender</td>
+                    <td th:text="${message.message}">Message</td>
+                    <td th:text="${message.departureDate}">Departure Date</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>
+        <form th:action="@{/message/sendMessage}" th:object="${messageDto}" method="post">
+            <input type="hidden" th:value="${sender}" name="idSender" />
+            <input type="hidden" th:value="${idRecipient}" name="idRecipient" />
+            <div class="form-group">
+                <textarea class="form-control" th:field="*{message}" placeholder="Введите сообщение..."></textarea>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script>
+    $(document).ready(function() {
+        let tableContainer = document.getElementById('tableContainer');
+        tableContainer.scrollTop = tableContainer.scrollHeight;
+    });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
