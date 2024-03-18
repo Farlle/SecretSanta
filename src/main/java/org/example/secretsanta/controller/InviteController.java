@@ -63,7 +63,7 @@ public class InviteController {
         }
         int idRoom = inviteTelegramWrapper.getRoom().getIdRoom();
         InviteDTO inviteDTO = new InviteDTO();
-        inviteDTO.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(participantUser));
+        inviteDTO.setUserInfoDTO(participantUser);
         inviteDTO.setTelegram(inviteTelegramWrapper.getParticipantTelegram().replaceAll("@", ""));
         inviteServiceImpl.sendInvite(idRoom, inviteDTO);
         return "redirect:/room/show/" + inviteTelegramWrapper.getRoom().getIdRoom();

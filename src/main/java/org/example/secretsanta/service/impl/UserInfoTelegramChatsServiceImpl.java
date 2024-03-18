@@ -1,6 +1,7 @@
 package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
+import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.mapper.UserInfoTelegramChatsMapper;
 import org.example.secretsanta.model.entity.UserInfoTelegramChatsEntity;
 import org.example.secretsanta.repository.UserInfoTelegramChatsRepository;
@@ -22,7 +23,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
     @Override
     public UserInfoTelegramChatsDTO create(UserInfoTelegramChatsDTO dto) {
         UserInfoTelegramChatsEntity userInfoTelegramChats = new UserInfoTelegramChatsEntity();
-        userInfoTelegramChats.setUserInfo(dto.getUserInfoEntity());
+        userInfoTelegramChats.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         userInfoTelegramChats.setIdUserInfoTelegramChat(dto.getIdUserInfoTelegramChat());
         userInfoTelegramChats.setIdChat(dto.getIdChat());
         return UserInfoTelegramChatsMapper
@@ -40,7 +41,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
         UserInfoTelegramChatsEntity userInfoTelegramChats = userInfoTelegramChatsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("userInfoTelegramChats not found with id: " + id));
 
-        userInfoTelegramChats.setUserInfo(dto.getUserInfoEntity());
+        userInfoTelegramChats.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         userInfoTelegramChats.setIdUserInfoTelegramChat(dto.getIdUserInfoTelegramChat());
         userInfoTelegramChats.setIdChat(dto.getIdChat());
         return UserInfoTelegramChatsMapper

@@ -3,6 +3,7 @@ package org.example.secretsanta.service.impl;
 import org.example.secretsanta.dto.InviteDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.mapper.InviteMapper;
+import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.InviteEntity;
 import org.example.secretsanta.model.enums.Status;
 import org.example.secretsanta.repository.InviteRepository;
@@ -39,7 +40,7 @@ public class InviteServiceImpl implements InviteService {
         InviteEntity invite = new InviteEntity();
         invite.setTelegram(dto.getTelegram());
         invite.setStatus(dto.getStatus());
-        invite.setUserInfo(dto.getUserInfoEntity());
+        invite.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         invite.setText(dto.getText());
 
         return InviteMapper.toInviteDTO(inviteRepository.save(invite));
@@ -55,7 +56,7 @@ public class InviteServiceImpl implements InviteService {
         InviteEntity inviteEntity = inviteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Invite not found with id: " + id));
 
-        inviteEntity.setUserInfo(dto.getUserInfoEntity());
+        inviteEntity.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         inviteEntity.setStatus(dto.getStatus());
         inviteEntity.setTelegram(dto.getTelegram());
         inviteEntity.setText(dto.getText());

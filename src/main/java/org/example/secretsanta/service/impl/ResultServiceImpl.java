@@ -43,7 +43,7 @@ public class ResultServiceImpl implements ResultService {
         ResultEntity result = new ResultEntity();
         result.setIdSanta(dto.getIdSanta());
         result.setIdWard(dto.getIdWard());
-        result.setRoom(dto.getRoomEntity());
+        result.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
 
         return ResultMapper.toResultDTO(resultRepository.save(result));
     }
@@ -60,7 +60,7 @@ public class ResultServiceImpl implements ResultService {
 
         result.setIdSanta(dto.getIdSanta());
         result.setIdWard(dto.getIdWard());
-        result.setRoom(dto.getRoomEntity());
+        result.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
 
         return ResultMapper.toResultDTO(resultRepository.save(result));
     }
@@ -73,7 +73,8 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public void performDraw(RoomDTO room) {
 
-            List<UserInfoDTO> users = userInfoServiceImpl.getUsersInfoById(roomServiceImpl.getUserIndoIdInRoom(room.getIdRoom()));
+            List<UserInfoDTO> users = userInfoServiceImpl.getUsersInfoById(roomServiceImpl
+                    .getUserInfoIdInRoom(room.getIdRoom()));
             List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsServiceImpl
                     .getAllIdChatsUsersWhoNeedNotify(room.getIdRoom());
 
@@ -96,7 +97,7 @@ public class ResultServiceImpl implements ResultService {
             ResultDTO result = new ResultDTO();
             result.setIdSanta(santa.getIdUserInfo());
             result.setIdWard(ward.getIdUserInfo());
-            result.setRoomEntity(RoomMapper.toRoomEntity(room));
+            result.setRoomDTO(room);
             resultRepository.save(ResultMapper.toResultEntity(result));
         }
         for (UserInfoTelegramChatsDTO dto: userInfoTelegramChatsDTO ) {
@@ -110,7 +111,7 @@ public class ResultServiceImpl implements ResultService {
         List<ResultDTO> results = ResultMapper.toResultDTOList(resultRepository.findAll());
         return results
                 .stream()
-                .filter(result -> result.getRoomEntity().getIdRoom() == idRoom)
+                .filter(result -> result.getRoomDTO().getIdRoom() == idRoom)
                 .collect(Collectors.toList());
     }
 

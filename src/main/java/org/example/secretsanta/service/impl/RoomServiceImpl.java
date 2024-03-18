@@ -6,6 +6,8 @@ import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.example.secretsanta.repository.RoomRepository;
 import org.example.secretsanta.service.serviceinterface.RoomService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,6 +24,12 @@ public class RoomServiceImpl implements RoomService {
     public RoomServiceImpl(RoomRepository roomRepository, UserInfoServiceImpl userInfoServiceImpl) {
         this.roomRepository = roomRepository;
         this.userInfoServiceImpl = userInfoServiceImpl;
+    }
+
+    @Override
+    public Page<RoomDTO> readAllRoom(Pageable pageable) {
+        return roomRepository.findAll(pageable)
+                .map(RoomMapper::toRoomDTO);
     }
 
     @Override
@@ -101,13 +109,18 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Integer> getUserIndoIdInRoom(int idRoom) {
+    public List<Integer> getUserInfoIdInRoom(int idRoom) {
         return roomRepository.findUserInfoIdInRoom(idRoom);
     }
 
     @Override
     public List<RoomDTO> getByDrawDateLessThanEqual(Date date) {
         return RoomMapper.toRoomDTOList(roomRepository.findByDrawDateLessThanEqual(date));
+    }
+
+    @Override
+    public Page<RoomDTO> getRoomsWhereUserJoin(int idUserInfo, Pageable pageable) {
+        return (roomRepository.findRoomsWhereUserJoinPage(idUserInfo, pageable)).map(RoomMapper::toRoomDTO);
     }
 
 

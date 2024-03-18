@@ -2,6 +2,7 @@ package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.mapper.MessageMapper;
+import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.MessageEntity;
 import org.example.secretsanta.repository.MessageRepository;
 import org.example.secretsanta.service.serviceinterface.MessageService;
@@ -23,7 +24,7 @@ public class MessageServiceImpl implements MessageService {
     public MessageDTO create(MessageDTO dto) {
         MessageEntity message = new MessageEntity();
         message.setMessage(dto.getMessage());
-        message.setSender(dto.getSender());
+        message.setSender(UserInfoMapper.toUserInfoEntity(dto.getSender()));
         message.setDepartureDate(dto.getDepartureDate());
         message.setIdRecipient(dto.getIdRecipient());
 
@@ -41,7 +42,7 @@ public class MessageServiceImpl implements MessageService {
                 .orElseThrow(() -> new EntityNotFoundException("Message not found with id: " + id));
 
         message.setMessage(dto.getMessage());
-        message.setSender(dto.getSender());
+        message.setSender(UserInfoMapper.toUserInfoEntity(dto.getSender()));
         message.setDepartureDate(dto.getDepartureDate());
         message.setIdRecipient(dto.getIdRecipient());
 
@@ -66,6 +67,11 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Integer> getAllUserDialog(int idUserInfo) {
         return messageRepository.findDistinctRecipientsByIdSender(idUserInfo);
+    }
+
+    @Override
+    public List<MessageDTO> getDistinctDialog(int idRecipient) {
+        return MessageMapper.toMessageDTOList(messageRepository.findDistinctDialog(idRecipient));
     }
 
 }

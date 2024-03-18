@@ -1,7 +1,7 @@
 package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.UserRoleWishRoomDTO;
-import org.example.secretsanta.mapper.UserRoleWishRoomMapper;
+import org.example.secretsanta.mapper.*;
 import org.example.secretsanta.model.entity.UserRoleWishRoomEntity;
 import org.example.secretsanta.repository.UserRoleWishRoomRepository;
 import org.example.secretsanta.service.serviceinterface.UserRoleWishRoomService;
@@ -23,10 +23,10 @@ public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
     @Override
     public UserRoleWishRoomDTO create(UserRoleWishRoomDTO dto) {
         UserRoleWishRoomEntity userRoleWishRoom = new UserRoleWishRoomEntity();
-        userRoleWishRoom.setRole(dto.getRoleEntity());
-        userRoleWishRoom.setWish(dto.getWishEntity());
-        userRoleWishRoom.setRoom(dto.getRoomEntity());
-        userRoleWishRoom.setUserInfoEntity(dto.getUserInfoEntity());
+        userRoleWishRoom.setRole(RoleMapper.toRoleEntity(dto.getRoleDTO()));
+        userRoleWishRoom.setWish(WishMapper.toWishEntity(dto.getWishDTO()));
+        userRoleWishRoom.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
+        userRoleWishRoom.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
 
         return UserRoleWishRoomMapper.toUserRoleWishRoomDTO(userRoleWishRoomRepository.save(userRoleWishRoom));
     }
@@ -41,10 +41,10 @@ public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
         UserRoleWishRoomEntity userRoleWishRoom = userRoleWishRoomRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("userRoleWishRoom not found with id: " + id));
 
-        userRoleWishRoom.setRole(dto.getRoleEntity());
-        userRoleWishRoom.setWish(dto.getWishEntity());
-        userRoleWishRoom.setRoom(dto.getRoomEntity());
-        userRoleWishRoom.setUserInfoEntity(dto.getUserInfoEntity());
+        userRoleWishRoom.setRole(RoleMapper.toRoleEntity(dto.getRoleDTO()));
+        userRoleWishRoom.setWish(WishMapper.toWishEntity(dto.getWishDTO()));
+        userRoleWishRoom.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
+        userRoleWishRoom.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
 
         return UserRoleWishRoomMapper.toUserRoleWishRoomDTO(userRoleWishRoomRepository.save(userRoleWishRoom));
     }
