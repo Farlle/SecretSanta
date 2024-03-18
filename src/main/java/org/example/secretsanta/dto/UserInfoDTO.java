@@ -55,7 +55,8 @@ public class UserInfoDTO {
         if (this == o) return true;
         if (!(o instanceof UserInfoDTO)) return false;
         UserInfoDTO that = (UserInfoDTO) o;
-        return idUserInfo == that.idUserInfo && Objects.equals(name, that.name) && Objects.equals(password, that.password) && Objects.equals(telegram, that.telegram);
+        return idUserInfo == that.idUserInfo && Objects.equals(name, that.name) && Objects.equals(password, that.password)
+                && Objects.equals(telegram, that.telegram);
     }
 
     @Override

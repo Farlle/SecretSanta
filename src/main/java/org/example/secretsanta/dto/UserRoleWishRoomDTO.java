@@ -10,17 +10,17 @@ import java.util.Objects;
 public class UserRoleWishRoomDTO {
 
     private int idUserRoleWishRoom;
-    private UserInfoEntity userInfoEntity;
-    private RoleEntity roleEntity;
-    private RoomEntity roomEntity;
-    private WishEntity wishEntity;
+    private UserInfoDTO userInfoDTO;
+    private RoleDTO roleDTO;
+    private RoomDTO roomDTO;
+    private WishDTO wishDTO;
 
-    public UserRoleWishRoomDTO(int idUserRoleWishRoom, UserInfoEntity userInfoEntity, RoleEntity roleEntity, RoomEntity roomEntity, WishEntity wishEntity) {
+    public UserRoleWishRoomDTO(int idUserRoleWishRoom, UserInfoDTO userInfoDTO, RoleDTO roleDTO, RoomDTO roomDTO, WishDTO wishDTO) {
         this.idUserRoleWishRoom = idUserRoleWishRoom;
-        this.userInfoEntity = userInfoEntity;
-        this.roleEntity = roleEntity;
-        this.roomEntity = roomEntity;
-        this.wishEntity = wishEntity;
+        this.userInfoDTO = userInfoDTO;
+        this.roleDTO = roleDTO;
+        this.roomDTO = roomDTO;
+        this.wishDTO = wishDTO;
     }
 
     public UserRoleWishRoomDTO() {
@@ -34,36 +34,36 @@ public class UserRoleWishRoomDTO {
         this.idUserRoleWishRoom = idUserRoleWishRoom;
     }
 
-    public UserInfoEntity getUserInfoEntity() {
-        return userInfoEntity;
+    public UserInfoDTO getUserInfoDTO() {
+        return userInfoDTO;
     }
 
-    public void setUserInfoEntity(UserInfoEntity userInfoEntity) {
-        this.userInfoEntity = userInfoEntity;
+    public void setUserInfoDTO(UserInfoDTO userInfoDTO) {
+        this.userInfoDTO = userInfoDTO;
     }
 
-    public RoleEntity getRoleEntity() {
-        return roleEntity;
+    public RoleDTO getRoleDTO() {
+        return roleDTO;
     }
 
-    public void setRoleEntity(RoleEntity roleEntity) {
-        this.roleEntity = roleEntity;
+    public void setRoleDTO(RoleDTO roleDTO) {
+        this.roleDTO = roleDTO;
     }
 
-    public RoomEntity getRoomEntity() {
-        return roomEntity;
+    public RoomDTO getRoomDTO() {
+        return roomDTO;
     }
 
-    public void setRoomEntity(RoomEntity roomEntity) {
-        this.roomEntity = roomEntity;
+    public void setRoomDTO(RoomDTO roomDTO) {
+        this.roomDTO = roomDTO;
     }
 
-    public WishEntity getWishEntity() {
-        return wishEntity;
+    public WishDTO getWishDTO() {
+        return wishDTO;
     }
 
-    public void setWishEntity(WishEntity wishEntity) {
-        this.wishEntity = wishEntity;
+    public void setWishDTO(WishDTO wishDTO) {
+        this.wishDTO = wishDTO;
     }
 
     @Override
@@ -71,11 +71,11 @@ public class UserRoleWishRoomDTO {
         if (this == o) return true;
         if (!(o instanceof UserRoleWishRoomDTO)) return false;
         UserRoleWishRoomDTO that = (UserRoleWishRoomDTO) o;
-        return idUserRoleWishRoom == that.idUserRoleWishRoom && Objects.equals(userInfoEntity, that.userInfoEntity) && Objects.equals(roleEntity, that.roleEntity) && Objects.equals(roomEntity, that.roomEntity) && Objects.equals(wishEntity, that.wishEntity);
+        return idUserRoleWishRoom == that.idUserRoleWishRoom && Objects.equals(userInfoDTO, that.userInfoDTO) && Objects.equals(roleDTO, that.roleDTO) && Objects.equals(roomDTO, that.roomDTO) && Objects.equals(wishDTO, that.wishDTO);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUserRoleWishRoom, userInfoEntity, roleEntity, roomEntity, wishEntity);
+        return Objects.hash(idUserRoleWishRoom, userInfoDTO, roleDTO, roomDTO, wishDTO);
     }
 }

@@ -8,17 +8,28 @@ import java.util.Objects;
 public class InviteDTO {
 
     private int idInvite;
-    private UserInfoEntity userInfoEntity;
+    private UserInfoDTO userInfoDTO;
     private String telegram;
     private Status status;
     private String text;
 
-    public UserInfoEntity getUserInfoEntity() {
-        return userInfoEntity;
+    public InviteDTO() {
     }
 
-    public void setUserInfoEntity(UserInfoEntity userInfoEntity) {
-        this.userInfoEntity = userInfoEntity;
+    public InviteDTO(int idInvite, UserInfoDTO userInfoDTO, String telegram, Status status, String text) {
+        this.idInvite = idInvite;
+        this.userInfoDTO = userInfoDTO;
+        this.telegram = telegram;
+        this.status = status;
+        this.text = text;
+    }
+
+    public UserInfoDTO getUserInfoDTO() {
+        return userInfoDTO;
+    }
+
+    public void setUserInfoDTO(UserInfoDTO userInfoDTO) {
+        this.userInfoDTO = userInfoDTO;
     }
 
     public String getTelegram() {
@@ -56,13 +67,14 @@ public class InviteDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof InviteDTO)) return false;
         InviteDTO inviteDTO = (InviteDTO) o;
-        return idInvite == inviteDTO.idInvite && Objects.equals(userInfoEntity, inviteDTO.userInfoEntity) && Objects.equals(telegram, inviteDTO.telegram) && status == inviteDTO.status && Objects.equals(text, inviteDTO.text);
+        return idInvite == inviteDTO.idInvite && Objects.equals(userInfoDTO, inviteDTO.userInfoDTO)
+                && Objects.equals(telegram, inviteDTO.telegram) && status == inviteDTO.status && Objects.equals(text, inviteDTO.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idInvite, userInfoEntity, telegram, status, text);
+        return Objects.hash(idInvite, userInfoDTO, telegram, status, text);
     }
 }

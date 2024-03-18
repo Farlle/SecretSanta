@@ -21,15 +21,15 @@ public class RoomDTO {
         this.place = place;
     }
 
+    public RoomDTO() {
+    }
+
     public int getIdRoom() {
         return idRoom;
     }
 
     public void setIdRoom(int idRoom) {
         this.idRoom = idRoom;
-    }
-
-    public RoomDTO() {
     }
 
     public String getName() {

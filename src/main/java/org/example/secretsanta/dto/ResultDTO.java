@@ -9,7 +9,17 @@ public class ResultDTO {
     private int idResult;
     private int idSanta;
     private int idWard;
-    private RoomEntity roomEntity;
+    private RoomDTO roomDTO;
+
+    public ResultDTO() {
+    }
+
+    public ResultDTO(int idResult, int idSanta, int idWard, RoomDTO roomDTO) {
+        this.idResult = idResult;
+        this.idSanta = idSanta;
+        this.idWard = idWard;
+        this.roomDTO = roomDTO;
+    }
 
     public int getIdResult() {
         return idResult;
@@ -35,12 +45,12 @@ public class ResultDTO {
         this.idWard = idWard;
     }
 
-    public RoomEntity getRoomEntity() {
-        return roomEntity;
+    public RoomDTO getRoomDTO() {
+        return roomDTO;
     }
 
-    public void setRoomEntity(RoomEntity roomEntity) {
-        this.roomEntity = roomEntity;
+    public void setRoomDTO(RoomDTO roomDTO) {
+        this.roomDTO = roomDTO;
     }
 
     @Override
@@ -48,11 +58,12 @@ public class ResultDTO {
         if (this == o) return true;
         if (!(o instanceof ResultDTO)) return false;
         ResultDTO resultDTO = (ResultDTO) o;
-        return idResult == resultDTO.idResult && idSanta == resultDTO.idSanta && idWard == resultDTO.idWard && Objects.equals(roomEntity, resultDTO.roomEntity);
+        return idResult == resultDTO.idResult && idSanta == resultDTO.idSanta && idWard == resultDTO.idWard
+                && Objects.equals(roomDTO, resultDTO.roomDTO);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idResult, idSanta, idWard, roomEntity);
+        return Objects.hash(idResult, idSanta, idWard, roomDTO);
     }
 }

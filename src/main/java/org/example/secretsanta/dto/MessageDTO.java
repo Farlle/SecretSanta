@@ -5,10 +5,10 @@ import org.example.secretsanta.model.entity.UserInfoEntity;
 import java.sql.Date;
 import java.util.Objects;
 
-public class MessageDTO {
+public class MessageDTO implements Comparable<MessageDTO> {
 
     private int idMessage;
-    private UserInfoEntity sender;
+    private UserInfoDTO sender;
     private int idRecipient;
     private String message;
     private Date departureDate;
@@ -21,11 +21,11 @@ public class MessageDTO {
         this.idMessage = idMessage;
     }
 
-    public UserInfoEntity getSender() {
+    public UserInfoDTO getSender() {
         return sender;
     }
 
-    public void setSender(UserInfoEntity sender) {
+    public void setSender(UserInfoDTO sender) {
         this.sender = sender;
     }
 
@@ -66,4 +66,8 @@ public class MessageDTO {
         return Objects.hash(idMessage, sender, idRecipient, message, departureDate);
     }
 
+    @Override
+    public int compareTo(MessageDTO o) {
+        return Integer.compare(this.idMessage, o.idMessage);
+    }
 }

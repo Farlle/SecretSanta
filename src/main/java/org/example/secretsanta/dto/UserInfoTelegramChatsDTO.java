@@ -2,11 +2,13 @@ package org.example.secretsanta.dto;
 
 import org.example.secretsanta.model.entity.UserInfoEntity;
 
+import java.util.Objects;
+
 public class UserInfoTelegramChatsDTO {
 
     private int idUserInfoTelegramChat;
     private Long idChat;
-    private UserInfoEntity userInfoEntity;
+    private UserInfoDTO userInfoDTO;
 
     public int getIdUserInfoTelegramChat() {
         return idUserInfoTelegramChat;
@@ -24,12 +26,25 @@ public class UserInfoTelegramChatsDTO {
         this.idChat = idChat;
     }
 
-    public UserInfoEntity getUserInfoEntity() {
-        return userInfoEntity;
+    public UserInfoDTO getUserInfoDTO() {
+        return userInfoDTO;
     }
 
-    public void setUserInfoEntity(UserInfoEntity userInfoEntity) {
-        this.userInfoEntity = userInfoEntity;
+    public void setUserInfoDTO(UserInfoDTO userInfoDTO) {
+        this.userInfoDTO = userInfoDTO;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserInfoTelegramChatsDTO)) return false;
+        UserInfoTelegramChatsDTO that = (UserInfoTelegramChatsDTO) o;
+        return idUserInfoTelegramChat == that.idUserInfoTelegramChat && Objects.equals(idChat, that.idChat)
+                && Objects.equals(userInfoDTO, that.userInfoDTO);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUserInfoTelegramChat, idChat, userInfoDTO);
+    }
 }
