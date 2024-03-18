@@ -1,6 +1,7 @@
 package org.example.secretsanta.model.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "result")
@@ -49,5 +50,19 @@ public class ResultEntity {
 
     public void setRoom(RoomEntity room) {
         this.room = room;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ResultEntity)) return false;
+        ResultEntity result = (ResultEntity) o;
+        return idResult == result.idResult && idSanta == result.idSanta && idWard == result.idWard
+                && Objects.equals(room, result.room);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idResult, idSanta, idWard, room);
     }
 }

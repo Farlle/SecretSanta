@@ -1,6 +1,7 @@
 package org.example.secretsanta.model.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_info_telegram_chats")
@@ -50,5 +51,19 @@ public class UserInfoTelegramChatsEntity {
 
     public void setUserInfo(UserInfoEntity userInfo) {
         this.userInfo = userInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserInfoTelegramChatsEntity)) return false;
+        UserInfoTelegramChatsEntity that = (UserInfoTelegramChatsEntity) o;
+        return idUserInfoTelegramChat == that.idUserInfoTelegramChat && Objects.equals(idChat, that.idChat)
+                && Objects.equals(userInfo, that.userInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUserInfoTelegramChat, idChat, userInfo);
     }
 }

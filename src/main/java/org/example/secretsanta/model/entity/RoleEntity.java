@@ -2,6 +2,7 @@ package org.example.secretsanta.model.entity;
 
 import org.example.secretsanta.model.enums.Role;
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "role")
@@ -40,5 +41,16 @@ public class RoleEntity {
         this.role = role;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoleEntity)) return false;
+        RoleEntity that = (RoleEntity) o;
+        return idRole == that.idRole && role == that.role;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(idRole, role);
+    }
 }

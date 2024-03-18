@@ -2,6 +2,7 @@ package org.example.secretsanta.model.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "room")
@@ -71,4 +72,18 @@ public class RoomEntity {
         this.place = place;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoomEntity)) return false;
+        RoomEntity room = (RoomEntity) o;
+        return idRoom == room.idRoom && idOrganizer == room.idOrganizer && Objects.equals(name, room.name)
+                && Objects.equals(tossDate, room.tossDate)
+                && Objects.equals(drawDate, room.drawDate) && Objects.equals(place, room.place);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idRoom, name, idOrganizer, tossDate, drawDate, place);
+    }
 }

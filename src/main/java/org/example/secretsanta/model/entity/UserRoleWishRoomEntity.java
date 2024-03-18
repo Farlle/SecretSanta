@@ -1,6 +1,7 @@
 package org.example.secretsanta.model.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_role_wish_room")
@@ -64,5 +65,19 @@ public class UserRoleWishRoomEntity {
 
     public void setWish(WishEntity wish) {
         this.wish = wish;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserRoleWishRoomEntity)) return false;
+        UserRoleWishRoomEntity that = (UserRoleWishRoomEntity) o;
+        return idUserRoleWishRoom == that.idUserRoleWishRoom && Objects.equals(userInfoEntity, that.userInfoEntity)
+                && Objects.equals(role, that.role) && Objects.equals(room, that.room) && Objects.equals(wish, that.wish);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idUserRoleWishRoom, userInfoEntity, role, room, wish);
     }
 }

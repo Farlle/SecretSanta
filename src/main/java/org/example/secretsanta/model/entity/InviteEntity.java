@@ -3,6 +3,7 @@ package org.example.secretsanta.model.entity;
 import org.example.secretsanta.model.enums.Status;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "invite")
@@ -24,6 +25,17 @@ public class InviteEntity {
 
     @Column(name = "text", nullable = false)
     private String text;
+
+    public InviteEntity() {
+    }
+
+    public InviteEntity(int idInvite, UserInfoEntity userInfo, String telegram, Status status, String text) {
+        this.idInvite = idInvite;
+        this.userInfo = userInfo;
+        this.telegram = telegram;
+        this.status = status;
+        this.text = text;
+    }
 
     public int getIdInvite() {
         return idInvite;
@@ -63,5 +75,19 @@ public class InviteEntity {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InviteEntity)) return false;
+        InviteEntity that = (InviteEntity) o;
+        return idInvite == that.idInvite && Objects.equals(userInfo, that.userInfo)
+                && Objects.equals(telegram, that.telegram) && status == that.status && Objects.equals(text, that.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idInvite, userInfo, telegram, status, text);
     }
 }

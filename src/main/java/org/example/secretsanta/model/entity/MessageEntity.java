@@ -2,6 +2,8 @@ package org.example.secretsanta.model.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Objects;
+
 @Entity
 @Table(name = "message")
 public class MessageEntity {
@@ -58,5 +60,19 @@ public class MessageEntity {
 
     public void setDepartureDate(Date departureDate) {
         this.departureDate = departureDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MessageEntity)) return false;
+        MessageEntity that = (MessageEntity) o;
+        return idMessage == that.idMessage && idRecipient == that.idRecipient && Objects.equals(sender, that.sender)
+                && Objects.equals(message, that.message) && Objects.equals(departureDate, that.departureDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idMessage, sender, idRecipient, message, departureDate);
     }
 }
