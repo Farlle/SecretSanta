@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .snowman {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre;
+            margin: 50px;
+            margin-left: -55px;
+        }
+    </style>
+</head>
+<div th:include="navbar :: navbar"></div>
+
+<body>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-12 text-center">
+            <a href="/room/create" class="btn btn-primary" role="button">Создать комнату</a>
+        </div>
+    </div>
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-auto snowman">
+            /\       /\       /\   _===_  _===_  _===_  _===_  _===_     /\       /\       /\
+           /  \     /  \     /  \  (.,.)  (.,.)  (.,.)  (.,.)  (.,.)    /  \     /  \     /  \
+          /____\   /____\   /____\ ( : )  ( : )  ( : )  ( : )  ( : )   /____\   /____\   /____\
+            ||       ||       ||   ( : )  ( : )  ( : )  ( : )  ( : )     ||       ||       ||
+        </div>
+    </div>
+</div>
+</body>
+</html>

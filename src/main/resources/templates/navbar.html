@@ -1,33 +1,25 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Navbar</title>
-    <style>
-        .navbar {
-            overflow: hidden;
-            background-color: #333;
-        }
-        .navbar a {
-            float: left;
-            display: block;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-    </style>
-</head>
-<body>
+<!-- navbar.html -->
 <div th:fragment="navbar">
-    <div class="navbar">
-        <a th:href="@{/room/show/participant/}">Мои Комнаты</a>
-        <a th:href="@{/room/create/}">Создать комнату</a>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Тайный санта</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/room/show/participant/}">Мои Комнаты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/room/create/}">Создать комнату</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/message/dialogs/}">Сообщения</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+                <button class="btn btn-danger my-2 my-sm-0" type="submit">Выйти</button>
+            </form>
+        </div>
+    </nav>
 </div>
-</body>
-</html>
