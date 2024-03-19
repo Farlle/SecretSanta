@@ -1,23 +1,31 @@
-<!-- navbar.html -->
-<div th:fragment="navbar">
+<div th:fragment="navbar" xmlns:sec="http://www.w3.org/1999/xhtml" >
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="/home">Тайный санта</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav" >
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-white" th:href="@{/room/show/participant/}">Мои Комнаты</a>
+                <li class="nav-item" >
+                    <a class="nav-link text-white" sec:authorize="isAuthenticated()" th:href="@{/room/show/participant/}">Мои Комнаты</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" th:href="@{/room/create/}">Создать комнату</a>
+                    <a class="nav-link text-white" sec:authorize="isAuthenticated()" th:href="@{/room/create/}">Создать комнату</a>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link text-white" sec:authorize="isAuthenticated()" th:href="@{/message/dialogs/}">Сообщения</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" th:href="@{/message/dialogs/}">Сообщения</a>
+                    <span class="nav-link text-white" sec:authorize="!isAuthenticated()">Добро пожаловать, гость!</span>
+                </li>
+                <li class="nav-item" >
+                    <a class="nav-link text-white" sec:authorize="!isAuthenticated()" th:href="@{/login}">Войти</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" sec:authorize="!isAuthenticated()" th:href="@{/register}">Зарегистрироваться</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0" th:action="@{/logout}" method="post">
+            <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()"th:action="@{/logout}" method="post">
                 <button class="btn btn-danger my-2 my-sm-0" type="submit">Выйти</button>
             </form>
         </div>
