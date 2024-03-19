@@ -26,7 +26,7 @@
             <th>Имя</th>
             <th>Роль</th>
             <th>Комната</th>
-            <th>Действие</th>
+            <th th:if="${user.name==organizer.name}">Действие</th>
         </tr>
         </thead>
         <tbody>
