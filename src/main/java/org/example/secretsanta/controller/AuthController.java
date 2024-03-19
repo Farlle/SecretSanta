@@ -42,4 +42,9 @@ public class AuthController {
         return "register-telegram";
     }
 
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
+
 }
