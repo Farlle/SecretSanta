@@ -70,14 +70,14 @@
 <div>
     <ul class="pagination justify-content-center">
         <li  class="page-item" th:class="${currentPage  == 0}? 'disabled'">
-            <a class="page-link" th:href="@{/room/show(page=${currentPage - 1}, size=${size})}"
+            <a class="page-link" th:href="@{/room/show/participant(page=${currentPage - 1}, size=${size})}"
                th:classappend="${currentPage == 0}? 'disabled'">Назад</a>
         </li>
         <li  class="page-item" th:each="page : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == currentPage}? 'active'">
-            <a class="page-link" th:href="@{/room/show(page=${page}, size=${size})}" th:text="${page + 1}">Page</a>
+            <a class="page-link" th:href="@{/room/show/participant(page=${page}, size=${size})}" th:text="${page + 1}">Page</a>
         </li>
         <li  class="page-item" th:class="${currentPage == totalPages - 1}? 'disabled'">
-            <a class="page-link" th:href="@{/room/show(page=${currentPage + 1}, size=${size})}"
+            <a class="page-link" th:href="@{/room/show/participant(page=${currentPage + 1}, size=${size})}"
                th:classappend="${currentPage == totalPages - 1}? 'disabled'">Вперед</a>
         </li>
     </ul>
