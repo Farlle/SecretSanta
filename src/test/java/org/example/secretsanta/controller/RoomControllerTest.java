@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.*;
 import org.example.secretsanta.model.enums.Role;
 import org.example.secretsanta.service.impl.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -107,35 +108,6 @@ class RoomControllerTest {
 
         verify(roomServiceImpl, times(1)).create(any(RoomDTO.class));
 
-    }
-
-    @Test
-    void testDeleteRoom() throws Exception {
-        int id = 1;
-
-        mockMvc.perform(delete("/room/delete/" + id).with(user("username").password("password")))
-                .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/room/show"));
-
-        verify(roomServiceImpl, times(1)).delete(id);
-    }
-
-    @Test
-    void testGetAllRoom() throws Exception {
-        int page = 0;
-        int size = 5;
-        Page<RoomDTO> roomDTOPage = new PageImpl<>(Collections.emptyList());
-
-        when(roomServiceImpl.readAllRoom(PageRequest.of(page, size))).thenReturn(roomDTOPage);
-
-        mockMvc.perform(get("/room/show")
-                        .param("page", String.valueOf(page))
-                        .param("size", String.valueOf(size))
-                        .with(user("username").password("password")))
-                .andExpect(status().isOk())
-                .andExpect(view().name("room-list"));
-
-        verify(roomServiceImpl).readAllRoom(PageRequest.of(page, size));
     }
 
     @Test

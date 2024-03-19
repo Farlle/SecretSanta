@@ -5,17 +5,15 @@ import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.InviteMapper;
 import org.example.secretsanta.model.entity.InviteEntity;
+import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.enums.Status;
 import org.example.secretsanta.repository.InviteRepository;
 import org.example.secretsanta.repository.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -27,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@Transactional
-@Rollback
+
 class InviteServiceImplTest {
 
     @Mock
@@ -116,17 +113,12 @@ class InviteServiceImplTest {
         RoomDTO roomDTO = new RoomDTO(1, "room", 1, new Date(864000L), new Date(764000L), "asd");
         String telegram = "test_user";
         String generatedText = "Тебя пригласили в комнату room присоединяйся по ссылке http://localhost:8080/room/1/join";
-        InviteDTO inviteDTO = new InviteDTO();
-        inviteDTO.setTelegram(telegram);
-        inviteDTO.setIdInvite(1);
-        inviteDTO.setStatus(Status.SENT);
-        inviteDTO.setText(generatedText);
-        inviteDTO.setUserInfoDTO(new UserInfoDTO());
-
+        InviteDTO inviteDTO = new InviteDTO(1, new UserInfoDTO(), "qwe", Status.SENT, generatedText);
 
         when(userInfoTelegramChatsService.getIdChatByTelegramName(telegram)).thenReturn(123L);
         when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
         when(inviteService.create(inviteDTO)).thenReturn(inviteDTO);
+        when(inviteRepository.save(any(InviteEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         inviteService.sendInvite(idRoom, inviteDTO);
 
@@ -161,37 +153,30 @@ class InviteServiceImplTest {
     }
 
     @Test
-    @Disabled
     public void testUserAcceptInvite() {
-        // Arrange
         String telegram = "qwe";
         int idRoom = 1;
         RoomDTO roomDTO = new RoomDTO(1, "room", 1,
                 new Date(864000L), new Date(764000L), "asd");
         String generatedTextInvite = "Тебя пригласили в комнату room присоединяйся по ссылке http://localhost:8080/room/1/join";
-        InviteDTO inviteDTO1 = new InviteDTO();
-        inviteDTO1.setIdInvite(1);
-        inviteDTO1.setStatus(Status.SENT);
-        InviteDTO inviteDTO2 = new InviteDTO();
-        inviteDTO2.setIdInvite(2);
-        inviteDTO2.setStatus(Status.SENT);
-        List<InviteDTO> inviteDTOs = Arrays.asList(inviteDTO1, inviteDTO2);
-        InviteDTO inviteDTOUpdate = inviteDTO1;
-        inviteDTOUpdate.setStatus(Status.ACCEPTED);
+        InviteEntity inviteEntity1 = new InviteEntity();
+        inviteEntity1.setIdInvite(1);
+        inviteEntity1.setStatus(Status.SENT);
+        InviteEntity inviteEntity2 = new InviteEntity();
+        inviteEntity2.setIdInvite(2);
+        inviteEntity2.setStatus(Status.SENT);
+        List<InviteEntity> inviteEntities = Arrays.asList(inviteEntity1, inviteEntity2);
 
-
-        when(inviteRepository.getAllInviteUsersInRoom(telegram, generatedTextInvite)).thenReturn(InviteMapper
-                .toInviteEntityList(inviteDTOs));
-        when(inviteRepository.findById(1)).thenReturn(Optional.of(InviteMapper.toInviteEntity(inviteDTO1)));
-        when(inviteRepository.findById(2)).thenReturn(Optional.of(InviteMapper.toInviteEntity(inviteDTO2)));
+        when(inviteRepository.getAllInviteUsersInRoom(telegram, generatedTextInvite)).thenReturn(inviteEntities);
+        when(inviteRepository.findById(1)).thenReturn(Optional.of(inviteEntity1));
+        when(inviteRepository.findById(2)).thenReturn(Optional.of(inviteEntity2));
         when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
-        when(inviteService.update(1, inviteDTO1)).thenReturn(inviteDTOUpdate);
+
         inviteService.UserAcceptInvite(telegram, idRoom);
 
-        for (InviteDTO inviteDTO : inviteDTOs) {
-            assertEquals(Status.ACCEPTED, inviteDTO.getStatus());
-            verify(inviteService).update(inviteDTO.getIdInvite(), inviteDTO);
-        }
+        verify(inviteRepository, times(2)).save(any(InviteEntity.class));
+        assertEquals(Status.ACCEPTED, inviteEntity1.getStatus());
+        assertEquals(Status.ACCEPTED, inviteEntity2.getStatus());
     }
 
 }
