@@ -25,11 +25,14 @@ public class ResultServiceImpl implements ResultService {
     private final UserInfoServiceImpl userInfoServiceImpl;
     private final UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
     private final TelegramServiceImpl telegramServiceImpl;
-    private final String MESSAGE_DRAW = "Была проведена жеребьевка, ваш подопечный: ";
+    private final String MESSAGE_DRAW = "Была проведена жеребьевка, смотри результат по сслыке ";
+    private final String HOST = " http://localhost:8080/result/";
+
     private String RECIPIENT;
     private String WISH;
 
     private final RoomServiceImpl roomServiceImpl;
+
     public ResultServiceImpl(ResultRepository resultRepository, UserInfoServiceImpl userInfoServiceImpl, UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl, TelegramServiceImpl telegramServiceImpl, RoomServiceImpl roomServiceImpl) {
         this.resultRepository = resultRepository;
         this.userInfoServiceImpl = userInfoServiceImpl;
@@ -73,21 +76,21 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public void performDraw(RoomDTO room) {
 
-            List<UserInfoDTO> users = userInfoServiceImpl.getUsersInfoById(roomServiceImpl
-                    .getUserInfoIdInRoom(room.getIdRoom()));
-            List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsServiceImpl
-                    .getAllIdChatsUsersWhoNeedNotify(room.getIdRoom());
+        List<UserInfoDTO> users = userInfoServiceImpl.getUsersInfoById(roomServiceImpl
+                .getUserInfoIdInRoom(room.getIdRoom()));
+        List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsServiceImpl
+                .getAllIdChatsUsersWhoNeedNotify(room.getIdRoom());
 
-            List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
-                    resultRepository.findByRoomIdRoom(room.getIdRoom()));
+        List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
+                resultRepository.findByRoomIdRoom(room.getIdRoom()));
 
-            if (!existingResults.isEmpty()) {
-                throw new DrawingAlreadyPerformedException("Drawing has already been performed in this room");
-            }
+        if (!existingResults.isEmpty()) {
+            throw new DrawingAlreadyPerformedException("Drawing has already been performed in this room");
+        }
 
-            if (users.size() < 2) {
-                throw new NotEnoughUsersException("Not enough users for drawing");
-            }
+        if (users.size() < 2) {
+            throw new NotEnoughUsersException("Not enough users for drawing");
+        }
 
         Collections.shuffle(users);
 
@@ -100,8 +103,8 @@ public class ResultServiceImpl implements ResultService {
             result.setRoomDTO(room);
             resultRepository.save(ResultMapper.toResultEntity(result));
         }
-        for (UserInfoTelegramChatsDTO dto: userInfoTelegramChatsDTO ) {
-            telegramServiceImpl.sendMessage(dto.getIdChat(), MESSAGE_DRAW);
+        for (UserInfoTelegramChatsDTO dto : userInfoTelegramChatsDTO) {
+            telegramServiceImpl.sendMessage(dto.getIdChat(), generatedMessageDraw(room.getIdRoom()));
         }
 
     }
@@ -113,6 +116,10 @@ public class ResultServiceImpl implements ResultService {
                 .stream()
                 .filter(result -> result.getRoomDTO().getIdRoom() == idRoom)
                 .collect(Collectors.toList());
+    }
+
+    public String generatedMessageDraw(int idRoom) {
+        return MESSAGE_DRAW + HOST + "show/" + idRoom;
     }
 
 }

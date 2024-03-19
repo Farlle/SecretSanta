@@ -123,6 +123,8 @@ class ResultServiceImplTest {
         verify(userInfoTelegramChatsServiceImpl, times(1)).getAllIdChatsUsersWhoNeedNotify(anyInt());
         verify(resultRepository, times(users.size())).save(any(ResultEntity.class));
         verify(telegramServiceImpl, times(userInfoTelegramChatsDTO.size())).sendMessage(anyLong(), anyString());
+        assertEquals("Была проведена жеребьевка, смотри результат по сслыке " +
+                " http://localhost:8080/result/show/1", resultService.generatedMessageDraw(1));
     }
 
     @Test
