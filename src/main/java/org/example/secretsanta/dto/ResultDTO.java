@@ -1,7 +1,5 @@
 package org.example.secretsanta.dto;
 
-import org.example.secretsanta.model.entity.RoomEntity;
-
 import java.util.Objects;
 
 public class ResultDTO {

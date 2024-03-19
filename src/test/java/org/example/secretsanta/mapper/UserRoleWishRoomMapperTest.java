@@ -3,12 +3,12 @@ package org.example.secretsanta.mapper;
 import org.example.secretsanta.dto.*;
 import org.example.secretsanta.model.entity.*;
 import org.junit.jupiter.api.Test;
-import org.xmlunit.util.Mapper;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserRoleWishRoomMapperTest {
 

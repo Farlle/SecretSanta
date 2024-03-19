@@ -1,6 +1,7 @@
 package org.example.secretsanta.model.entity;
 
 import org.example.secretsanta.model.enums.Role;
+
 import javax.persistence.*;
 import java.util.Objects;
 

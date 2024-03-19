@@ -2,7 +2,6 @@ package org.example.secretsanta.telegram;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
-import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.impl.UserInfoTelegramChatsServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
@@ -35,10 +34,10 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
 
             Long idChat = update.getMessage().getChatId();
-            if(userInfoTelegramChatsServiceImpl.getRegisterUserByIdChats(idChat)==null) {
+            if (userInfoTelegramChatsServiceImpl.getRegisterUserByIdChats(idChat) == null) {
                 String telegram = update.getMessage().getFrom().getUserName();
                 UserInfoDTO currentUser = userInfoServiceImpl.getUsersInfoByTelegram(telegram);
-                if(currentUser==null){
+                if (currentUser == null) {
                     sendMessage(idChat, "Не зарегистрирован");
                     throw new IllegalArgumentException("не зарегистрирован");
                 }

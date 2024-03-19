@@ -84,7 +84,7 @@ public class InviteServiceImpl implements InviteService {
     public boolean checkInvite(String telegram, int idRoom) {
         List<InviteDTO> allUsersInvite = getAllUsersInvite(telegram);
         for (InviteDTO inviteDTO : allUsersInvite) {
-            if(idRoom == Integer.parseInt(UrlUtils.extractRoomNumberFromUrl(inviteDTO.getText()))){
+            if (idRoom == Integer.parseInt(UrlUtils.extractRoomNumberFromUrl(inviteDTO.getText()))) {
                 return true;
             }
         }
@@ -98,12 +98,12 @@ public class InviteServiceImpl implements InviteService {
 
     @Override
     public void UserAcceptInvite(String telegram, int idRoom) {
-      List<InviteDTO> inviteDTOs = InviteMapper.toInviteDTOList(
-              inviteRepository.getAllInviteUsersInRoom(telegram, generatedTextInvite(idRoom)));
-      for(InviteDTO inviteDTO: inviteDTOs) {
-          inviteDTO.setStatus(Status.ACCEPTED);
-          update(inviteDTO.getIdInvite(),inviteDTO);
-      }
+        List<InviteDTO> inviteDTOs = InviteMapper.toInviteDTOList(
+                inviteRepository.getAllInviteUsersInRoom(telegram, generatedTextInvite(idRoom)));
+        for (InviteDTO inviteDTO : inviteDTOs) {
+            inviteDTO.setStatus(Status.ACCEPTED);
+            update(inviteDTO.getIdInvite(), inviteDTO);
+        }
     }
 
     String generatedTextInvite(int idRoom) {

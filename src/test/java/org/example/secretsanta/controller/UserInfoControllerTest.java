@@ -18,6 +18,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @Profile("dev")
 @WebMvcTest(UserInfoController.class)
 class UserInfoControllerTest {
@@ -70,7 +71,7 @@ class UserInfoControllerTest {
         UserInfoDTO dtoNew = new UserInfoDTO(id, "test2", "password2", "telegram2");
 
 
-        when(userInfoServiceImpl.update(id,dto)).thenReturn(dtoNew);
+        when(userInfoServiceImpl.update(id, dto)).thenReturn(dtoNew);
 
         mockMvc.perform(post("/userInfo/update/{id}", id).with(user("username").password("password"))
                         .param("name", dtoNew.getName())

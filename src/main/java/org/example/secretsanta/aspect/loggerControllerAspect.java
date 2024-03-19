@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class loggerControllerAspect {
 
-        private static final Logger logger = Logger.getLogger(loggerControllerAspect.class.getName());
+    private static final Logger logger = Logger.getLogger(loggerControllerAspect.class.getName());
 
-        @After("execution(* org.example.secretsanta.controller.*.*(..))")
-        public void logAfter(JoinPoint joinPoint) {
-            logger.info("Method executed in Controller " + joinPoint.getSignature().getName());
-        }
+    @After("execution(* org.example.secretsanta.controller.*.*(..))")
+    public void logAfter(JoinPoint joinPoint) {
+        logger.info("Method executed in Controller " + joinPoint.getSignature().getName());
+    }
 
 }

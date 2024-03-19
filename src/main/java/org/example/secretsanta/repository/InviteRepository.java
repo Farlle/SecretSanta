@@ -1,7 +1,6 @@
 package org.example.secretsanta.repository;
 
 import org.example.secretsanta.model.entity.InviteEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

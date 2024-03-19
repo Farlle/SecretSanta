@@ -1,6 +1,5 @@
 package org.example.secretsanta.dto;
 
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.enums.Status;
 
 import java.util.Objects;

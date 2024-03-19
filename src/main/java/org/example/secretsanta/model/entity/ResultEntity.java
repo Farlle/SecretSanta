@@ -9,7 +9,7 @@ public class ResultEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="id_result")
+    @Column(name = "id_result")
     private int idResult;
     @Column(name = "id_santa", nullable = false)
     private int idSanta;

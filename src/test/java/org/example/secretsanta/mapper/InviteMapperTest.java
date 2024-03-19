@@ -46,7 +46,7 @@ class InviteMapperTest {
         assertEquals(inviteDTO.getIdInvite(), inviteEntity.getIdInvite());
         assertEquals(inviteDTO.getStatus(), inviteEntity.getStatus());
         assertEquals(inviteDTO.getTelegram(), inviteEntity.getTelegram());
-        assertEquals(inviteDTO.getUserInfoDTO(),UserInfoMapper.toUserInfoDTO(inviteEntity.getUserInfo()));
+        assertEquals(inviteDTO.getUserInfoDTO(), UserInfoMapper.toUserInfoDTO(inviteEntity.getUserInfo()));
         assertEquals(inviteDTO.getText(), inviteEntity.getText());
     }
 

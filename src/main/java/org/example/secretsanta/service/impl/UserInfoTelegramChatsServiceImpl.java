@@ -36,7 +36,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
     }
 
     @Override
-    public UserInfoTelegramChatsDTO update(int id,UserInfoTelegramChatsDTO dto) {
+    public UserInfoTelegramChatsDTO update(int id, UserInfoTelegramChatsDTO dto) {
 
         UserInfoTelegramChatsEntity userInfoTelegramChats = userInfoTelegramChatsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("userInfoTelegramChats not found with id: " + id));
@@ -62,8 +62,8 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
 
     @Override
     public List<UserInfoTelegramChatsDTO> getAllIdChatsUsersWhoNeedNotify(int idRoom) {
-       return UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(
-               userInfoTelegramChatsRepository.findAllUserIdChatsWhoNeedNotify(idRoom));
+        return UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(
+                userInfoTelegramChatsRepository.findAllUserIdChatsWhoNeedNotify(idRoom));
     }
 
     @Override

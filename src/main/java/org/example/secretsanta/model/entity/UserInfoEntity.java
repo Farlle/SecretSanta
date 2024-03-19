@@ -4,18 +4,18 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name="user_info")
+@Table(name = "user_info")
 public class UserInfoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user_info")
     private int idUserInfo;
-    @Column(name ="name", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name ="password", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
-    @Column(name ="telegram", nullable = false)
+    @Column(name = "telegram", nullable = false)
     private String telegram;
 
     public UserInfoEntity() {
@@ -31,6 +31,7 @@ public class UserInfoEntity {
     public int getId() {
         return idUserInfo;
     }
+
     public void setId(int id) {
         this.idUserInfo = id;
     }

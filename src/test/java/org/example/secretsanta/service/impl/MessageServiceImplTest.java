@@ -1,11 +1,8 @@
 package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.MessageDTO;
-import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.MessageMapper;
-import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.MessageEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.MessageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

@@ -17,12 +17,12 @@ public interface UserInfoTelegramChatsRepository extends JpaRepository<UserInfoT
             "join UserRoleWishRoomEntity userRoom  " +
             "on userInfo.idUserInfo = userRoom.userInfoEntity.idUserInfo " +
             "join RoomEntity room on room.idRoom = userRoom.room.idRoom " +
-            "where room.idRoom =:idRoom"    )
+            "where room.idRoom =:idRoom")
     List<UserInfoTelegramChatsEntity> findAllUserIdChatsWhoNeedNotify(int idRoom);
 
     @Query("select userInfoTelegramChatsEntity.idChat " +
             "from UserInfoEntity userInfoEntity join UserInfoTelegramChatsEntity userInfoTelegramChatsEntity " +
             "on userInfoTelegramChatsEntity.userInfo.idUserInfo = userInfoEntity.idUserInfo " +
             "where userInfoEntity.telegram =:telegramName")
-    Long getIdChatByTelegramName (String telegramName);
+    Long getIdChatByTelegramName(String telegramName);
 }

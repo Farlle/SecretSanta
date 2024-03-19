@@ -4,4 +4,5 @@ public class NotEnoughUsersException extends RuntimeException {
     public NotEnoughUsersException(String message) {
         super(message);
     }
+
 }

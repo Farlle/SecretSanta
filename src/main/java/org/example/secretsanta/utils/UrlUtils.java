@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class UrlUtils {
 
-    public static String extractRoomNumberFromUrl (String url) {
+    public static String extractRoomNumberFromUrl(String url) {
 
         Pattern pattern = Pattern.compile("room/(\\d+)/join");
         Matcher matcher = pattern.matcher(url);

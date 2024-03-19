@@ -4,7 +4,6 @@ import org.example.secretsanta.dto.*;
 import org.example.secretsanta.model.enums.Role;
 import org.example.secretsanta.service.impl.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,17 +11,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -305,7 +301,7 @@ class RoomControllerTest {
         int page = 0;
         int size = 5;
         Page<RoomDTO> roomDTOPage = new PageImpl<>(Collections.emptyList());
-        UserInfoDTO userInfoDTO = new UserInfoDTO(idUser,"username","password","telegram");
+        UserInfoDTO userInfoDTO = new UserInfoDTO(idUser, "username", "password", "telegram");
 
         when(userDetailsService.findUserByName(username)).thenReturn(userInfoDTO);
         when(roomServiceImpl.getRoomsWhereUserJoin(idUser, PageRequest.of(page, size))).thenReturn(roomDTOPage);

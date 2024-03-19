@@ -1,8 +1,6 @@
 package org.example.secretsanta.wrapper;
 
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.model.entity.MessageEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 
 public class DialogWrapper {
     private UserInfoDTO sender;

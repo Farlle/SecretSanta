@@ -1,7 +1,6 @@
 package org.example.secretsanta.repository;
 
 import org.example.secretsanta.model.entity.MessageEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,6 +22,7 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Integer>
             "from MessageEntity messageEntity " +
             "where messageEntity.sender.idUserInfo =:idSender")
     List<Integer> findDistinctRecipientsByIdSender(@PathVariable("idSender") int idSender);
+
     @Query("SELECT m1 FROM MessageEntity m1 " +
             "WHERE m1.idMessage = " +
             "(SELECT MAX(m2.idMessage) FROM MessageEntity m2" +

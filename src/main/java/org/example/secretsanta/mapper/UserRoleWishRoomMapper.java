@@ -1,6 +1,5 @@
 package org.example.secretsanta.mapper;
 
-import org.example.secretsanta.dto.RoleDTO;
 import org.example.secretsanta.dto.UserRoleWishRoomDTO;
 import org.example.secretsanta.model.entity.UserRoleWishRoomEntity;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,7 @@ public class UserRoleWishRoomMapper {
 
     public static UserRoleWishRoomDTO toUserRoleWishRoomDTO(UserRoleWishRoomEntity userRoleWishRoomEntity) {
 
-        if(userRoleWishRoomEntity ==null) {
+        if (userRoleWishRoomEntity == null) {
             return null;
         }
 
@@ -29,7 +28,7 @@ public class UserRoleWishRoomMapper {
 
     public static UserRoleWishRoomEntity toUserRoleWishRoomEntity(UserRoleWishRoomDTO userRoleWishRoomDTO) {
 
-        if(userRoleWishRoomDTO ==null) {
+        if (userRoleWishRoomDTO == null) {
             return null;
         }
 

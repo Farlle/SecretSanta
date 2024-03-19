@@ -1,10 +1,5 @@
 package org.example.secretsanta.dto;
 
-import org.example.secretsanta.model.entity.RoleEntity;
-import org.example.secretsanta.model.entity.RoomEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
-import org.example.secretsanta.model.entity.WishEntity;
-
 import java.util.Objects;
 
 public class UserRoleWishRoomDTO {

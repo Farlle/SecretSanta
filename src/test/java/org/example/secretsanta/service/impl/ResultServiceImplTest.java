@@ -5,7 +5,6 @@ import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.mapper.ResultMapper;
-import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.ResultEntity;
 import org.example.secretsanta.repository.ResultRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -100,9 +102,9 @@ class ResultServiceImplTest {
     @Test
     void performDrawTest() {
         RoomDTO room = new RoomDTO();
-        UserInfoDTO user1 = new UserInfoDTO(1,"name1","pas1","tg1");
-        UserInfoDTO user2 = new UserInfoDTO(2,"name2","pas2","tg2");
-        UserInfoDTO user3 = new UserInfoDTO(3,"name3","pas3","tg3");
+        UserInfoDTO user1 = new UserInfoDTO(1, "name1", "pas1", "tg1");
+        UserInfoDTO user2 = new UserInfoDTO(2, "name2", "pas2", "tg2");
+        UserInfoDTO user3 = new UserInfoDTO(3, "name3", "pas3", "tg3");
 
         List<UserInfoDTO> users = new ArrayList<>();
         users.add(user1);
@@ -130,9 +132,9 @@ class ResultServiceImplTest {
     @Test
     void showDrawInRoomTest() {
         int idRoom = 1;
-        RoomDTO roomDTO = new RoomDTO(1,"name",1,new Date(864000L),new Date(764000L),"qwe");
-        ResultDTO result = new ResultDTO(1,1,2, roomDTO);
-        ResultDTO result1 = new ResultDTO(2,3,4, roomDTO);
+        RoomDTO roomDTO = new RoomDTO(1, "name", 1, new Date(864000L), new Date(764000L), "qwe");
+        ResultDTO result = new ResultDTO(1, 1, 2, roomDTO);
+        ResultDTO result1 = new ResultDTO(2, 3, 4, roomDTO);
         List<ResultEntity> resultEntities =
                 Arrays.asList(ResultMapper.toResultEntity(result), ResultMapper.toResultEntity(result1));
         when(resultRepository.findAll()).thenReturn(resultEntities);

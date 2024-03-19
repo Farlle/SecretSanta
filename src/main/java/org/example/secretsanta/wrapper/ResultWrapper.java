@@ -2,8 +2,6 @@ package org.example.secretsanta.wrapper;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.WishDTO;
-import org.example.secretsanta.model.entity.UserInfoEntity;
-import org.example.secretsanta.model.entity.WishEntity;
 
 public class ResultWrapper {
 

@@ -5,12 +5,12 @@ import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.entity.UserInfoTelegramChatsEntity;
 import org.junit.jupiter.api.Test;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserInfoTelegramChatsMapperTest {
 
