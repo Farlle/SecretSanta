@@ -1,28 +1,25 @@
-/*
 package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.RoleDTO;
+import org.example.secretsanta.mapper.RoleMapper;
 import org.example.secretsanta.model.entity.RoleEntity;
 import org.example.secretsanta.model.enums.Role;
-import org.example.secretsanta.repository.ResultRepository;
 import org.example.secretsanta.repository.RoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class RoleServiceImplTest {
     @Mock
     private RoleRepository roleRepository;
@@ -30,59 +27,80 @@ class RoleServiceImplTest {
     @InjectMocks
     private RoleServiceImpl roleService;
 
-    RoleEntity role;
-    RoleDTO roleDTO;
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        role = new RoleEntity();
-        role.setIdRole(1);
-        role.setRole(Role.PARTICIPANT);
-
-        roleDTO = new RoleDTO();
-        roleDTO.setIdRole(3);
-        roleDTO.setRole(Role.PARTICIPANT);
-
-
     }
 
     @Test
-    void readAll() {
-        List<RoleEntity> roles = Arrays.asList(
-                new RoleEntity(1, Role.PARTICIPANT),
-                new RoleEntity(2, Role.ORGANIZER)
-        );
+    void testCreate() {
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setRole(Role.PARTICIPANT);
 
-        when(roleRepository.findAll()).thenReturn(roles);
+        RoleDTO savedRoleDTO = new RoleDTO();
+        savedRoleDTO.setRole(Role.PARTICIPANT);
+
+        when(roleRepository.save(any(RoleEntity.class))).thenReturn(roleEntity);
+
+        RoleDTO result = roleService.create(savedRoleDTO);
+
+        assertEquals(savedRoleDTO, result);
+    }
+
+    @Test
+    public void testReadAll() {
+        RoleEntity roleEntity1 = new RoleEntity();
+        roleEntity1.setIdRole(1);
+        roleEntity1.setRole(Role.PARTICIPANT);
+        RoleEntity roleEntity2 = new RoleEntity();
+        roleEntity2.setIdRole(2);
+        roleEntity2.setRole(Role.ORGANIZER);
+        when(roleRepository.findAll()).thenReturn(Arrays.asList(roleEntity1, roleEntity2));
 
         List<RoleDTO> roleDTOs = roleService.readAll();
 
-        assertNotNull(roleDTOs);
-        assertEquals(roles.size(), roleDTOs.size());
+        assertEquals(2, roleDTOs.size());
+        assertEquals(RoleMapper.toRoleDTO(roleEntity1), roleDTOs.get(0));
+        assertEquals(RoleMapper.toRoleDTO(roleEntity2), roleDTOs.get(1));
     }
 
     @Test
-    void update() {
+    public void testUpdate() {
+        int id = 1;
+        RoleDTO dto = new RoleDTO();
+        dto.setRole(Role.PARTICIPANT);
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setIdRole(id);
+        roleEntity.setRole(dto.getRole());
+        when(roleRepository.findById(id)).thenReturn(Optional.of(roleEntity));
+        when(roleRepository.save(roleEntity)).thenReturn(roleEntity);
+
+        RoleDTO updatedRoleDTO = roleService.update(id, dto);
+
+        assertEquals(RoleMapper.toRoleDTO(roleEntity), updatedRoleDTO);
     }
 
-    @Test
-    void delete() {
-    }
 
     @Test
-    void getRoleByIdTest() {
-        int id = 2;
-        RoleEntity role = new RoleEntity();
-        role.setIdRole(id);
-        role.setRole(Role.ORGANIZER);
-
-        when(roleRepository.findById(id)).thenReturn(Optional.of(role));
+    void testGetRoleById() {
+        int id = 1;
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setIdRole(id);
+        when(roleRepository.findById(id)).thenReturn(Optional.of(roleEntity));
 
         RoleDTO roleDTO = roleService.getRoleById(id);
 
-        assertNotNull(roleDTO);
-        assertEquals(role.getRole(), roleDTO.getRole());
+        assertEquals(RoleMapper.toRoleDTO(roleEntity), roleDTO);
     }
-}*/
+
+    @Test
+    public void testDelete() {
+        int id = 1;
+
+        roleService.delete(id);
+
+        verify(roleRepository).deleteById(id);
+    }
+
+
+}

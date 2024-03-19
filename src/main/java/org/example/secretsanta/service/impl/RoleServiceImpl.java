@@ -19,6 +19,7 @@ public class RoleServiceImpl implements RoleService {
         this.roleRepository = roleRepository;
     }
 
+    @Override
     public RoleDTO create(RoleDTO dto) {
         RoleEntity role = new RoleEntity();
         role.setRole(dto.getRole());
