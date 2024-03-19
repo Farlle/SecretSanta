@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UrlUtilsTest {
 
     @Test
-    void extractRoomNumberFromUrl() {
+    void testExtractRoomNumberFromUrl() {
         String url1 = "Тебя пригласили в комнату Teesss присоединяйся по ссылке http://localhost:8080/room/4/join";
         String url2 = "Тебя пригласили в комнату Teesss присоединяйся по ссылке http://localhost:8080/room/35/join";
         String url3 = "Тебя пригласили в комнату Teesss присоединяйся по ссылке http://localhost:8080/room/2/join";
