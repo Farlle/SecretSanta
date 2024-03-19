@@ -15,9 +15,18 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
+    private final UserInfoServiceImpl userInfoServiceImpl;
+    private final UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
+    private final TelegramServiceImpl telegramServiceImpl;
+    private final String MESSAGE = "Тебе пришло новое сообщение";
 
-    public MessageServiceImpl(MessageRepository messageRepository) {
+
+    public MessageServiceImpl(MessageRepository messageRepository, UserInfoServiceImpl userInfoServiceImpl, UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl, TelegramServiceImpl telegramServiceImpl) {
         this.messageRepository = messageRepository;
+
+        this.userInfoServiceImpl = userInfoServiceImpl;
+        this.userInfoTelegramChatsServiceImpl = userInfoTelegramChatsServiceImpl;
+        this.telegramServiceImpl = telegramServiceImpl;
     }
 
     @Override
@@ -27,6 +36,9 @@ public class MessageServiceImpl implements MessageService {
         message.setSender(UserInfoMapper.toUserInfoEntity(dto.getSender()));
         message.setDepartureDate(dto.getDepartureDate());
         message.setIdRecipient(dto.getIdRecipient());
+
+        telegramServiceImpl.sendMessage( userInfoTelegramChatsServiceImpl.getIdChatByTelegramName(
+                userInfoServiceImpl.getTelegramUser(dto.getIdRecipient())),MESSAGE);
 
         return MessageMapper.toMessageDTO(messageRepository.save(message));
     }

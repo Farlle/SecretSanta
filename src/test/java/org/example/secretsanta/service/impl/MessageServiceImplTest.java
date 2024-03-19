@@ -1,8 +1,10 @@
 package org.example.secretsanta.service.impl;
 
 import org.example.secretsanta.dto.MessageDTO;
+import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.MessageMapper;
 import org.example.secretsanta.model.entity.MessageEntity;
+import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.MessageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,10 +12,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -23,6 +27,12 @@ class MessageServiceImplTest {
 
     @Mock
     private MessageRepository messageRepository;
+    @Mock
+    private UserInfoServiceImpl userInfoServiceImpl;
+    @Mock
+    private UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
+    @Mock
+    private TelegramServiceImpl telegramServiceImpl;
 
     @InjectMocks
     private MessageServiceImpl messageService;
@@ -35,13 +45,41 @@ class MessageServiceImplTest {
 
     @Test
     void testCreate() {
-        MessageDTO dto = new MessageDTO();
-        when(messageRepository.save(any(MessageEntity.class))).thenReturn(MessageMapper.toMessageEntity(dto));
+        String senderTelegram = "sender";
+        String recipientTelegram = "recipient";
+        String messageText = "Hello, recipient!";
+        Date departureDate = new Date(8600000L);
+        int idRecipient = 1;
+        String message = "Тебе пришло новое сообщение";
 
-        MessageDTO result = messageService.create(dto);
+        UserInfoDTO senderDTO = new UserInfoDTO();
+        senderDTO.setTelegram(senderTelegram);
 
-        assertNotNull(result);
+        UserInfoEntity senderEntity = new UserInfoEntity();
+        senderEntity.setTelegram(senderTelegram);
+
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setSender(senderDTO);
+        messageDTO.setMessage(messageText);
+        messageDTO.setDepartureDate(departureDate);
+        messageDTO.setIdRecipient(idRecipient);
+
+        MessageEntity savedMessageEntity = new MessageEntity();
+        savedMessageEntity.setIdMessage(1);
+        savedMessageEntity.setMessage(messageText);
+        savedMessageEntity.setSender(senderEntity);
+        savedMessageEntity.setDepartureDate(departureDate);
+        savedMessageEntity.setIdRecipient(idRecipient);
+
+        when(userInfoServiceImpl.getTelegramUser(idRecipient)).thenReturn(recipientTelegram);
+        when(userInfoTelegramChatsServiceImpl.getIdChatByTelegramName(recipientTelegram)).thenReturn(2L);
+        when(messageRepository.save(any(MessageEntity.class))).thenReturn(savedMessageEntity);
+
+        MessageDTO result = messageService.create(messageDTO);
+
+        verify(telegramServiceImpl).sendMessage(2L, message);
         verify(messageRepository).save(any(MessageEntity.class));
+        assertEquals(MessageMapper.toMessageDTO(savedMessageEntity), result);
     }
 
     @Test

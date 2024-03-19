@@ -3,6 +3,7 @@ package org.example.secretsanta.controller;
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.service.impl.MessageServiceImpl;
+import org.example.secretsanta.service.impl.TelegramServiceImpl;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.example.secretsanta.utils.DateUtils;
@@ -27,7 +28,8 @@ public class MessageController {
     private final UserInfoServiceImpl userInfoServiceImpl;
     private final CustomUserDetailsService userDetailsService;
 
-    public MessageController(MessageServiceImpl messageServiceImpl, UserInfoServiceImpl userInfoServiceImpl, CustomUserDetailsService userDetailsService) {
+    public MessageController(MessageServiceImpl messageServiceImpl, UserInfoServiceImpl userInfoServiceImpl,
+                             CustomUserDetailsService userDetailsService) {
         this.messageServiceImpl = messageServiceImpl;
         this.userInfoServiceImpl = userInfoServiceImpl;
         this.userDetailsService = userDetailsService;
@@ -76,6 +78,7 @@ public class MessageController {
         messageDTO.setSender(userDetailsService.findUserByName(principal.getName()));
         messageDTO.setIdRecipient(idRecipient);
         messageServiceImpl.create(messageDTO);
+
         return "redirect:/message/conversation/" + messageDTO.getIdRecipient();
     }
 

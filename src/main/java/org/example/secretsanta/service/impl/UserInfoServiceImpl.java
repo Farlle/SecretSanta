@@ -70,13 +70,19 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfoDTO> getUsersInfoById(List<Integer> usersIds) {
-        return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAllById(usersIds));
+    public List<UserInfoDTO> getUsersInfoById(List<Integer> idUsers) {
+        return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAllById(idUsers));
     }
 
     @Override
     public UserInfoDTO getUsersInfoByTelegram(String telegram) {
         return UserInfoMapper.toUserInfoDTO(userInfoRepository.findByTelegram(telegram));
+    }
+
+    @Override
+    public String getTelegramUser(int idUser) {
+        UserInfoEntity userInfoEntity = userInfoRepository.findById(idUser).orElseThrow();
+        return  userInfoEntity.getTelegram();
     }
 
 }

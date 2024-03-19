@@ -18,7 +18,9 @@ public interface UserInfoService {
 
     void registerNewUserInfoAccount(UserInfoDTO dto) throws Exception;
 
-    List<UserInfoDTO> getUsersInfoById(List<Integer> usersIds);
+    List<UserInfoDTO> getUsersInfoById(List<Integer> idUsers);
 
     UserInfoDTO getUsersInfoByTelegram(String telegram);
+
+    String getTelegramUser(int idUser);
 }
