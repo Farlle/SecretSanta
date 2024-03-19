@@ -2,10 +2,6 @@ package org.example.secretsanta.controller;
 
 
 import org.example.secretsanta.dto.*;
-import org.example.secretsanta.mapper.RoleMapper;
-import org.example.secretsanta.mapper.RoomMapper;
-import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.mapper.WishMapper;
 import org.example.secretsanta.model.enums.Role;
 import org.example.secretsanta.service.impl.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
@@ -23,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("/room")
@@ -75,37 +72,6 @@ public class RoomController {
         RoomDTO room = roomServiceImpl.create(dto);
         model.addAttribute("room", room);
         return "redirect:/room/" + room.getIdRoom() + "/join";
-    }
-
-    @GetMapping("/update/{id}")
-    public String updateRoom(@PathVariable int id, Model model) {
-        RoomDTO room = roomServiceImpl.getRoomById(id);
-        model.addAttribute("room", room);
-        return "room-update";
-    }
-
-    @PostMapping("/update/{id}")
-    public String updateRoom(@PathVariable int id, RoomDTO dto, Model model) {
-        roomServiceImpl.update(id, dto);
-        model.addAttribute("roomsDto", dto);
-        return "redirect:/room/show";
-    }
-
-    @DeleteMapping("delete/{id}")
-    public String deleteRoom(@PathVariable int id) {
-        roomServiceImpl.delete(id);
-        return "redirect:/room/show";
-    }
-
-    @GetMapping("/show")
-    public String getAllRoom(Model model,
-                             @RequestParam(value = "page", defaultValue = "0") int page,
-                             @RequestParam(value = "size", defaultValue = "5") int size) {
-        Page<RoomDTO> roomDTOPage = roomServiceImpl.readAllRoom(PageRequest.of(page, size));
-        model.addAttribute("roomsDto", roomDTOPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", roomDTOPage.getTotalPages());
-        return "room-list";
     }
 
     @GetMapping("/show/{idRoom}")
@@ -198,7 +164,7 @@ public class RoomController {
                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                    @RequestParam(value = "size", defaultValue = "5") int size) {
         int idUser = userDetailsService.findUserByName(principal.getName()).getIdUserInfo();
-        Page<RoomDTO> roomDTOPage = roomServiceImpl.getRoomsWhereUserJoin(idUser,PageRequest.of(page, size));
+        Page<RoomDTO> roomDTOPage = roomServiceImpl.getRoomsWhereUserJoin(idUser, PageRequest.of(page, size));
         model.addAttribute("roomsDto", roomDTOPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", roomDTOPage.getTotalPages());

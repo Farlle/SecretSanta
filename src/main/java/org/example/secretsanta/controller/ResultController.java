@@ -81,7 +81,7 @@ public class ResultController {
         } catch (NotEnoughUsersException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Маловато гостей");
             return "redirect:/room/show/" + idRoom;
-        }catch (DrawingAlreadyPerformedException e){
+        } catch (DrawingAlreadyPerformedException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Упс, ты не организатор");
             return "redirect:/room/show/" + idRoom;
         }

@@ -32,13 +32,13 @@ public class UserInfoController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateUserInfo(@PathVariable int id,Model model) {
+    public String updateUserInfo(@PathVariable int id, Model model) {
         UserInfoDTO userInfo = userInfoServiceImpl.getUserInfoById(id);
         model.addAttribute("userInfo", userInfo);
         return "user-info-update";
     }
 
-    @PostMapping ("/update/{id}")
+    @PostMapping("/update/{id}")
     public String updateUserInfo(@PathVariable int id, @ModelAttribute("userInfo") UserInfoDTO dto, Model model) {
         userInfoServiceImpl.update(id, dto);
         model.addAttribute("userInfo", dto);
@@ -46,13 +46,13 @@ public class UserInfoController {
     }
 
     @GetMapping("/show")
-    public String getAllUsersInfo(Model model){
+    public String getAllUsersInfo(Model model) {
         model.addAttribute("userInfo", userInfoServiceImpl.readAll());
         return "user-info-list";
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteUserInfo(@PathVariable int id){
+    public String deleteUserInfo(@PathVariable int id) {
         userInfoServiceImpl.delete(id);
         return "redirect:/userInfo/show";
 

@@ -3,8 +3,6 @@ package org.example.secretsanta.controller;
 import org.example.secretsanta.dto.InviteDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.mapper.UserInfoMapper;
-import org.example.secretsanta.model.enums.Status;
 import org.example.secretsanta.service.impl.InviteServiceImpl;
 import org.example.secretsanta.service.impl.RoomServiceImpl;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
@@ -68,6 +66,5 @@ public class InviteController {
         inviteServiceImpl.sendInvite(idRoom, inviteDTO);
         return "redirect:/room/show/" + inviteTelegramWrapper.getRoom().getIdRoom();
     }
-
 
 }
