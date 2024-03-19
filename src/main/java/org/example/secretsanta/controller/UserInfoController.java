@@ -2,11 +2,13 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@Profile("dev")
 @RequestMapping("/userInfo")
 public class UserInfoController {
 
