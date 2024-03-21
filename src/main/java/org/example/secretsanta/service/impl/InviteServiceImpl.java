@@ -19,17 +19,15 @@ import java.util.List;
 public class InviteServiceImpl implements InviteService {
 
     private final InviteRepository inviteRepository;
-    private final UserInfoServiceImpl userInfoServiceImpl;
     private final RoomServiceImpl roomServiceImpl;
     private final TelegramServiceImpl telegramService;
     private final UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
     private final String HOST = "http://localhost:8080/room/";
 
-    public InviteServiceImpl(InviteRepository inviteRepository, UserInfoServiceImpl userInfoServiceImpl,
-                             RoomServiceImpl roomServiceImpl, TelegramServiceImpl telegramService,
+    public InviteServiceImpl(InviteRepository inviteRepository, RoomServiceImpl roomServiceImpl,
+                             TelegramServiceImpl telegramService,
                              UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl) {
         this.inviteRepository = inviteRepository;
-        this.userInfoServiceImpl = userInfoServiceImpl;
         this.roomServiceImpl = roomServiceImpl;
         this.telegramService = telegramService;
         this.userInfoTelegramChatsServiceImpl = userInfoTelegramChatsServiceImpl;
@@ -106,7 +104,8 @@ public class InviteServiceImpl implements InviteService {
         }
     }
 
-    String generatedTextInvite(int idRoom) {
+    @Override
+    public String generatedTextInvite(int idRoom) {
         RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
         return "Тебя пригласили в комнату " + roomDTO.getName()
                 + " присоединяйся по ссылке " + HOST + roomDTO.getIdRoom() + "/join";

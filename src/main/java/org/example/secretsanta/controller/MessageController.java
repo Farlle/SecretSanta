@@ -3,7 +3,6 @@ package org.example.secretsanta.controller;
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.service.impl.MessageServiceImpl;
-import org.example.secretsanta.service.impl.TelegramServiceImpl;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.example.secretsanta.utils.DateUtils;

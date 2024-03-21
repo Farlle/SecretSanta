@@ -19,4 +19,6 @@ public interface ResultService {
 
     List<ResultDTO> showDrawInRoom(int idRoom);
 
+    String generatedMessageDraw(int idRoom);
+
 }

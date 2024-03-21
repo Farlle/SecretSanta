@@ -118,6 +118,7 @@ public class ResultServiceImpl implements ResultService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public String generatedMessageDraw(int idRoom) {
         return MESSAGE_DRAW + HOST + "show/" + idRoom;
     }
