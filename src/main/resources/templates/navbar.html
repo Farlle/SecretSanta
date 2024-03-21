@@ -16,7 +16,7 @@
                     <a class="nav-link text-white" sec:authorize="isAuthenticated()" th:href="@{/message/dialogs/}">Сообщения</a>
                 </li>
                 <li class="nav-item">
-                    <span class="nav-link text-white" sec:authorize="!isAuthenticated()">Добро пожаловать, гость!</span>
+                    <span class="nav-link text-white" sec:authorize="!isAuthenticated()">Добро пожаловать!</span>
                 </li>
                 <li class="nav-item" >
                     <a class="nav-link text-white" sec:authorize="!isAuthenticated()" th:href="@{/login}">Войти</a>

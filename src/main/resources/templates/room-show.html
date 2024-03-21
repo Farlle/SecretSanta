@@ -43,7 +43,7 @@
         <a class="btn btn-primary" href="#" th:href="@{/room/{id}/join(id=${roomAndOrganizerWrapper.room.idRoom})}" target="_blank">Присоединиться</a>
         <a class="btn btn-primary" href="#" th:if="${loginUser.name == roomAndOrganizerWrapper.userInfo.name}" th:href="@{/result/drawing/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Провести жеребьевку</a>
         <a class="btn btn-primary" href="#" th:href="@{/room/{idRoom}/users-and-roles(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Участники</a>
-        <a class="btn btn-primary" href="#" th:href="@{/invite/send/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Приглашение через телеграм</a>
+        <a class="btn btn-primary" href="#" th:if="${loginUser.name == roomAndOrganizerWrapper.userInfo.name}"  th:href="@{/invite/send/{idRoom}(idRoom=${roomAndOrganizerWrapper.room.idRoom})}">Приглашение через телеграм</a>
     </div>
 </div>
 </body>
