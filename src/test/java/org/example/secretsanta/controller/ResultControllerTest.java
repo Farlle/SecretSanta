@@ -4,11 +4,11 @@ import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.WishDTO;
-import org.example.secretsanta.service.impl.ResultServiceImpl;
-import org.example.secretsanta.service.impl.RoomServiceImpl;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
-import org.example.secretsanta.service.impl.WishServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.ResultService;
+import org.example.secretsanta.service.serviceinterface.RoomService;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
+import org.example.secretsanta.service.serviceinterface.WishService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -29,15 +29,15 @@ class ResultControllerTest {
     @Autowired
     MockMvc mockMvc;
     @MockBean
-    private ResultServiceImpl resultServiceImpl;
+    private ResultService resultService;
     @MockBean
-    private UserInfoServiceImpl userInfoServiceImpl;
+    private UserInfoService userInfoService;
     @MockBean
-    private RoomServiceImpl roomServiceImpl;
+    private RoomService roomService;
     @MockBean
     private CustomUserDetailsService userDetailsService;
     @MockBean
-    private WishServiceImpl wishServiceImpl;
+    private WishService wishService;
 
     @Test
     void testShowResultDraw() throws Exception {
@@ -47,9 +47,9 @@ class ResultControllerTest {
         WishDTO wishDTO = new WishDTO();
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(userInfoDTO);
-        when(resultServiceImpl.showDrawInRoom(anyInt())).thenReturn(Collections.singletonList(resultDTO));
-        when(userInfoServiceImpl.getUserInfoById(anyInt())).thenReturn(userInfoDTO);
-        when(wishServiceImpl.getUserWishInRoom(anyInt(), anyInt())).thenReturn(wishDTO);
+        when(resultService.showDrawInRoom(anyInt())).thenReturn(Collections.singletonList(resultDTO));
+        when(userInfoService.getUserInfoById(anyInt())).thenReturn(userInfoDTO);
+        when(wishService.getUserWishInRoom(anyInt(), anyInt())).thenReturn(wishDTO);
 
         mockMvc.perform(get("/result/show/{idRoom}", 1)
                         .with(user("username").password("password")))
@@ -58,9 +58,9 @@ class ResultControllerTest {
                 .andExpect(model().attributeExists("resultWrappers"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(resultServiceImpl).showDrawInRoom(anyInt());
-        verify(userInfoServiceImpl, times(2)).getUserInfoById(anyInt());
-        verify(wishServiceImpl).getUserWishInRoom(anyInt(), anyInt());
+        verify(resultService).showDrawInRoom(anyInt());
+        verify(userInfoService, times(2)).getUserInfoById(anyInt());
+        verify(wishService).getUserWishInRoom(anyInt(), anyInt());
     }
 
     @Test
@@ -69,8 +69,8 @@ class ResultControllerTest {
         RoomDTO roomDTO = new RoomDTO();
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(userInfoDTO);
-        when(roomServiceImpl.getRoomById(anyInt())).thenReturn(roomDTO);
-        when(roomServiceImpl.getRoomOrganizer(any(RoomDTO.class))).thenReturn(userInfoDTO);
+        when(roomService.getRoomById(anyInt())).thenReturn(roomDTO);
+        when(roomService.getRoomOrganizer(any(RoomDTO.class))).thenReturn(userInfoDTO);
 
         mockMvc.perform(get("/result/drawing/{idRoom}", 1)
                         .with(user("username").password("password")))
@@ -78,9 +78,9 @@ class ResultControllerTest {
                 .andExpect(redirectedUrl("/result/show/1"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(roomServiceImpl, times(2)).getRoomById(anyInt());
-        verify(roomServiceImpl).getRoomOrganizer(any(RoomDTO.class));
-        verify(resultServiceImpl).performDraw(any(RoomDTO.class));
+        verify(roomService, times(2)).getRoomById(anyInt());
+        verify(roomService).getRoomOrganizer(any(RoomDTO.class));
+        verify(resultService).performDraw(any(RoomDTO.class));
     }
 
     @Test
@@ -92,8 +92,8 @@ class ResultControllerTest {
         currentUser.setIdUserInfo(2);
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
-        when(roomServiceImpl.getRoomById(anyInt())).thenReturn(roomDTO);
-        when(roomServiceImpl.getRoomOrganizer(any(RoomDTO.class))).thenReturn(roomOrganizer);
+        when(roomService.getRoomById(anyInt())).thenReturn(roomDTO);
+        when(roomService.getRoomOrganizer(any(RoomDTO.class))).thenReturn(roomOrganizer);
 
 
         mockMvc.perform(get("/result/drawing/{idRoom}", 1)
@@ -103,9 +103,9 @@ class ResultControllerTest {
                 .andExpect(flash().attribute("errorMessage", "Вы не можете проводить жеребьевку"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(roomServiceImpl, times(1)).getRoomById(anyInt());
-        verify(roomServiceImpl).getRoomOrganizer(any(RoomDTO.class));
-        verify(resultServiceImpl, never()).performDraw(any(RoomDTO.class));
+        verify(roomService, times(1)).getRoomById(anyInt());
+        verify(roomService).getRoomOrganizer(any(RoomDTO.class));
+        verify(resultService, never()).performDraw(any(RoomDTO.class));
     }
 
 

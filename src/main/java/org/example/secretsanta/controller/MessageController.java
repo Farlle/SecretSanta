@@ -2,9 +2,9 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.service.impl.MessageServiceImpl;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.MessageService;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
 import org.example.secretsanta.utils.DateUtils;
 import org.example.secretsanta.wrapper.DialogWrapper;
 import org.springframework.stereotype.Controller;
@@ -23,27 +23,27 @@ import java.util.List;
 @RequestMapping("/message")
 public class MessageController {
 
-    private final MessageServiceImpl messageServiceImpl;
-    private final UserInfoServiceImpl userInfoServiceImpl;
+    private final MessageService messageService;
+    private final UserInfoService userInfoService;
     private final CustomUserDetailsService userDetailsService;
 
-    public MessageController(MessageServiceImpl messageServiceImpl, UserInfoServiceImpl userInfoServiceImpl,
+    public MessageController(MessageService messageService, UserInfoService userInfoService,
                              CustomUserDetailsService userDetailsService) {
-        this.messageServiceImpl = messageServiceImpl;
-        this.userInfoServiceImpl = userInfoServiceImpl;
+        this.messageService = messageService;
+        this.userInfoService = userInfoService;
         this.userDetailsService = userDetailsService;
     }
 
     @GetMapping("/dialogs")
     public String getDialogs(Model model, Principal principal) {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
-        List<MessageDTO> messageDTOS = messageServiceImpl.getDistinctDialog(currentUser.getIdUserInfo());
+        List<MessageDTO> messageDTOS = messageService.getDistinctDialog(currentUser.getIdUserInfo());
         List<DialogWrapper> dialogs = new ArrayList<>();
 
         for (int i = 0; i < messageDTOS.size(); i++) {
-            dialogs.add(new DialogWrapper(userInfoServiceImpl.getUserInfoById(messageDTOS.get(i).getSender()
+            dialogs.add(new DialogWrapper(userInfoService.getUserInfoById(messageDTOS.get(i).getSender()
                     .getIdUserInfo()),
-                    userInfoServiceImpl.getUserInfoById(messageDTOS.get(i).getIdRecipient()),
+                    userInfoService.getUserInfoById(messageDTOS.get(i).getIdRecipient()),
                     messageDTOS.get(i).getMessage().toString()));
         }
         model.addAttribute("dialogs", dialogs);
@@ -53,8 +53,8 @@ public class MessageController {
     @GetMapping("/conversation/{idUserInfo}")
     public String receiveMessages(@PathVariable("idUserInfo") int idUserInfo, Model model, Principal principal) {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
-        List<MessageDTO> messagesTo = messageServiceImpl.getConversation(currentUser.getIdUserInfo(), idUserInfo);
-        List<MessageDTO> messagesFrom = messageServiceImpl.getConversation(idUserInfo, currentUser.getIdUserInfo());
+        List<MessageDTO> messagesTo = messageService.getConversation(currentUser.getIdUserInfo(), idUserInfo);
+        List<MessageDTO> messagesFrom = messageService.getConversation(idUserInfo, currentUser.getIdUserInfo());
         List<MessageDTO> allMessages = new ArrayList<>();
         allMessages.addAll(messagesFrom);
         allMessages.addAll(messagesTo);
@@ -76,7 +76,7 @@ public class MessageController {
         messageDTO.setDepartureDate(DateUtils.convertDateToSqlDate(LocalDateTime.now()));
         messageDTO.setSender(userDetailsService.findUserByName(principal.getName()));
         messageDTO.setIdRecipient(idRecipient);
-        messageServiceImpl.create(messageDTO);
+        messageService.create(messageDTO);
 
         return "redirect:/message/conversation/" + messageDTO.getIdRecipient();
     }

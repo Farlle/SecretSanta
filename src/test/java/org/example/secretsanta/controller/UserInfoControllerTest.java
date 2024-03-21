@@ -1,8 +1,8 @@
 package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ class UserInfoControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private UserInfoServiceImpl userInfoServiceImpl;
+    private UserInfoService userInfoService;
     @MockBean
     private CustomUserDetailsService userDetailsService;
 
@@ -44,7 +44,7 @@ class UserInfoControllerTest {
     void testCreateUserInfo() throws Exception {
         UserInfoDTO dto = new UserInfoDTO(1, "test", "password", "telegram");
 
-        when(userInfoServiceImpl.create(dto)).thenReturn(dto);
+        when(userInfoService.create(dto)).thenReturn(dto);
 
         mockMvc.perform(post("/userInfo/create").with(user("username").password("password"))
                         .param("name", dto.getName())
@@ -58,7 +58,7 @@ class UserInfoControllerTest {
     void testUpdateUserInfoPage() throws Exception {
         int id = 1;
         UserInfoDTO dto = new UserInfoDTO(id, "test", "password", "telegram");
-        when(userInfoServiceImpl.getUserInfoById(id)).thenReturn(dto);
+        when(userInfoService.getUserInfoById(id)).thenReturn(dto);
 
         mockMvc.perform(get("/userInfo/update/{id}", id).with(user("username").password("password")))
                 .andExpect(status().isOk())
@@ -73,7 +73,7 @@ class UserInfoControllerTest {
         UserInfoDTO dtoNew = new UserInfoDTO(id, "test2", "password2", "telegram2");
 
 
-        when(userInfoServiceImpl.update(id, dto)).thenReturn(dtoNew);
+        when(userInfoService.update(id, dto)).thenReturn(dtoNew);
 
         mockMvc.perform(post("/userInfo/update/{id}", id).with(user("username").password("password"))
                         .param("name", dtoNew.getName())
@@ -89,7 +89,7 @@ class UserInfoControllerTest {
                 new UserInfoDTO(1, "test", "1223", "test"),
                 new UserInfoDTO(2, "test2", "1223", "test2")
         );
-        when(userInfoServiceImpl.readAll()).thenReturn(userInfoList);
+        when(userInfoService.readAll()).thenReturn(userInfoList);
 
         mockMvc.perform(get("/userInfo/show")
                         .with(user("username").password("password")))

@@ -2,9 +2,8 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.*;
 import org.example.secretsanta.model.enums.Role;
-import org.example.secretsanta.service.impl.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.junit.jupiter.api.Disabled;
+import org.example.secretsanta.service.serviceinterface.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,7 +20,8 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(RoomController.class)
@@ -31,21 +31,22 @@ class RoomControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private RoomServiceImpl roomServiceImpl;
+    private RoomService roomService;
     @MockBean
     private CustomUserDetailsService userDetailsService;
     @MockBean
-    private WishServiceImpl wishServiceImpl;
+    private WishService wishService;
     @MockBean
-    private RoleServiceImpl roleServiceImpl;
+    private RoleService roleService;
     @MockBean
-    private UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl;
+    private UserRoleWishRoomService userRoleWishRoomService;
     @MockBean
-    private InviteServiceImpl inviteServiceImpl;
+    private InviteService inviteService;
 
     @Test
     void testShowAddRoomPage() throws Exception {
-        UserInfoDTO userInfoDTO = new UserInfoDTO(1, "username", "password", "telegram");
+        UserInfoDTO userInfoDTO = new UserInfoDTO(1, "username", "password",
+                "telegram");
 
         when(userDetailsService.findUserByName("username")).thenReturn(userInfoDTO);
 
@@ -78,7 +79,7 @@ class RoomControllerTest {
                 .andExpect(redirectedUrl("/room/create"))
                 .andExpect(flash().attribute("error", "Draw Date must be before Toss Date."));
 
-        verify(roomServiceImpl, never()).create(any(RoomDTO.class));
+        verify(roomService, never()).create(any(RoomDTO.class));
     }
 
     @Test
@@ -94,7 +95,7 @@ class RoomControllerTest {
         createdRoom = roomDTO;
         createdRoom.setIdRoom(1);
 
-        when(roomServiceImpl.create(any(RoomDTO.class))).thenReturn(createdRoom);
+        when(roomService.create(any(RoomDTO.class))).thenReturn(createdRoom);
         mockMvc.perform(post("/room/create")
                         .param("id", String.valueOf(createdRoom.getIdRoom()))
                         .param("name", createdRoom.getName())
@@ -106,7 +107,7 @@ class RoomControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/room/" + createdRoom.getIdRoom() + "/join"));
 
-        verify(roomServiceImpl, times(1)).create(any(RoomDTO.class));
+        verify(roomService, times(1)).create(any(RoomDTO.class));
 
     }
 
@@ -117,9 +118,9 @@ class RoomControllerTest {
         UserInfoDTO loginUser = new UserInfoDTO();
         UserInfoDTO organizer = new UserInfoDTO();
 
-        when(roomServiceImpl.getRoomById(idRoom)).thenReturn(room);
+        when(roomService.getRoomById(idRoom)).thenReturn(room);
         when(userDetailsService.findUserByName(anyString())).thenReturn(loginUser);
-        when(roomServiceImpl.getRoomOrganizer(room)).thenReturn(organizer);
+        when(roomService.getRoomOrganizer(room)).thenReturn(organizer);
 
         mockMvc.perform(get("/room/show/" + idRoom)
                         .with(user("username").password("password")))
@@ -128,9 +129,9 @@ class RoomControllerTest {
                 .andExpect(model().attributeExists("loginUser"))
                 .andExpect(model().attributeExists("roomAndOrganizerWrapper"));
 
-        verify(roomServiceImpl, times(1)).getRoomById(idRoom);
+        verify(roomService, times(1)).getRoomById(idRoom);
         verify(userDetailsService, times(1)).findUserByName(anyString());
-        verify(roomServiceImpl, times(1)).getRoomOrganizer(room);
+        verify(roomService, times(1)).getRoomOrganizer(room);
     }
 
     @Test
@@ -142,10 +143,10 @@ class RoomControllerTest {
         currentUser.setIdUserInfo(2);
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
-        when(roomServiceImpl.getRoomById(idRoom)).thenReturn(roomDTO);
-        when(inviteServiceImpl.checkInvite(currentUser.getTelegram(), idRoom)).thenReturn(false);
-        when(roomServiceImpl.getRoomOrganizer(roomDTO)).thenReturn(new UserInfoDTO());
-        when(roomServiceImpl.getRoomsWhereUserJoin(currentUser.getIdUserInfo())).thenReturn(Collections.emptyList());
+        when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
+        when(inviteService.checkInvite(currentUser.getTelegram(), idRoom)).thenReturn(false);
+        when(roomService.getRoomOrganizer(roomDTO)).thenReturn(new UserInfoDTO());
+        when(roomService.getRoomsWhereUserJoin(currentUser.getIdUserInfo())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/room/{id}/join", idRoom)
                         .with(user("username").password("password")))
@@ -163,10 +164,10 @@ class RoomControllerTest {
 
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
-        when(roomServiceImpl.getRoomById(idRoom)).thenReturn(roomDTO);
-        when(inviteServiceImpl.checkInvite(currentUser.getTelegram(), idRoom)).thenReturn(false);
-        when(roomServiceImpl.getRoomOrganizer(roomDTO)).thenReturn(new UserInfoDTO());
-        when(roomServiceImpl.getRoomsWhereUserJoin(currentUser.getIdUserInfo())).thenReturn(Collections.emptyList());
+        when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
+        when(inviteService.checkInvite(currentUser.getTelegram(), idRoom)).thenReturn(false);
+        when(roomService.getRoomOrganizer(roomDTO)).thenReturn(new UserInfoDTO());
+        when(roomService.getRoomsWhereUserJoin(currentUser.getIdUserInfo())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/room/{id}/join", idRoom)
                         .with(user("username").password("password")))
@@ -185,10 +186,10 @@ class RoomControllerTest {
         RoomDTO roomDTO = new RoomDTO();
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
-        when(roomServiceImpl.getRoomById(idRoom)).thenReturn(roomDTO);
-        when(inviteServiceImpl.checkInvite(currentUser.getTelegram(), idRoom)).thenReturn(true);
-        when(roomServiceImpl.getRoomOrganizer(roomDTO)).thenReturn(new UserInfoDTO());
-        when(roomServiceImpl.getRoomsWhereUserJoin(currentUser.getIdUserInfo())).thenReturn(Collections.emptyList());
+        when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
+        when(inviteService.checkInvite(currentUser.getTelegram(), idRoom)).thenReturn(true);
+        when(roomService.getRoomOrganizer(roomDTO)).thenReturn(new UserInfoDTO());
+        when(roomService.getRoomsWhereUserJoin(currentUser.getIdUserInfo())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/room/{id}/join", idRoom)
                         .with(user("username").password("password")))
@@ -200,10 +201,10 @@ class RoomControllerTest {
                 .andExpect(model().attributeExists("wishDto"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(roomServiceImpl, times(2)).getRoomById(idRoom);
-        verify(inviteServiceImpl).checkInvite(currentUser.getTelegram(), idRoom);
-        verify(roomServiceImpl).getRoomsWhereUserJoin(currentUser.getIdUserInfo());
-        verify(roomServiceImpl, times(2)).getRoomById(idRoom);
+        verify(roomService, times(2)).getRoomById(idRoom);
+        verify(inviteService).checkInvite(currentUser.getTelegram(), idRoom);
+        verify(roomService).getRoomsWhereUserJoin(currentUser.getIdUserInfo());
+        verify(roomService, times(2)).getRoomById(idRoom);
     }
 
     @Test
@@ -217,13 +218,13 @@ class RoomControllerTest {
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setRole(Role.ORGANIZER);
 
-        when(wishServiceImpl.create(eq(wishDto))).thenReturn(savedWish);
-        when(roomServiceImpl.getRoomById(idRoom)).thenReturn(roomDTO);
+        when(wishService.create(eq(wishDto))).thenReturn(savedWish);
+        when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
-        when(roomServiceImpl.getRoomOrganizer(roomDTO)).thenReturn(currentUser);
-        when(roleServiceImpl.getRoleById(Role.ORGANIZER.getId())).thenReturn(roleDTO);
-        when(userRoleWishRoomServiceImpl.create(refEq(userRoleWishRoomDTO))).thenReturn(userRoleWishRoomDTO);
-        when(roomServiceImpl.readAll()).thenReturn(Collections.singletonList(roomDTO));
+        when(roomService.getRoomOrganizer(roomDTO)).thenReturn(currentUser);
+        when(roleService.getRoleById(Role.ORGANIZER.getId())).thenReturn(roleDTO);
+        when(userRoleWishRoomService.create(refEq(userRoleWishRoomDTO))).thenReturn(userRoleWishRoomDTO);
+        when(roomService.readAll()).thenReturn(Collections.singletonList(roomDTO));
 
         mockMvc.perform(post("/room/{id}/join", idRoom)
                         .with(user("username").password("password"))
@@ -231,13 +232,13 @@ class RoomControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/room/show/" + idRoom));
 
-        verify(wishServiceImpl, times(1)).create(wishDto);
-        verify(roomServiceImpl, times(1)).getRoomById(idRoom);
+        verify(wishService, times(1)).create(wishDto);
+        verify(roomService, times(1)).getRoomById(idRoom);
         verify(userDetailsService, times(1)).findUserByName(anyString());
-        verify(roomServiceImpl, times(2)).getRoomOrganizer(roomDTO);
-        verify(roleServiceImpl, times(1)).getRoleById(Role.ORGANIZER.getId());
-        verify(userRoleWishRoomServiceImpl, times(1)).create(any(UserRoleWishRoomDTO.class));
-        verify(roomServiceImpl, times(1)).readAll();
+        verify(roomService, times(2)).getRoomOrganizer(roomDTO);
+        verify(roleService, times(1)).getRoleById(Role.ORGANIZER.getId());
+        verify(userRoleWishRoomService, times(1)).create(any(UserRoleWishRoomDTO.class));
+        verify(roomService, times(1)).readAll();
     }
 
     @Test
@@ -250,9 +251,9 @@ class RoomControllerTest {
         roomDTO.setIdRoom(idRoom);
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(userInfoDTO);
-        when(roomServiceImpl.getRoomById(anyInt())).thenReturn(roomDTO);
-        when(roomServiceImpl.getRoomOrganizer(any(RoomDTO.class))).thenReturn(organizer);
-        when(roomServiceImpl.getUsersAndRolesByRoomId(anyInt())).thenReturn(usersAndRoles);
+        when(roomService.getRoomById(anyInt())).thenReturn(roomDTO);
+        when(roomService.getRoomOrganizer(any(RoomDTO.class))).thenReturn(organizer);
+        when(roomService.getUsersAndRolesByRoomId(anyInt())).thenReturn(usersAndRoles);
 
         mockMvc.perform(get("/room/{idRoom}/users-and-roles", idRoom)
                         .with(user("username").password("password")))
@@ -260,9 +261,9 @@ class RoomControllerTest {
                 .andExpect(view().name("user-in-room"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(roomServiceImpl).getRoomById(anyInt());
-        verify(roomServiceImpl).getRoomOrganizer(any(RoomDTO.class));
-        verify(roomServiceImpl).getUsersAndRolesByRoomId(anyInt());
+        verify(roomService).getRoomById(anyInt());
+        verify(roomService).getRoomOrganizer(any(RoomDTO.class));
+        verify(roomService).getUsersAndRolesByRoomId(anyInt());
 
     }
 
@@ -276,7 +277,7 @@ class RoomControllerTest {
         UserInfoDTO userInfoDTO = new UserInfoDTO(idUser, "username", "password", "telegram");
 
         when(userDetailsService.findUserByName(username)).thenReturn(userInfoDTO);
-        when(roomServiceImpl.getRoomsWhereUserJoin(idUser, PageRequest.of(page, size))).thenReturn(roomDTOPage);
+        when(roomService.getRoomsWhereUserJoin(idUser, PageRequest.of(page, size))).thenReturn(roomDTOPage);
 
         mockMvc.perform(get("/room/show/participant")
                         .param("page", String.valueOf(page))
@@ -285,7 +286,7 @@ class RoomControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("room-list"));
         verify(userDetailsService).findUserByName(username);
-        verify(roomServiceImpl).getRoomsWhereUserJoin(idUser, PageRequest.of(page, size));
+        verify(roomService).getRoomsWhereUserJoin(idUser, PageRequest.of(page, size));
     }
 
     @Test
@@ -299,8 +300,8 @@ class RoomControllerTest {
         userInfoDTO.setIdUserInfo(idUser);
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(userInfoDTO, loginUser);
-        when(roomServiceImpl.getRoomByName(anyString())).thenReturn(roomDTO);
-        when(roomServiceImpl.getRoomOrganizer(any(RoomDTO.class))).thenReturn(loginUser);
+        when(roomService.getRoomByName(anyString())).thenReturn(roomDTO);
+        when(roomService.getRoomOrganizer(any(RoomDTO.class))).thenReturn(loginUser);
 
         mockMvc.perform(post("/room/{nameRoom}/users/{UserInfoName}", "testRoom", "testUser")
                         .with(user("username").password("password")))
@@ -308,9 +309,9 @@ class RoomControllerTest {
                 .andExpect(redirectedUrl("/room/1/users-and-roles"));
 
         verify(userDetailsService, times(2)).findUserByName(anyString());
-        verify(roomServiceImpl).getRoomByName(anyString());
-        verify(roomServiceImpl).getRoomOrganizer(any(RoomDTO.class));
-        verify(userRoleWishRoomServiceImpl).deleteUserFromRoom(idRoom, idUser);
+        verify(roomService).getRoomByName(anyString());
+        verify(roomService).getRoomOrganizer(any(RoomDTO.class));
+        verify(userRoleWishRoomService).deleteUserFromRoom(idRoom, idUser);
     }
 
     @Test
@@ -328,8 +329,8 @@ class RoomControllerTest {
         organizer.setIdUserInfo(idOrganizer);
 
         when(userDetailsService.findUserByName(anyString())).thenReturn(userInfoDTO, loginUser);
-        when(roomServiceImpl.getRoomByName(anyString())).thenReturn(roomDTO);
-        when(roomServiceImpl.getRoomOrganizer(any(RoomDTO.class))).thenReturn(organizer);
+        when(roomService.getRoomByName(anyString())).thenReturn(roomDTO);
+        when(roomService.getRoomOrganizer(any(RoomDTO.class))).thenReturn(organizer);
 
         mockMvc.perform(post("/room/{nameRoom}/users/{UserInfoName}", "testRoom", "testUser")
                         .with(user("username").password("password")))
@@ -338,8 +339,8 @@ class RoomControllerTest {
                 .andExpect(flash().attribute("errorMessage", "Не можешь удалять"));
 
         verify(userDetailsService, times(2)).findUserByName(anyString());
-        verify(roomServiceImpl).getRoomByName(anyString());
-        verify(roomServiceImpl).getRoomOrganizer(any(RoomDTO.class));
-        verify(userRoleWishRoomServiceImpl, times(0)).deleteUserFromRoom(idRoom, idUser);
+        verify(roomService).getRoomByName(anyString());
+        verify(roomService).getRoomOrganizer(any(RoomDTO.class));
+        verify(userRoleWishRoomService, times(0)).deleteUserFromRoom(idRoom, idUser);
     }
 }

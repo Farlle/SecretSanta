@@ -2,9 +2,9 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.service.impl.MessageServiceImpl;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.MessageService;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,10 +28,10 @@ class MessageControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private MessageServiceImpl messageServiceImpl;
+    private MessageService messageService;
 
     @MockBean
-    private UserInfoServiceImpl userInfoServiceImpl;
+    private UserInfoService userInfoService;
 
     @MockBean
     private CustomUserDetailsService userDetailsService;
@@ -41,7 +41,7 @@ class MessageControllerTest {
     void testGetDialogs() throws Exception {
         UserInfoDTO currentUser = new UserInfoDTO();
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
-        when(messageServiceImpl.getDistinctDialog(anyInt())).thenReturn(Collections.emptyList());
+        when(messageService.getDistinctDialog(anyInt())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/message/dialogs")
                         .with(user("username").password("password")))
@@ -49,14 +49,14 @@ class MessageControllerTest {
                 .andExpect(view().name("dialogs"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(messageServiceImpl).getDistinctDialog(anyInt());
+        verify(messageService).getDistinctDialog(anyInt());
     }
 
     @Test
     void testReceiveMessages() throws Exception {
         UserInfoDTO currentUser = new UserInfoDTO();
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
-        when(messageServiceImpl.getConversation(anyInt(), anyInt())).thenReturn(Collections.emptyList());
+        when(messageService.getConversation(anyInt(), anyInt())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/message/conversation/1")
                         .with(user("username").password("password")))
@@ -64,7 +64,7 @@ class MessageControllerTest {
                 .andExpect(view().name("conversation"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(messageServiceImpl, times(2)).getConversation(anyInt(), anyInt());
+        verify(messageService, times(2)).getConversation(anyInt(), anyInt());
     }
 
     @Test
@@ -80,6 +80,6 @@ class MessageControllerTest {
                 .andExpect(view().name("redirect:/message/conversation/1"));
 
         verify(userDetailsService).findUserByName(anyString());
-        verify(messageServiceImpl).create(any(MessageDTO.class));
+        verify(messageService).create(any(MessageDTO.class));
     }
 }

@@ -36,9 +36,11 @@ public class MessageServiceImpl implements MessageService {
         message.setSender(UserInfoMapper.toUserInfoEntity(dto.getSender()));
         message.setDepartureDate(dto.getDepartureDate());
         message.setIdRecipient(dto.getIdRecipient());
-
-        telegramServiceImpl.sendMessage( userInfoTelegramChatsServiceImpl.getIdChatByTelegramName(
-                userInfoServiceImpl.getTelegramUser(dto.getIdRecipient())),MESSAGE);
+        Long idChat = userInfoTelegramChatsServiceImpl.getIdChatByTelegramName(
+                userInfoServiceImpl.getTelegramUser(dto.getIdRecipient()));
+        if(idChat != null){
+            telegramServiceImpl.sendMessage(idChat,MESSAGE);
+        }
 
         return MessageMapper.toMessageDTO(messageRepository.save(message));
     }

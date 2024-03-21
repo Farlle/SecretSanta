@@ -36,10 +36,6 @@ class InviteServiceImplTest {
     private RoomServiceImpl roomService;
     @Mock
     private UserInfoTelegramChatsServiceImpl userInfoTelegramChatsService;
-    @Mock
-    private UserInfoServiceImpl userInfoService;
-    @Mock
-    private RoomRepository roomRepository;
 
     @InjectMocks
     private InviteServiceImpl inviteService;

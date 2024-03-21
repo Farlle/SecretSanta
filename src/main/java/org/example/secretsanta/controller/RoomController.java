@@ -1,10 +1,9 @@
 package org.example.secretsanta.controller;
 
-
 import org.example.secretsanta.dto.*;
 import org.example.secretsanta.model.enums.Role;
-import org.example.secretsanta.service.impl.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.*;
 import org.example.secretsanta.wrapper.RoomAndOrganizerWrapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,24 +24,24 @@ import java.util.List;
 @RequestMapping("/room")
 public class RoomController {
 
-    private final RoomServiceImpl roomServiceImpl;
+    private final RoomService roomService;
     private final CustomUserDetailsService userDetailsService;
-    private final WishServiceImpl wishServiceImpl;
-    private final RoleServiceImpl roleServiceImpl;
-    private final UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl;
-    private final InviteServiceImpl inviteServiceImpl;
+    private final WishService wishService;
+    private final RoleService roleService;
+    private final UserRoleWishRoomService userRoleWishRoomService;
+    private final InviteService inviteService;
 
 
-    public RoomController(RoomServiceImpl roomServiceImpl, CustomUserDetailsService userDetailsService,
-                          WishServiceImpl wishServiceImpl, RoleServiceImpl roleServiceImpl,
-                          UserRoleWishRoomServiceImpl userRoleWishRoomServiceImpl, InviteServiceImpl inviteServiceImpl) {
+    public RoomController(RoomService roomService, CustomUserDetailsService userDetailsService,
+                          WishService wishService, RoleService roleService,
+                          UserRoleWishRoomService userRoleWishRoomService, InviteService inviteService) {
 
-        this.roomServiceImpl = roomServiceImpl;
+        this.roomService = roomService;
         this.userDetailsService = userDetailsService;
-        this.wishServiceImpl = wishServiceImpl;
-        this.roleServiceImpl = roleServiceImpl;
-        this.userRoleWishRoomServiceImpl = userRoleWishRoomServiceImpl;
-        this.inviteServiceImpl = inviteServiceImpl;
+        this.wishService = wishService;
+        this.roleService = roleService;
+        this.userRoleWishRoomService = userRoleWishRoomService;
+        this.inviteService = inviteService;
     }
 
     @GetMapping("/create")
@@ -69,7 +68,7 @@ public class RoomController {
             redirectAttributes.addFlashAttribute("error", "Draw Date must be before Toss Date.");
             return "redirect:/room/create";
         }
-        RoomDTO room = roomServiceImpl.create(dto);
+        RoomDTO room = roomService.create(dto);
         model.addAttribute("room", room);
         return "redirect:/room/" + room.getIdRoom() + "/join";
     }
@@ -77,9 +76,9 @@ public class RoomController {
     @GetMapping("/show/{idRoom}")
     public String getRoomById(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
 
-        RoomDTO room = roomServiceImpl.getRoomById(idRoom);
+        RoomDTO room = roomService.getRoomById(idRoom);
         UserInfoDTO loginUser = userDetailsService.findUserByName(principal.getName());
-        UserInfoDTO organizer = roomServiceImpl.getRoomOrganizer(room);
+        UserInfoDTO organizer = roomService.getRoomOrganizer(room);
 
         RoomAndOrganizerWrapper roomAndOrganizerWrapper = new RoomAndOrganizerWrapper(room, organizer);
 
@@ -93,14 +92,14 @@ public class RoomController {
     public String joinRoomForm(@PathVariable("id") int idRoom, Model model, Principal principal) {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
 
-        RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
-        if ((!inviteServiceImpl.checkInvite(currentUser.getTelegram(), idRoom)) &&
-                (roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo()) != currentUser.getIdUserInfo()) {
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
+        if ((!inviteService.checkInvite(currentUser.getTelegram(), idRoom)) &&
+                (roomService.getRoomOrganizer(roomDTO).getIdUserInfo()) != currentUser.getIdUserInfo()) {
             model.addAttribute("errorMessage", "У вас нет приглашения!!!");
             return "join-room-page";
         }
-        if (roomServiceImpl.getRoomsWhereUserJoin(currentUser.getIdUserInfo())
-                .contains(roomServiceImpl.getRoomById(idRoom))) {
+        if (roomService.getRoomsWhereUserJoin(currentUser.getIdUserInfo())
+                .contains(roomService.getRoomById(idRoom))) {
             model.addAttribute("errorMessage", "Вы уже являетесь участником этой комнаты.");
             return "join-room-page";
         }
@@ -116,30 +115,30 @@ public class RoomController {
     public String joinRoom(@PathVariable("id") int idRoom, @ModelAttribute WishDTO wishDto,
                            Model model, Principal principal) {
 
-        WishDTO savedWish = wishServiceImpl.create(wishDto);
+        WishDTO savedWish = wishService.create(wishDto);
 
-        RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
         UserRoleWishRoomDTO userRoleWishRoomDTO = new UserRoleWishRoomDTO();
         RoleDTO roleDTO;
 
-        if ((roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo()) == currentUser.getIdUserInfo()) {
-            roleDTO = roleServiceImpl.getRoleById(Role.ORGANIZER.getId());
+        if ((roomService.getRoomOrganizer(roomDTO).getIdUserInfo()) == currentUser.getIdUserInfo()) {
+            roleDTO = roleService.getRoleById(Role.ORGANIZER.getId());
         } else {
-            roleDTO = roleServiceImpl.getRoleById(Role.PARTICIPANT.getId());
+            roleDTO = roleService.getRoleById(Role.PARTICIPANT.getId());
         }
 
         userRoleWishRoomDTO.setUserInfoDTO(currentUser);
         userRoleWishRoomDTO.setWishDTO(savedWish);
         userRoleWishRoomDTO.setRoleDTO(roleDTO);
-        userRoleWishRoomDTO.setRoomDTO(roomServiceImpl.findRoomByName(roomDTO.getName()));
+        userRoleWishRoomDTO.setRoomDTO(roomService.findRoomByName(roomDTO.getName()));
 
-        userRoleWishRoomServiceImpl.create(userRoleWishRoomDTO);
+        userRoleWishRoomService.create(userRoleWishRoomDTO);
 
-        model.addAttribute("room", roomServiceImpl.readAll());
+        model.addAttribute("room", roomService.readAll());
 
-        if ((roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo()) != currentUser.getIdUserInfo()) {
-            inviteServiceImpl.UserAcceptInvite(currentUser.getTelegram(), idRoom);
+        if ((roomService.getRoomOrganizer(roomDTO).getIdUserInfo()) != currentUser.getIdUserInfo()) {
+            inviteService.UserAcceptInvite(currentUser.getTelegram(), idRoom);
         }
 
         return "redirect:/room/show/" + idRoom;
@@ -148,11 +147,11 @@ public class RoomController {
     @GetMapping("/{idRoom}/users-and-roles")
     public String getUsersAndRoles(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
         UserInfoDTO userInfoDTO = userDetailsService.findUserByName(principal.getName());
-        RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
 
-        UserInfoDTO organizer = roomServiceImpl.getRoomOrganizer(roomDTO);
+        UserInfoDTO organizer = roomService.getRoomOrganizer(roomDTO);
 
-        List<Object[]> usersAndRoles = roomServiceImpl.getUsersAndRolesByRoomId(idRoom);
+        List<Object[]> usersAndRoles = roomService.getUsersAndRolesByRoomId(idRoom);
         model.addAttribute("user", userInfoDTO);
         model.addAttribute("organizer", organizer);
         model.addAttribute("usersAndRoles", usersAndRoles);
@@ -164,7 +163,7 @@ public class RoomController {
                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                    @RequestParam(value = "size", defaultValue = "5") int size) {
         int idUser = userDetailsService.findUserByName(principal.getName()).getIdUserInfo();
-        Page<RoomDTO> roomDTOPage = roomServiceImpl.getRoomsWhereUserJoin(idUser, PageRequest.of(page, size));
+        Page<RoomDTO> roomDTOPage = roomService.getRoomsWhereUserJoin(idUser, PageRequest.of(page, size));
         model.addAttribute("roomsDto", roomDTOPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", roomDTOPage.getTotalPages());
@@ -178,15 +177,15 @@ public class RoomController {
                                      RedirectAttributes redirectAttributes) {
 
         UserInfoDTO userInfoDTO = userDetailsService.findUserByName(userInfoName);
-        RoomDTO roomDTO = roomServiceImpl.getRoomByName(nameRoom);
+        RoomDTO roomDTO = roomService.getRoomByName(nameRoom);
         UserInfoDTO loginUser = userDetailsService.findUserByName(principal.getName());
 
-        if (!(roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo() == loginUser.getIdUserInfo())) {
+        if (!(roomService.getRoomOrganizer(roomDTO).getIdUserInfo() == loginUser.getIdUserInfo())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Не можешь удалять");
             return "redirect:/room/" + roomDTO.getIdRoom() + "/users-and-roles";
         }
 
-        userRoleWishRoomServiceImpl.deleteUserFromRoom(roomDTO.getIdRoom(), userInfoDTO.getIdUserInfo());
+        userRoleWishRoomService.deleteUserFromRoom(roomDTO.getIdRoom(), userInfoDTO.getIdUserInfo());
         return "redirect:/room/" + roomDTO.getIdRoom() + "/users-and-roles";
     }
 

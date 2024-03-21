@@ -1,8 +1,8 @@
 package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,7 +20,7 @@ class AuthControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserInfoServiceImpl userInfoServiceImpl;
+    private UserInfoService userInfoService;
     @MockBean
     private CustomUserDetailsService userDetailsService;
 
@@ -48,6 +48,6 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("register-telegram"));
 
-        verify(userInfoServiceImpl).registerNewUserInfoAccount(dto);
+        verify(userInfoService).registerNewUserInfoAccount(dto);
     }
 }

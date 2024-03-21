@@ -3,6 +3,7 @@ package org.example.secretsanta.controller;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.exception.UserAlreadyExistsException;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class AuthController {
 
-    private final UserInfoServiceImpl userInfoServiceImpl;
+    private final UserInfoService userInfoService;
 
-    public AuthController(UserInfoServiceImpl userInfoServiceImpl) {
-        this.userInfoServiceImpl = userInfoServiceImpl;
+    public AuthController(UserInfoService userInfoService) {
+        this.userInfoService = userInfoService;
     }
 
     @GetMapping("/login")
@@ -34,7 +35,7 @@ public class AuthController {
     public String registrationUserInfo(@ModelAttribute("userInfo") UserInfoDTO dto,
                                        RedirectAttributes redirectAttributes) throws Exception {
         try{
-            userInfoServiceImpl.registerNewUserInfoAccount(dto);
+            userInfoService.registerNewUserInfoAccount(dto);
         } catch (UserAlreadyExistsException e){
             redirectAttributes.addFlashAttribute("errorMessage","Имя пользователя уже занято!");
             return  "redirect:/login";

@@ -6,11 +6,11 @@ import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.WishDTO;
 import org.example.secretsanta.exception.DrawingAlreadyPerformedException;
 import org.example.secretsanta.exception.NotEnoughUsersException;
-import org.example.secretsanta.service.impl.ResultServiceImpl;
-import org.example.secretsanta.service.impl.RoomServiceImpl;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
-import org.example.secretsanta.service.impl.WishServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.ResultService;
+import org.example.secretsanta.service.serviceinterface.RoomService;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
+import org.example.secretsanta.service.serviceinterface.WishService;
 import org.example.secretsanta.wrapper.ResultWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,30 +27,32 @@ import java.util.List;
 @RequestMapping("/result")
 public class ResultController {
 
-    private final ResultServiceImpl resultServiceImpl;
-    private final UserInfoServiceImpl userInfoServiceImpl;
-    private final RoomServiceImpl roomServiceImpl;
+    private final ResultService resultService;
+    private final UserInfoService userInfoService;
+    private final RoomService roomService;
     private final CustomUserDetailsService userDetailsService;
-    private final WishServiceImpl wishServiceImpl;
+    private final WishService wishService;
 
-    public ResultController(ResultServiceImpl resultServiceImpl, UserInfoServiceImpl userInfoServiceImpl, RoomServiceImpl roomServiceImpl, CustomUserDetailsService userDetailsService, WishServiceImpl wishServiceImpl) {
-        this.resultServiceImpl = resultServiceImpl;
-        this.userInfoServiceImpl = userInfoServiceImpl;
-        this.roomServiceImpl = roomServiceImpl;
+    public ResultController(ResultService resultService, UserInfoService userInfoService,
+                            RoomService roomService, CustomUserDetailsService userDetailsService,
+                            WishService wishService) {
+        this.resultService = resultService;
+        this.userInfoService = userInfoService;
+        this.roomService = roomService;
         this.userDetailsService = userDetailsService;
-        this.wishServiceImpl = wishServiceImpl;
+        this.wishService = wishService;
     }
 
     @GetMapping("/show/{idRoom}")
     public String showResultDraw(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
-        List<ResultDTO> results = resultServiceImpl.showDrawInRoom(idRoom);
+        List<ResultDTO> results = resultService.showDrawInRoom(idRoom);
         List<ResultWrapper> resultWrapper = new ArrayList<>();
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
 
         for (ResultDTO result : results) {
-            UserInfoDTO santa = userInfoServiceImpl.getUserInfoById(result.getIdSanta());
-            UserInfoDTO ward = userInfoServiceImpl.getUserInfoById(result.getIdWard());
-            WishDTO wish = wishServiceImpl.getUserWishInRoom(idRoom, ward.getIdUserInfo());
+            UserInfoDTO santa = userInfoService.getUserInfoById(result.getIdSanta());
+            UserInfoDTO ward = userInfoService.getUserInfoById(result.getIdWard());
+            WishDTO wish = wishService.getUserWishInRoom(idRoom, ward.getIdUserInfo());
             resultWrapper.add(new ResultWrapper(santa, ward, wish));
         }
 
@@ -68,16 +70,16 @@ public class ResultController {
                               RedirectAttributes redirectAttributes) {
 
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
-        RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
+        RoomDTO roomDTO = roomService.getRoomById(idRoom);
 
-        if (!(roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo() == currentUser.getIdUserInfo())) {
+        if (!(roomService.getRoomOrganizer(roomDTO).getIdUserInfo() == currentUser.getIdUserInfo())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Вы не можете проводить жеребьевку");
             return "redirect:/room/show/" + idRoom;
         }
 
-        RoomDTO room = roomServiceImpl.getRoomById(idRoom);
+        RoomDTO room = roomService.getRoomById(idRoom);
         try {
-            resultServiceImpl.performDraw(room);
+            resultService.performDraw(room);
         } catch (NotEnoughUsersException e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Маловато гостей");
             return "redirect:/room/show/" + idRoom;

@@ -3,10 +3,10 @@ package org.example.secretsanta.controller;
 import org.example.secretsanta.dto.InviteDTO;
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
-import org.example.secretsanta.service.impl.InviteServiceImpl;
-import org.example.secretsanta.service.impl.RoomServiceImpl;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
+import org.example.secretsanta.service.serviceinterface.InviteService;
+import org.example.secretsanta.service.serviceinterface.RoomService;
+import org.example.secretsanta.service.serviceinterface.UserInfoService;
 import org.example.secretsanta.wrapper.InviteTelegramWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,32 +19,33 @@ import java.security.Principal;
 @RequestMapping("/invite")
 public class InviteController {
 
-    private final InviteServiceImpl inviteServiceImpl;
-    private final UserInfoServiceImpl userInfoServiceImpl;
+    private final InviteService inviteService;
+    private final UserInfoService userInfoService;
     private final CustomUserDetailsService userDetailsService;
-    private final RoomServiceImpl roomServiceImpl;
+    private final RoomService roomService;
 
-    public InviteController(InviteServiceImpl inviteServiceImpl, UserInfoServiceImpl userInfoServiceImpl, CustomUserDetailsService userDetailsService, RoomServiceImpl roomServiceImpl) {
-        this.inviteServiceImpl = inviteServiceImpl;
-        this.userInfoServiceImpl = userInfoServiceImpl;
+    public InviteController(InviteService inviteService, UserInfoService userInfoService,
+                            CustomUserDetailsService userDetailsService, RoomService roomService) {
+        this.inviteService = inviteService;
+        this.userInfoService = userInfoService;
         this.userDetailsService = userDetailsService;
-        this.roomServiceImpl = roomServiceImpl;
+        this.roomService = roomService;
     }
 
     @GetMapping("/send/{idRoom}")
     public String inviteTelegramForm(@PathVariable("idRoom") int idRoom, Model model, Principal principal,
                                      RedirectAttributes redirectAttributes) {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
-        RoomDTO roomDTO = roomServiceImpl.getRoomById(idRoom);
+        RoomDTO roomDTO = roomService .getRoomById(idRoom);
 
-        if (roomServiceImpl.getRoomOrganizer(roomDTO).getIdUserInfo() != currentUser.getIdUserInfo()) {
-            redirectAttributes.addFlashAttribute("error", "Вы не можете приглашать участников");
+        if (roomService .getRoomOrganizer(roomDTO).getIdUserInfo() != currentUser.getIdUserInfo()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Вы не можете приглашать участников");
             return "redirect:/room/show/" + idRoom;
         }
 
         InviteTelegramWrapper inviteTelegramWrapper = new InviteTelegramWrapper();
         inviteTelegramWrapper.setSanta(userDetailsService.findUserByName(principal.getName()));
-        inviteTelegramWrapper.setRoom(roomServiceImpl.getRoomById(idRoom));
+        inviteTelegramWrapper.setRoom(roomService .getRoomById(idRoom));
 
         model.addAttribute("inviteTelegramWrapper", inviteTelegramWrapper);
         return "invite-page";
@@ -53,17 +54,17 @@ public class InviteController {
     @PostMapping("/send")
     public String inviteTelegramUser(@ModelAttribute InviteTelegramWrapper inviteTelegramWrapper,
                                      RedirectAttributes redirectAttributes) {
-        UserInfoDTO participantUser = userInfoServiceImpl
+        UserInfoDTO participantUser = userInfoService 
                 .getUsersInfoByTelegram(inviteTelegramWrapper.getParticipantTelegram());
         if (participantUser == null) {
-            redirectAttributes.addFlashAttribute("error", "Этот пользователь не регестрировал телеграм!");
+            redirectAttributes.addFlashAttribute("errorMessage", "Этот пользователь не регестрировал телеграм!");
             return "redirect:/room/show/" + inviteTelegramWrapper.getRoom().getIdRoom();
         }
         int idRoom = inviteTelegramWrapper.getRoom().getIdRoom();
         InviteDTO inviteDTO = new InviteDTO();
         inviteDTO.setUserInfoDTO(participantUser);
         inviteDTO.setTelegram(inviteTelegramWrapper.getParticipantTelegram().replaceAll("@", ""));
-        inviteServiceImpl.sendInvite(idRoom, inviteDTO);
+        inviteService .sendInvite(idRoom, inviteDTO);
         return "redirect:/room/show/" + inviteTelegramWrapper.getRoom().getIdRoom();
     }
 
