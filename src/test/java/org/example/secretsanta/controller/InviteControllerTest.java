@@ -73,7 +73,7 @@ class InviteControllerTest {
                         .with(user("username").password("password")))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/room/show/1"))
-                .andExpect(flash().attribute("error", "Вы не можете приглашать участников"));
+                .andExpect(flash().attribute("errorMessage", "Вы не можете приглашать участников"));
 
 
         verify(userDetailsService, times(1)).findUserByName(anyString());
@@ -118,9 +118,9 @@ class InviteControllerTest {
         mockMvc.perform(post("/invite/send")
                         .flashAttr("inviteTelegramWrapper", inviteTelegramWrapper)
                         .with(user("username").password("password")))
-                .andExpect(status().is3xxRedirection()) // Ожидаем перенаправление
-                .andExpect(redirectedUrl("/room/show/1")) // Ожидаем URL перенаправления
-                .andExpect(flash().attribute("error", "Этот пользователь не регестрировал телеграм!")); // Ожидаем атрибут в flash-атрибутах
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/room/show/1"))
+                .andExpect(flash().attribute("errorMessage", "Этот пользователь не регестрировал телеграм!"));
 
 
         verify(userInfoService).getUsersInfoByTelegram(anyString());
