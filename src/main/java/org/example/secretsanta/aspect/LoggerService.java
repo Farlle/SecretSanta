@@ -9,9 +9,9 @@ import java.util.logging.Logger;
 
 @Aspect
 @Component
-public class loggerServiceAspect {
+public class LoggerService {
 
-    private static final Logger logger = Logger.getLogger(loggerServiceAspect.class.getName());
+    private static final Logger logger = Logger.getLogger(LoggerService.class.getName());
 
     @After("execution(* org.example.secretsanta.service.impl.*.*(..))")
     public void logAfter(JoinPoint joinPoint) {

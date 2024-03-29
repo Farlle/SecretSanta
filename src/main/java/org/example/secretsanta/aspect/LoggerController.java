@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class loggerControllerAspect {
+public class LoggerController {
 
-    private static final Logger logger = Logger.getLogger(loggerControllerAspect.class.getName());
+    private static final Logger logger = Logger.getLogger(LoggerController.class.getName());
 
     @After("execution(* org.example.secretsanta.controller.*.*(..))")
     public void logAfter(JoinPoint joinPoint) {
