@@ -7,13 +7,12 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserRoleWishRoomMapperTest {
 
     @Test
-    void TestToUserRoleWishRoomDTO() {
+    void testToUserRoleWishRoomDTO() {
         UserRoleWishRoomEntity userRoleWishRoomEntity = new UserRoleWishRoomEntity();
         userRoleWishRoomEntity.setIdUserRoleWishRoom(1);
         userRoleWishRoomEntity.setUserInfoEntity(new UserInfoEntity());
@@ -32,7 +31,7 @@ class UserRoleWishRoomMapperTest {
     }
 
     @Test
-    void TestToUserRoleWishRoomEntity() {
+    void testToUserRoleWishRoomEntity() {
         UserRoleWishRoomDTO userRoleWishRoomDTO = new UserRoleWishRoomDTO();
         userRoleWishRoomDTO.setIdUserRoleWishRoom(1);
         userRoleWishRoomDTO.setUserInfoDTO(new UserInfoDTO());
@@ -52,7 +51,7 @@ class UserRoleWishRoomMapperTest {
     }
 
     @Test
-    void TestToUserRoleWishRoomDTOList() {
+    void testToUserRoleWishRoomDTOList() {
         UserRoleWishRoomEntity userRoleWishRoomEntity1 = new UserRoleWishRoomEntity();
         userRoleWishRoomEntity1.setIdUserRoleWishRoom(1);
         UserRoleWishRoomEntity userRoleWishRoomEntity2 = new UserRoleWishRoomEntity();
@@ -71,24 +70,24 @@ class UserRoleWishRoomMapperTest {
     }
 
     @Test
-    public void testToUserRoleWishRoomDTO_Null() {
+    void testToUserRoleWishRoomDTO_Null() {
         UserRoleWishRoomDTO userRoleWishRoomDTO = UserRoleWishRoomMapper.toUserRoleWishRoomDTO(null);
 
-        assertNull(userRoleWishRoomDTO);
+        assertNotNull(userRoleWishRoomDTO);
     }
 
     @Test
-    public void testToUserRoleWishRoomEntity_Null() {
+    void testToUserRoleWishRoomEntity_Null() {
         UserRoleWishRoomEntity userRoleWishRoomEntity = UserRoleWishRoomMapper.toUserRoleWishRoomEntity(null);
 
-        assertNull(userRoleWishRoomEntity);
+        assertNotNull(userRoleWishRoomEntity);
     }
 
     @Test
-    public void testToUserRoleWishRoomDTOList_Null() {
+    void testToUserRoleWishRoomDTOList_Null() {
         List<UserRoleWishRoomDTO> userRoleWishRoomDTOList = UserRoleWishRoomMapper.toUserRoleWishRoomDTOList(null);
 
-        assertNull(userRoleWishRoomDTOList);
+        assertNotNull(userRoleWishRoomDTOList);
     }
 
 }

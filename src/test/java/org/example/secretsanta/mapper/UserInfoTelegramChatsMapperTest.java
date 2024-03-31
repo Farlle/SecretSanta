@@ -9,13 +9,12 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserInfoTelegramChatsMapperTest {
 
     @Test
-    void TestToUserInfoTelegramChatsDTO() {
+    void testToUserInfoTelegramChatsDTO() {
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
         userInfoTelegramChatsEntity.setIdChat(1L);
         userInfoTelegramChatsEntity.setUserInfo(new UserInfoEntity());
@@ -32,7 +31,7 @@ class UserInfoTelegramChatsMapperTest {
     }
 
     @Test
-    void TestToUserInfoTelegramChatsEntity() {
+    void testToUserInfoTelegramChatsEntity() {
         UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
         userInfoTelegramChatsDTO.setIdChat(1L);
         userInfoTelegramChatsDTO.setUserInfoDTO(new UserInfoDTO());
@@ -49,7 +48,7 @@ class UserInfoTelegramChatsMapperTest {
     }
 
     @Test
-    void TestToUserInfoTelegramChatsDTOList() {
+    void testToUserInfoTelegramChatsDTOList() {
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity1 = new UserInfoTelegramChatsEntity();
         userInfoTelegramChatsEntity1.setIdChat(1L);
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity2 = new UserInfoTelegramChatsEntity();
@@ -66,26 +65,26 @@ class UserInfoTelegramChatsMapperTest {
     }
 
     @Test
-    public void testToUserInfoTelegramChatsDTO_Null() {
+    void testToUserInfoTelegramChatsDTO_Null() {
         UserInfoTelegramChatsDTO userInfoTelegramChatsDTO
                 = UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTO(null);
 
-        assertNull(userInfoTelegramChatsDTO);
+        assertNotNull(userInfoTelegramChatsDTO);
     }
 
     @Test
-    public void testToUserInfoTelegramChatsEntity_Null() {
+    void testToUserInfoTelegramChatsEntity_Null() {
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity
                 = UserInfoTelegramChatsMapper.toUserInfoTelegramChatsEntity(null);
 
-        assertNull(userInfoTelegramChatsEntity);
+        assertNotNull(userInfoTelegramChatsEntity);
     }
 
     @Test
-    public void testToUserInfoTelegramChatsDTOList_Null() {
+    void testToUserInfoTelegramChatsDTOList_Null() {
         List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTOList
                 = UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(null);
 
-        assertNull(userInfoTelegramChatsDTOList);
+        assertNotNull(userInfoTelegramChatsDTOList);
     }
 }

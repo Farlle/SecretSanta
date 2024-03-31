@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.UserRoleWishRoomDTO;
 import org.example.secretsanta.model.entity.UserRoleWishRoomEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,12 +12,11 @@ import java.util.stream.Collectors;
 public class UserRoleWishRoomMapper {
 
     public static UserRoleWishRoomDTO toUserRoleWishRoomDTO(UserRoleWishRoomEntity userRoleWishRoomEntity) {
+        UserRoleWishRoomDTO userRoleWishRoomDTO = new UserRoleWishRoomDTO();
 
         if (userRoleWishRoomEntity == null) {
-            return null;
+            return userRoleWishRoomDTO;
         }
-
-        UserRoleWishRoomDTO userRoleWishRoomDTO = new UserRoleWishRoomDTO();
 
         userRoleWishRoomDTO.setIdUserRoleWishRoom(userRoleWishRoomEntity.getIdUserRoleWishRoom());
         userRoleWishRoomDTO.setUserInfoDTO(UserInfoMapper.toUserInfoDTO(userRoleWishRoomEntity.getUserInfoEntity()));
@@ -27,12 +27,11 @@ public class UserRoleWishRoomMapper {
     }
 
     public static UserRoleWishRoomEntity toUserRoleWishRoomEntity(UserRoleWishRoomDTO userRoleWishRoomDTO) {
+        UserRoleWishRoomEntity userRoleWishRoomEntity = new UserRoleWishRoomEntity();
 
         if (userRoleWishRoomDTO == null) {
-            return null;
+            return userRoleWishRoomEntity;
         }
-
-        UserRoleWishRoomEntity userRoleWishRoomEntity = new UserRoleWishRoomEntity();
 
         userRoleWishRoomEntity.setIdUserRoleWishRoom(userRoleWishRoomDTO.getIdUserRoleWishRoom());
         userRoleWishRoomEntity.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(userRoleWishRoomDTO.getUserInfoDTO()));
@@ -44,7 +43,7 @@ public class UserRoleWishRoomMapper {
 
     public static List<UserRoleWishRoomDTO> toUserRoleWishRoomDTOList(List<UserRoleWishRoomEntity> userRoleWishRoomEntityList) {
         if (userRoleWishRoomEntityList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return userRoleWishRoomEntityList.stream()

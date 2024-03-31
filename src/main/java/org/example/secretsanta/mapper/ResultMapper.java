@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.ResultDTO;
 import org.example.secretsanta.model.entity.ResultEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,11 +12,12 @@ import java.util.stream.Collectors;
 public class ResultMapper {
 
     public static ResultDTO toResultDTO(ResultEntity resultEntity) {
+        ResultDTO resultDTO = new ResultDTO();
+
         if (resultEntity == null) {
-            return null;
+            return resultDTO;
         }
 
-        ResultDTO resultDTO = new ResultDTO();
         resultDTO.setIdResult(resultEntity.getIdResult());
         resultDTO.setIdSanta(resultEntity.getIdSanta());
         resultDTO.setIdWard(resultEntity.getIdWard());
@@ -25,11 +27,11 @@ public class ResultMapper {
     }
 
     public static ResultEntity toResultEntity(ResultDTO resultDTO) {
-        if (resultDTO == null) {
-            return null;
-        }
-
         ResultEntity resultEntity = new ResultEntity();
+
+        if (resultDTO == null) {
+            return resultEntity;
+        }
 
         resultEntity.setIdResult(resultDTO.getIdResult());
         resultEntity.setIdSanta(resultDTO.getIdSanta());
@@ -42,7 +44,7 @@ public class ResultMapper {
 
     public static List<ResultDTO> toResultDTOList(List<ResultEntity> resultEntitiesList) {
         if (resultEntitiesList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return resultEntitiesList.stream()

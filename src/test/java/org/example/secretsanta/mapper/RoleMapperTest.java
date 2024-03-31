@@ -52,23 +52,23 @@ class RoleMapperTest {
     }
 
     @Test
-    public void testToRoleDTO_Null() {
+    void testToRoleDTO_Null() {
         RoleDTO roleDTO = RoleMapper.toRoleDTO(null);
 
-        assertNull(roleDTO);
+        assertNotNull(roleDTO);
     }
 
     @Test
-    public void testToRoleEntity_Null() {
+    void testToRoleEntity_Null() {
         RoleEntity roleEntity = RoleMapper.toRoleEntity(null);
 
-        assertNull(roleEntity);
+        assertNotNull(roleEntity);
     }
 
     @Test
-    public void testToRoleDTOList_Null() {
+    void testToRoleDTOList_Null() {
         List<RoleDTO> roleDTOList = RoleMapper.toRoleDTOList(null);
 
-        assertNull(roleDTOList);
+        assertNotNull(roleDTOList);
     }
 }

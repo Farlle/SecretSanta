@@ -81,31 +81,31 @@ class InviteMapperTest {
     }
 
     @Test
-    public void testToInviteDTO_Null() {
+    void testToInviteDTO_Null() {
         InviteDTO inviteDTO = InviteMapper.toInviteDTO(null);
 
-        assertNull(inviteDTO);
+        assertNotNull(inviteDTO);
     }
 
     @Test
-    public void testToInviteEntity_Null() {
+    void testToInviteEntity_Null() {
         InviteEntity inviteEntity = InviteMapper.toInviteEntity(null);
 
-        assertNull(inviteEntity);
+        assertNotNull(inviteEntity);
     }
 
     @Test
-    public void testToInviteDTOList_Null() {
+    void testToInviteDTOList_Null() {
         List<InviteDTO> inviteDTOList = InviteMapper.toInviteDTOList(null);
 
-        assertNull(inviteDTOList);
+        assertNotNull(inviteDTOList);
     }
 
     @Test
-    public void testToInviteEntityList_Null() {
+    void testToInviteEntityList_Null() {
         List<InviteEntity> inviteEntityList = InviteMapper.toInviteEntityList(null);
 
-        assertNull(inviteEntityList);
+        assertNotNull(inviteEntityList);
     }
 
 }

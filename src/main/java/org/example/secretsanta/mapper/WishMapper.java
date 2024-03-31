@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.WishDTO;
 import org.example.secretsanta.model.entity.WishEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,22 +12,24 @@ import java.util.stream.Collectors;
 public class WishMapper {
 
     public static WishDTO toWishDTO(WishEntity wishEntity) {
+        WishDTO wishDTO = new WishDTO();
+
         if (wishEntity == null) {
-            return null;
+            return wishDTO;
         }
 
-        WishDTO wishDTO = new WishDTO();
         wishDTO.setIdWish(wishEntity.getIdWish());
         wishDTO.setWish(wishEntity.getWish());
         return wishDTO;
     }
 
     public static WishEntity toWishEntity(WishDTO wishDTO) {
+        WishEntity wishEntity = new WishEntity();
+
         if (wishDTO == null) {
-            return null;
+            return wishEntity;
         }
 
-        WishEntity wishEntity = new WishEntity();
         wishEntity.setIdWish(wishDTO.getIdWish());
         wishEntity.setWish(wishDTO.getWish());
         return wishEntity;
@@ -34,7 +37,7 @@ public class WishMapper {
 
     public static List<WishDTO> toWishDTOList(List<WishEntity> wishEntitiesList) {
         if (wishEntitiesList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return wishEntitiesList.stream()

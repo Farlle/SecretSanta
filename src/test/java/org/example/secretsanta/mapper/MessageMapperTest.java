@@ -66,24 +66,24 @@ class MessageMapperTest {
     }
 
     @Test
-    public void testToMessageDTO_Null() {
+    void testToMessageDTO_Null() {
         MessageDTO messageDTO = MessageMapper.toMessageDTO(null);
 
-        assertNull(messageDTO);
+        assertNotNull(messageDTO);
     }
 
     @Test
-    public void testToMessageEntity_Null() {
+    void testToMessageEntity_Null() {
         MessageEntity messageEntity = MessageMapper.toMessageEntity(null);
 
-        assertNull(messageEntity);
+        assertNotNull(messageEntity);
     }
 
     @Test
-    public void testToMessageDTOList_Null() {
+    void testToMessageDTOList_Null() {
         List<MessageDTO> messageDTOList = MessageMapper.toMessageDTOList(null);
 
-        assertNull(messageDTOList);
+        assertNotNull(messageDTOList);
     }
 
 }

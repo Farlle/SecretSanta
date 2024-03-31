@@ -59,24 +59,24 @@ class UserInfoMapperTest {
     }
 
     @Test
-    public void testToUserInfoDTO_Null() {
+    void testToUserInfoDTO_Null() {
         UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(null);
 
-        assertNull(userInfoDTO);
+        assertNotNull(userInfoDTO);
     }
 
     @Test
-    public void testToUserInfoEntity_Null() {
+    void testToUserInfoEntity_Null() {
         UserInfoEntity userInfoEntity = UserInfoMapper.toUserInfoEntity(null);
 
-        assertNull(userInfoEntity);
+        assertNotNull(userInfoEntity);
     }
 
     @Test
-    public void testToUserInfoDTOList_Null() {
+    void testToUserInfoDTOList_Null() {
         List<UserInfoDTO> userInfoDTOList = UserInfoMapper.toUserInfoDTOList(null);
 
-        assertNull(userInfoDTOList);
+        assertNotNull(userInfoDTOList);
     }
 
 }

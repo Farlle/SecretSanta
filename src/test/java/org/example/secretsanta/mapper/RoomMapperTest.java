@@ -68,24 +68,24 @@ class RoomMapperTest {
     }
 
     @Test
-    public void testToRoomDTO_Null() {
+    void testToRoomDTO_Null() {
         RoomDTO roomDTO = RoomMapper.toRoomDTO(null);
 
-        assertNull(roomDTO);
+        assertNotNull(roomDTO);
     }
 
     @Test
-    public void testToRoomDTOList_Null() {
+    void testToRoomDTOList_Null() {
         List<RoomDTO> roomDTOList = RoomMapper.toRoomDTOList(null);
 
-        assertNull(roomDTOList);
+        assertNotNull(roomDTOList);
     }
 
     @Test
-    public void testToRoomEntity_Null() {
+    void testToRoomEntity_Null() {
         RoomEntity roomEntity = RoomMapper.toRoomEntity(null);
 
-        assertNull(roomEntity);
+        assertNotNull(roomEntity);
     }
 
 }

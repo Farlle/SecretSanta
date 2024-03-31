@@ -61,24 +61,24 @@ class ResultMapperTest {
     }
 
     @Test
-    public void testToResultDTO_Null() {
+    void testToResultDTO_Null() {
         ResultDTO resultDTO = ResultMapper.toResultDTO(null);
 
-        assertNull(resultDTO);
+        assertNotNull(resultDTO);
     }
 
     @Test
-    public void testToResultEntity_Null() {
+    void testToResultEntity_Null() {
         ResultEntity resultEntity = ResultMapper.toResultEntity(null);
 
-        assertNull(resultEntity);
+        assertNotNull(resultEntity);
     }
 
     @Test
-    public void testToResultDTOList_Null() {
+    void testToResultDTOList_Null() {
         List<ResultDTO> resultDTOList = ResultMapper.toResultDTOList(null);
 
-        assertNull(resultDTOList);
+        assertNotNull(resultDTOList);
     }
 
 }

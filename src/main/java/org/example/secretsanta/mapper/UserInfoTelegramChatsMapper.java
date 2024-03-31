@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.model.entity.UserInfoTelegramChatsEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,12 +13,13 @@ public class UserInfoTelegramChatsMapper {
 
     public static UserInfoTelegramChatsDTO toUserInfoTelegramChatsDTO
             (UserInfoTelegramChatsEntity userInfoTelegramChatsEntity) {
+        UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
+
 
         if (userInfoTelegramChatsEntity == null) {
-            return null;
+            return userInfoTelegramChatsDTO;
         }
 
-        UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
         userInfoTelegramChatsDTO.setIdChat(userInfoTelegramChatsEntity.getIdChat());
         userInfoTelegramChatsDTO.setUserInfoDTO(UserInfoMapper.toUserInfoDTO(userInfoTelegramChatsEntity.getUserInfo()));
         userInfoTelegramChatsDTO.setIdUserInfoTelegramChat(userInfoTelegramChatsEntity.getIdUserInfoTelegramChat());
@@ -27,12 +29,12 @@ public class UserInfoTelegramChatsMapper {
 
     public static UserInfoTelegramChatsEntity toUserInfoTelegramChatsEntity
             (UserInfoTelegramChatsDTO userInfoTelegramChatsDTO) {
+        UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
 
         if (userInfoTelegramChatsDTO == null) {
-            return null;
+            return userInfoTelegramChatsEntity;
         }
 
-        UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
         userInfoTelegramChatsEntity.setIdChat(userInfoTelegramChatsDTO.getIdChat());
         userInfoTelegramChatsEntity.setUserInfo(UserInfoMapper
                 .toUserInfoEntity(userInfoTelegramChatsDTO.getUserInfoDTO()));
@@ -46,7 +48,7 @@ public class UserInfoTelegramChatsMapper {
             (List<UserInfoTelegramChatsEntity> userInfoTelegramChatsEntityList) {
 
         if (userInfoTelegramChatsEntityList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return userInfoTelegramChatsEntityList.stream()

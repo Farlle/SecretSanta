@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.InviteDTO;
 import org.example.secretsanta.model.entity.InviteEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,11 +12,12 @@ import java.util.stream.Collectors;
 public class InviteMapper {
 
     public static InviteDTO toInviteDTO(InviteEntity inviteEntity) {
+        InviteDTO inviteDTO = new InviteDTO();
+
         if (inviteEntity == null) {
-            return null;
+            return inviteDTO;
         }
 
-        InviteDTO inviteDTO = new InviteDTO();
         inviteDTO.setIdInvite(inviteEntity.getIdInvite());
         inviteDTO.setStatus(inviteEntity.getStatus());
         inviteDTO.setTelegram(inviteEntity.getTelegram());
@@ -26,11 +28,12 @@ public class InviteMapper {
     }
 
     public static InviteEntity toInviteEntity(InviteDTO inviteDTO) {
+        InviteEntity inviteEntity = new InviteEntity();
+
         if (inviteDTO == null) {
-            return null;
+            return inviteEntity;
         }
 
-        InviteEntity inviteEntity = new InviteEntity();
         inviteEntity.setIdInvite(inviteDTO.getIdInvite());
         inviteEntity.setStatus(inviteDTO.getStatus());
         inviteEntity.setTelegram(inviteDTO.getTelegram());
@@ -42,7 +45,7 @@ public class InviteMapper {
 
     public static List<InviteDTO> toInviteDTOList(List<InviteEntity> inviteEntitiesList) {
         if (inviteEntitiesList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return inviteEntitiesList.stream()
@@ -53,7 +56,7 @@ public class InviteMapper {
 
     public static List<InviteEntity> toInviteEntityList(List<InviteDTO> inveteDTOList) {
         if (inveteDTOList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return inveteDTOList.stream()

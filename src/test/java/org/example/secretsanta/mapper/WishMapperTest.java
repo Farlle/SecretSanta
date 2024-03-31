@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WishMapperTest {
 
     @Test
-    void TestToWishDTO() {
+    void testToWishDTO() {
         WishEntity wishEntity = new WishEntity();
         wishEntity.setIdWish(1);
         wishEntity.setWish("Test Wish");
@@ -24,7 +24,7 @@ class WishMapperTest {
     }
 
     @Test
-    void TestToWishEntity() {
+    void testToWishEntity() {
         WishDTO wishDTO = new WishDTO();
         wishDTO.setIdWish(1);
         wishDTO.setWish("Test Wish");
@@ -36,7 +36,7 @@ class WishMapperTest {
     }
 
     @Test
-    void TestToWishDTOList() {
+    void testToWishDTOList() {
         WishEntity wishEntity1 = new WishEntity();
         wishEntity1.setIdWish(1);
         WishEntity wishEntity2 = new WishEntity();
@@ -51,24 +51,24 @@ class WishMapperTest {
     }
 
     @Test
-    public void testToWishDTO_Null() {
+    void testToWishDTO_Null() {
         WishDTO wishDTO = WishMapper.toWishDTO(null);
 
-        assertNull(wishDTO);
+        assertNotNull(wishDTO);
     }
 
     @Test
-    public void testToWishEntity_Null() {
+    void testToWishEntity_Null() {
         WishEntity wishEntity = WishMapper.toWishEntity(null);
 
-        assertNull(wishEntity);
+        assertNotNull(wishEntity);
     }
 
     @Test
-    public void testToWishDTOList_Null() {
+    void testToWishDTOList_Null() {
         List<WishDTO> wishDTOList = WishMapper.toWishDTOList(null);
 
-        assertNull(wishDTOList);
+        assertNotNull(wishDTOList);
     }
 
 }

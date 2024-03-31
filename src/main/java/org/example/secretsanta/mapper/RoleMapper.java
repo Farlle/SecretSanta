@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.RoleDTO;
 import org.example.secretsanta.model.entity.RoleEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,22 +12,24 @@ import java.util.stream.Collectors;
 public class RoleMapper {
 
     public static RoleDTO toRoleDTO(RoleEntity roleEntity) {
+        RoleDTO roleDTO = new RoleDTO();
+
         if (roleEntity == null) {
-            return null;
+            return roleDTO;
         }
 
-        RoleDTO roleDTO = new RoleDTO();
         roleDTO.setIdRole(roleEntity.getIdRole());
         roleDTO.setRole(roleEntity.getRole());
         return roleDTO;
     }
 
     public static RoleEntity toRoleEntity(RoleDTO roleDTO) {
+        RoleEntity roleEntity = new RoleEntity();
+
         if (roleDTO == null) {
-            return null;
+            return roleEntity;
         }
 
-        RoleEntity roleEntity = new RoleEntity();
         roleEntity.setIdRole(roleDTO.getIdRole());
         roleEntity.setRole(roleDTO.getRole());
         return roleEntity;
@@ -34,7 +37,7 @@ public class RoleMapper {
 
     public static List<RoleDTO> toRoleDTOList(List<RoleEntity> roleEntitiesList) {
         if (roleEntitiesList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return roleEntitiesList.stream()

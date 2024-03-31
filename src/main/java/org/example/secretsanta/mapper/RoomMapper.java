@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.model.entity.RoomEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,11 +12,12 @@ import java.util.stream.Collectors;
 public class RoomMapper {
 
     public static RoomDTO toRoomDTO(RoomEntity roomEntity) {
+        RoomDTO roomDTO = new RoomDTO();
+
         if (roomEntity == null) {
-            return null;
+            return roomDTO;
         }
 
-        RoomDTO roomDTO = new RoomDTO();
         roomDTO.setIdRoom(roomEntity.getIdRoom());
         roomDTO.setIdOrganizer(roomEntity.getIdOrganizer());
         roomDTO.setName(roomEntity.getName());
@@ -28,7 +30,7 @@ public class RoomMapper {
 
     public static List<RoomDTO> toRoomDTOList(List<RoomEntity> roomEntities) {
         if (roomEntities == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return roomEntities.stream()
@@ -39,10 +41,11 @@ public class RoomMapper {
 
 
     public static RoomEntity toRoomEntity(RoomDTO roomDTO) {
-        if (roomDTO == null) {
-            return null;
-        }
         RoomEntity roomEntity = new RoomEntity();
+
+        if (roomDTO == null) {
+            return roomEntity;
+        }
         roomEntity.setIdRoom(roomDTO.getIdRoom());
         roomEntity.setIdOrganizer(roomDTO.getIdOrganizer());
         roomEntity.setName(roomDTO.getName());

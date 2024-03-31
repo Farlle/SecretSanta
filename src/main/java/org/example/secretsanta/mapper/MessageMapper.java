@@ -4,6 +4,7 @@ import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.model.entity.MessageEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,11 +12,12 @@ import java.util.stream.Collectors;
 public class MessageMapper {
 
     public static MessageDTO toMessageDTO(MessageEntity messageEntity) {
+        MessageDTO messageDTO = new MessageDTO();
+
         if (messageEntity == null) {
-            return null;
+            return messageDTO;
         }
 
-        MessageDTO messageDTO = new MessageDTO();
         messageDTO.setIdMessage(messageEntity.getIdMessage());
         messageDTO.setMessage(messageEntity.getMessage());
         messageDTO.setDepartureDate(messageEntity.getDepartureDate());
@@ -26,11 +28,12 @@ public class MessageMapper {
     }
 
     public static MessageEntity toMessageEntity(MessageDTO messageDTO) {
+        MessageEntity messageEntity = new MessageEntity();
+
         if (messageDTO == null) {
-            return null;
+            return messageEntity;
         }
 
-        MessageEntity messageEntity = new MessageEntity();
         messageEntity.setIdMessage(messageDTO.getIdMessage());
         messageEntity.setMessage(messageDTO.getMessage());
         messageEntity.setDepartureDate(messageDTO.getDepartureDate());
@@ -42,7 +45,7 @@ public class MessageMapper {
 
     public static List<MessageDTO> toMessageDTOList(List<MessageEntity> messageEntityList) {
         if (messageEntityList == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return messageEntityList.stream()
