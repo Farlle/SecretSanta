@@ -125,23 +125,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     /**
-     * Метод для поиска комнаты по ее названию
-     *
-     * @param name Имя комнаты
-     * @return Найденную комнату
-     */
-/*
-    @Override
-    public RoomDTO findRoomByName(String name) {
-        List<RoomEntity> allUsers = roomRepository.findAll();
-        return RoomMapper.toRoomDTO(allUsers.stream()
-                .filter(user -> user.getName().equals(name))
-                .findFirst()
-                .orElse(null));
-    }
-*/
-
-    /**
      * Метод для получения пользователей и их ролей в комнате
      *
      * @param idRoom Идентификатор в комнате
