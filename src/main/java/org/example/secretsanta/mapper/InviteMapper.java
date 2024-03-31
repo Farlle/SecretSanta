@@ -15,7 +15,7 @@ public class InviteMapper {
         InviteDTO inviteDTO = new InviteDTO();
 
         if (inviteEntity == null) {
-            return inviteDTO;
+            throw new IllegalArgumentException("InviteEntity cannot be null");
         }
 
         inviteDTO.setIdInvite(inviteEntity.getIdInvite());
@@ -31,7 +31,7 @@ public class InviteMapper {
         InviteEntity inviteEntity = new InviteEntity();
 
         if (inviteDTO == null) {
-            return inviteEntity;
+            throw new IllegalArgumentException("InviteDTO cannot be null");
         }
 
         inviteEntity.setIdInvite(inviteDTO.getIdInvite());
@@ -45,7 +45,7 @@ public class InviteMapper {
 
     public static List<InviteDTO> toInviteDTOList(List<InviteEntity> inviteEntitiesList) {
         if (inviteEntitiesList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("InviteEntityList cannot be null");
         }
 
         return inviteEntitiesList.stream()
@@ -56,7 +56,7 @@ public class InviteMapper {
 
     public static List<InviteEntity> toInviteEntityList(List<InviteDTO> inveteDTOList) {
         if (inveteDTOList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("InviteDTOList cannot be null");
         }
 
         return inveteDTOList.stream()

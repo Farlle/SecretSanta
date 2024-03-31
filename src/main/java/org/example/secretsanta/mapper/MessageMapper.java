@@ -15,7 +15,7 @@ public class MessageMapper {
         MessageDTO messageDTO = new MessageDTO();
 
         if (messageEntity == null) {
-            return messageDTO;
+            throw new IllegalArgumentException("MessageEntity cannot be null");
         }
 
         messageDTO.setIdMessage(messageEntity.getIdMessage());
@@ -31,7 +31,7 @@ public class MessageMapper {
         MessageEntity messageEntity = new MessageEntity();
 
         if (messageDTO == null) {
-            return messageEntity;
+            throw new IllegalArgumentException("MessageDTO cannot be null");
         }
 
         messageEntity.setIdMessage(messageDTO.getIdMessage());
@@ -45,7 +45,7 @@ public class MessageMapper {
 
     public static List<MessageDTO> toMessageDTOList(List<MessageEntity> messageEntityList) {
         if (messageEntityList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("MessageEntityList cannot be null");
         }
 
         return messageEntityList.stream()

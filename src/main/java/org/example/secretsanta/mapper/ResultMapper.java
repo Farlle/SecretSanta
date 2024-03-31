@@ -15,7 +15,7 @@ public class ResultMapper {
         ResultDTO resultDTO = new ResultDTO();
 
         if (resultEntity == null) {
-            return resultDTO;
+            throw new IllegalArgumentException("ResultEntity cannot be null");
         }
 
         resultDTO.setIdResult(resultEntity.getIdResult());
@@ -30,7 +30,7 @@ public class ResultMapper {
         ResultEntity resultEntity = new ResultEntity();
 
         if (resultDTO == null) {
-            return resultEntity;
+            throw new IllegalArgumentException("ResultDTO cannot be null");
         }
 
         resultEntity.setIdResult(resultDTO.getIdResult());
@@ -44,7 +44,7 @@ public class ResultMapper {
 
     public static List<ResultDTO> toResultDTOList(List<ResultEntity> resultEntitiesList) {
         if (resultEntitiesList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("ResultEntityList cannot be null");
         }
 
         return resultEntitiesList.stream()

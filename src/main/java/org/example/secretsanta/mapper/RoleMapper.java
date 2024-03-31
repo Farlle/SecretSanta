@@ -15,7 +15,7 @@ public class RoleMapper {
         RoleDTO roleDTO = new RoleDTO();
 
         if (roleEntity == null) {
-            return roleDTO;
+            throw new IllegalArgumentException("RoleEntity cannot be null");
         }
 
         roleDTO.setIdRole(roleEntity.getIdRole());
@@ -27,7 +27,7 @@ public class RoleMapper {
         RoleEntity roleEntity = new RoleEntity();
 
         if (roleDTO == null) {
-            return roleEntity;
+            throw new IllegalArgumentException("RoleDTO cannot be null");
         }
 
         roleEntity.setIdRole(roleDTO.getIdRole());
@@ -37,7 +37,7 @@ public class RoleMapper {
 
     public static List<RoleDTO> toRoleDTOList(List<RoleEntity> roleEntitiesList) {
         if (roleEntitiesList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("RoleEntity cannot be null");
         }
 
         return roleEntitiesList.stream()

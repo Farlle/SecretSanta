@@ -15,9 +15,8 @@ public class UserInfoTelegramChatsMapper {
             (UserInfoTelegramChatsEntity userInfoTelegramChatsEntity) {
         UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
 
-
         if (userInfoTelegramChatsEntity == null) {
-            return userInfoTelegramChatsDTO;
+            throw new IllegalArgumentException("UserInfoTelegramChatsEntity cannot be null");
         }
 
         userInfoTelegramChatsDTO.setIdChat(userInfoTelegramChatsEntity.getIdChat());
@@ -32,7 +31,7 @@ public class UserInfoTelegramChatsMapper {
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
 
         if (userInfoTelegramChatsDTO == null) {
-            return userInfoTelegramChatsEntity;
+            throw new IllegalArgumentException("UserInfoTelegramChatsDTO cannot be null");
         }
 
         userInfoTelegramChatsEntity.setIdChat(userInfoTelegramChatsDTO.getIdChat());
@@ -48,7 +47,7 @@ public class UserInfoTelegramChatsMapper {
             (List<UserInfoTelegramChatsEntity> userInfoTelegramChatsEntityList) {
 
         if (userInfoTelegramChatsEntityList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("UserInfoTelegramChatsEntityList cannot be null");
         }
 
         return userInfoTelegramChatsEntityList.stream()

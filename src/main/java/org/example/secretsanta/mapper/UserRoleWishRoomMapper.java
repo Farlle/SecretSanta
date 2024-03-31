@@ -15,7 +15,7 @@ public class UserRoleWishRoomMapper {
         UserRoleWishRoomDTO userRoleWishRoomDTO = new UserRoleWishRoomDTO();
 
         if (userRoleWishRoomEntity == null) {
-            return userRoleWishRoomDTO;
+            throw new IllegalArgumentException("UserRoleWishRoomEntity cannot be null");
         }
 
         userRoleWishRoomDTO.setIdUserRoleWishRoom(userRoleWishRoomEntity.getIdUserRoleWishRoom());
@@ -30,7 +30,7 @@ public class UserRoleWishRoomMapper {
         UserRoleWishRoomEntity userRoleWishRoomEntity = new UserRoleWishRoomEntity();
 
         if (userRoleWishRoomDTO == null) {
-            return userRoleWishRoomEntity;
+            throw new IllegalArgumentException("UserRoleWishRoomDTO cannot be null");
         }
 
         userRoleWishRoomEntity.setIdUserRoleWishRoom(userRoleWishRoomDTO.getIdUserRoleWishRoom());
@@ -43,7 +43,7 @@ public class UserRoleWishRoomMapper {
 
     public static List<UserRoleWishRoomDTO> toUserRoleWishRoomDTOList(List<UserRoleWishRoomEntity> userRoleWishRoomEntityList) {
         if (userRoleWishRoomEntityList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("UserRoleWishRoomEntityList cannot be null");
         }
 
         return userRoleWishRoomEntityList.stream()

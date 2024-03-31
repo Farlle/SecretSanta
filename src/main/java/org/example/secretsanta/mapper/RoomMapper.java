@@ -15,7 +15,7 @@ public class RoomMapper {
         RoomDTO roomDTO = new RoomDTO();
 
         if (roomEntity == null) {
-            return roomDTO;
+            throw new IllegalArgumentException("RoomEntity cannot be null");
         }
 
         roomDTO.setIdRoom(roomEntity.getIdRoom());
@@ -30,7 +30,7 @@ public class RoomMapper {
 
     public static List<RoomDTO> toRoomDTOList(List<RoomEntity> roomEntities) {
         if (roomEntities == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("RoomEntityList cannot be null");
         }
 
         return roomEntities.stream()
@@ -44,7 +44,7 @@ public class RoomMapper {
         RoomEntity roomEntity = new RoomEntity();
 
         if (roomDTO == null) {
-            return roomEntity;
+            throw new IllegalArgumentException("RoomEntity cannot be null");
         }
         roomEntity.setIdRoom(roomDTO.getIdRoom());
         roomEntity.setIdOrganizer(roomDTO.getIdOrganizer());

@@ -15,7 +15,7 @@ public class UserInfoMapper {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
 
         if (userInfoEntity == null) {
-            return userInfoDTO;
+            throw new IllegalArgumentException("UserInfoEntity cannot be null");
         }
 
         userInfoDTO.setIdUserInfo(userInfoEntity.getId());
@@ -30,7 +30,7 @@ public class UserInfoMapper {
         UserInfoEntity userInfoEntity = new UserInfoEntity();
 
         if (userInfoDTO == null) {
-            return userInfoEntity;
+            throw new IllegalArgumentException("UserInfoDTO cannot be null");
         }
 
         userInfoEntity.setId(userInfoDTO.getIdUserInfo());
@@ -43,7 +43,7 @@ public class UserInfoMapper {
 
     public static List<UserInfoDTO> toUserInfoDTOList(List<UserInfoEntity> userInfoEntityList) {
         if (userInfoEntityList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("UserInfoEntityList cannot be null");
         }
 
         return userInfoEntityList.stream()

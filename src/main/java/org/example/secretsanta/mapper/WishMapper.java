@@ -15,7 +15,7 @@ public class WishMapper {
         WishDTO wishDTO = new WishDTO();
 
         if (wishEntity == null) {
-            return wishDTO;
+            throw new IllegalArgumentException("WishEntity cannot be null");
         }
 
         wishDTO.setIdWish(wishEntity.getIdWish());
@@ -27,7 +27,7 @@ public class WishMapper {
         WishEntity wishEntity = new WishEntity();
 
         if (wishDTO == null) {
-            return wishEntity;
+            throw new IllegalArgumentException("WishDTO cannot be null");
         }
 
         wishEntity.setIdWish(wishDTO.getIdWish());
@@ -37,7 +37,7 @@ public class WishMapper {
 
     public static List<WishDTO> toWishDTOList(List<WishEntity> wishEntitiesList) {
         if (wishEntitiesList == null) {
-            return Collections.emptyList();
+            throw new IllegalArgumentException("WishEntityList cannot be null");
         }
 
         return wishEntitiesList.stream()
