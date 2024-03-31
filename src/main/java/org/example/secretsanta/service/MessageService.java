@@ -17,7 +17,5 @@ public interface MessageService {
 
     List<MessageDTO> getConversation(int idSender, int idRecipient);
 
-    List<Integer> getAllUserDialog(int idUserInfo);
-
     List<MessageDTO> getDistinctDialog(int idSender);
 }

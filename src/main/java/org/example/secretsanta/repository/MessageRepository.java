@@ -18,11 +18,6 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Integer>
             "and messageEntity.idRecipient =:idRecipient")
     List<MessageEntity> findByIdSenderAndIdRecipient(int idSender, int idRecipient);
 
-    @Query("select distinct messageEntity.idRecipient " +
-            "from MessageEntity messageEntity " +
-            "where messageEntity.sender.idUserInfo =:idSender")
-    List<Integer> findDistinctRecipientsByIdSender(@PathVariable("idSender") int idSender);
-
     @Query("SELECT m1 FROM MessageEntity m1 " +
             "WHERE m1.idMessage = " +
             "(SELECT MAX(m2.idMessage) FROM MessageEntity m2" +

@@ -18,7 +18,7 @@ public interface UserInfoTelegramChatsRepository extends JpaRepository<UserInfoT
             "on userInfo.idUserInfo = userRoom.userInfoEntity.idUserInfo " +
             "join RoomEntity room on room.idRoom = userRoom.room.idRoom " +
             "where room.idRoom =:idRoom")
-    List<UserInfoTelegramChatsEntity> findAllUserIdChatsWhoNeedNotify(int idRoom);
+    List<UserInfoTelegramChatsEntity> findAllUserChatsWhoNeedNotify(int idRoom);
 
     @Query("select userInfoTelegramChatsEntity.idChat " +
             "from UserInfoEntity userInfoEntity join UserInfoTelegramChatsEntity userInfoTelegramChatsEntity " +

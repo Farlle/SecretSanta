@@ -16,7 +16,7 @@ public interface UserInfoTelegramChatsService {
 
     UserInfoTelegramChatsDTO getRegisterUserByIdChats(Long idChat);
 
-    List<UserInfoTelegramChatsDTO> getAllIdChatsUsersWhoNeedNotify(int idRoom);
+    List<UserInfoTelegramChatsDTO> getAllUserChatsWhoNeedNotify(int idRoom);
 
     Long getIdChatByTelegramName(String telegramName);
 

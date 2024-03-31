@@ -10,7 +10,7 @@ import org.example.secretsanta.mapper.ResultMapper;
 import org.example.secretsanta.mapper.RoomMapper;
 import org.example.secretsanta.model.entity.ResultEntity;
 import org.example.secretsanta.repository.ResultRepository;
-import org.example.secretsanta.service.serviceinterface.ResultService;
+import org.example.secretsanta.service.*;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -18,29 +18,36 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для работы с результатамив комнате
+ */
 @Service
 public class ResultServiceImpl implements ResultService {
 
     private final ResultRepository resultRepository;
-    private final UserInfoServiceImpl userInfoServiceImpl;
-    private final UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
-    private final TelegramServiceImpl telegramServiceImpl;
-    private final String MESSAGE_DRAW = "Была проведена жеребьевка, смотри результат по сслыке ";
-    private final String HOST = " http://localhost:8080/result/";
+    private final UserInfoService userInfoService;
+    private final UserInfoTelegramChatsService userInfoTelegramChatsService;
+    private final TelegramService telegramService;
+    private final RoomService roomService;
+    private static final String MESSAGE_DRAW = "Была проведена жеребьевка, смотри результат по сслыке ";
+    private static final String HOST = " http://localhost:8080/result/";
+    private static final String SHOW = "show/";
 
-    private String RECIPIENT;
-    private String WISH;
 
-    private final RoomServiceImpl roomServiceImpl;
-
-    public ResultServiceImpl(ResultRepository resultRepository, UserInfoServiceImpl userInfoServiceImpl, UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl, TelegramServiceImpl telegramServiceImpl, RoomServiceImpl roomServiceImpl) {
+    public ResultServiceImpl(ResultRepository resultRepository, UserInfoService userInfoService, UserInfoTelegramChatsService userInfoTelegramChatsService, TelegramService telegramService, RoomService roomService) {
         this.resultRepository = resultRepository;
-        this.userInfoServiceImpl = userInfoServiceImpl;
-        this.userInfoTelegramChatsServiceImpl = userInfoTelegramChatsServiceImpl;
-        this.telegramServiceImpl = telegramServiceImpl;
-        this.roomServiceImpl = roomServiceImpl;
+        this.userInfoService = userInfoService;
+        this.userInfoTelegramChatsService = userInfoTelegramChatsService;
+        this.telegramService = telegramService;
+        this.roomService = roomService;
     }
 
+    /**
+     * Метод для создания результата
+     *
+     * @param dto Объект который необходимо создать
+     * @return Возвращает созданный результат
+     */
     @Override
     public ResultDTO create(ResultDTO dto) {
         ResultEntity result = new ResultEntity();
@@ -51,11 +58,23 @@ public class ResultServiceImpl implements ResultService {
         return ResultMapper.toResultDTO(resultRepository.save(result));
     }
 
+    /**
+     * Метод для получения всех результатов
+     *
+     * @return Список всех результатов
+     */
     @Override
     public List<ResultDTO> readAll() {
         return ResultMapper.toResultDTOList(resultRepository.findAll());
     }
 
+    /**
+     * Метод для обновления результата
+     *
+     * @param id Идентификатор объекта который необходимо обновить
+     * @param dto Объект который необходимо обновить
+     * @return Обновленный объект
+     */
     @Override
     public ResultDTO update(int id, ResultDTO dto) {
         ResultEntity result = resultRepository.findById(id)
@@ -68,18 +87,28 @@ public class ResultServiceImpl implements ResultService {
         return ResultMapper.toResultDTO(resultRepository.save(result));
     }
 
+    /**
+     * Метод для удаления результата
+     *
+     * @param id Идентификатор объекта для удаления
+     */
     @Override
     public void delete(int id) {
         resultRepository.deleteById(id);
     }
 
+    /**
+     * Метод для проведения жеребьевки в комнате
+     *
+     * @param room Комната в которой надо провести жеребьевку
+     */
     @Override
     public void performDraw(RoomDTO room) {
 
-        List<UserInfoDTO> users = userInfoServiceImpl.getUsersInfoById(roomServiceImpl
+        List<UserInfoDTO> users = userInfoService.getUsersInfoById(roomService
                 .getUserInfoIdInRoom(room.getIdRoom()));
-        List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsServiceImpl
-                .getAllIdChatsUsersWhoNeedNotify(room.getIdRoom());
+        List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsService
+                .getAllUserChatsWhoNeedNotify(room.getIdRoom());
 
         List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
                 resultRepository.findByRoomIdRoom(room.getIdRoom()));
@@ -104,11 +133,17 @@ public class ResultServiceImpl implements ResultService {
             resultRepository.save(ResultMapper.toResultEntity(result));
         }
         for (UserInfoTelegramChatsDTO dto : userInfoTelegramChatsDTO) {
-            telegramServiceImpl.sendMessage(dto.getIdChat(), generatedMessageDraw(room.getIdRoom()));
+            telegramService.sendMessage(dto.getIdChat(), generatedMessageDraw(room.getIdRoom()));
         }
 
     }
 
+    /**
+     * Метод для показа результата в комнате
+     *
+     * @param idRoom Идентификатор в комнате
+     * @return Возвращает список результатов в формате (Санта -> Подопечный)
+     */
     @Override
     public List<ResultDTO> showDrawInRoom(int idRoom) {
         List<ResultDTO> results = ResultMapper.toResultDTOList(resultRepository.findAll());
@@ -118,9 +153,14 @@ public class ResultServiceImpl implements ResultService {
                 .collect(Collectors.toList());
     }
 
+    /** Метод для генерации уведомления в телеграм о проведении жеребьевки
+     *
+     * @param idRoom Идентификатор комнаты
+     * @return Текст уведомления
+     */
     @Override
     public String generatedMessageDraw(int idRoom) {
-        return MESSAGE_DRAW + HOST + "show/" + idRoom;
+        return MESSAGE_DRAW + HOST + SHOW + idRoom;
     }
 
 }

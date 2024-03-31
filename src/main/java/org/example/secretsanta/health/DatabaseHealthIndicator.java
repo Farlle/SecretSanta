@@ -8,6 +8,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Класс для проверки работоспособности базы данных
+ */
 @Component
 public class DatabaseHealthIndicator implements HealthIndicator {
 
@@ -22,6 +25,12 @@ public class DatabaseHealthIndicator implements HealthIndicator {
         return HealthIndicator.super.getHealth(includeDetails);
     }
 
+    /**
+     * Метод для проверки работтоспособности базы
+     *
+     * @return Health с информацией о состоянии базы данных
+     * @throws SQLException если возникает исключение при работе с базой данных
+     */
     @Override
     public Health health() {
         try (Connection connection = dataSource.getConnection()) {

@@ -9,11 +9,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+/**
+ * Контроллер для обработки 500 исключения
+ */
 @ControllerAdvice
 public class CustomErrorController {
 
     private static final Logger logger = Logger.getLogger(CustomErrorController.class.getName());
 
+    /**
+     * Обрабатывет 500 исключение и производит логирование
+     * @param throwable возникающее исключение
+     * @return страницу с ошибкой
+     */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(final Throwable throwable) {

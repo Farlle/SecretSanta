@@ -7,10 +7,10 @@ import org.example.secretsanta.dto.WishDTO;
 import org.example.secretsanta.exception.DrawingAlreadyPerformedException;
 import org.example.secretsanta.exception.NotEnoughUsersException;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.example.secretsanta.service.serviceinterface.ResultService;
-import org.example.secretsanta.service.serviceinterface.RoomService;
-import org.example.secretsanta.service.serviceinterface.UserInfoService;
-import org.example.secretsanta.service.serviceinterface.WishService;
+import org.example.secretsanta.service.ResultService;
+import org.example.secretsanta.service.RoomService;
+import org.example.secretsanta.service.UserInfoService;
+import org.example.secretsanta.service.WishService;
 import org.example.secretsanta.wrapper.ResultWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +23,9 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Контроллер для проведения жеребьевок и просмотра ее результата
+ */
 @Controller
 @RequestMapping("/result")
 public class ResultController {
@@ -43,6 +46,14 @@ public class ResultController {
         this.wishService = wishService;
     }
 
+    /**
+     * Метод для просмотра результатов
+     *
+     * @param idRoom Идентификатор комнаты, в которой просматриваем результат
+     * @param model Модель для передачи данных в представление
+     * @param principal Представляет текущего пользователя
+     * @return Страница с результатами
+     */
     @GetMapping("/show/{idRoom}")
     public String showResultDraw(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
         List<ResultDTO> results = resultService.showDrawInRoom(idRoom);
@@ -65,6 +76,15 @@ public class ResultController {
         return "result-show-in-room";
     }
 
+    /**
+     * Метод для проведения жеребьевки в комнате
+     *
+     * @param idRoom Индентификатор в комнате
+     * @param principal Представляет текущего пользователя
+     * @param redirectAttributes Атрибуты для передачи данных на страницу
+     * @return Возвращает страницу просмотра результат после просмотра результат, либо страницу с информацией о комнате,
+     * если недостаточно пользователей в комнате или текущий пользователь не организатор
+     */
     @GetMapping("/drawing/{idRoom}")
     public String drawingLots(@PathVariable("idRoom") int idRoom, Principal principal,
                               RedirectAttributes redirectAttributes) {
@@ -72,7 +92,7 @@ public class ResultController {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
         RoomDTO roomDTO = roomService.getRoomById(idRoom);
 
-        if (!(roomService.getRoomOrganizer(roomDTO).getIdUserInfo() == currentUser.getIdUserInfo())) {
+        if ((roomService.getRoomOrganizer(roomDTO).getIdUserInfo() != currentUser.getIdUserInfo())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Вы не можете проводить жеребьевку");
             return "redirect:/room/show/" + idRoom;
         }

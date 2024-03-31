@@ -2,9 +2,10 @@ package org.example.secretsanta.telegram;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
+import org.example.secretsanta.service.UserInfoService;
+import org.example.secretsanta.service.UserInfoTelegramChatsService;
 import org.example.secretsanta.service.impl.UserInfoServiceImpl;
 import org.example.secretsanta.service.impl.UserInfoTelegramChatsServiceImpl;
-import org.example.secretsanta.service.security.CustomUserDetailsService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,28 +16,33 @@ import java.util.List;
 
 @Component
 public class SantaTelegramBot extends TelegramLongPollingBot {
-    private final UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
-    private final CustomUserDetailsService userDetailsService;
-    private final UserInfoServiceImpl userInfoServiceImpl;
+    private final UserInfoTelegramChatsService userInfoTelegramChatsService;
+    private final UserInfoService userInfoService;
 
-    private final String BOT_TOKEN = System.getenv("token");
-    private final String BOT_USERNAME = "HomeSecretSantaBot";
+    private static final String BOT_TOKEN = System.getenv("token");
+    private static final String BOT_USERNAME = "HomeSecretSantaBot";
 
-    public SantaTelegramBot(UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl,
-                            CustomUserDetailsService userDetailsService, UserInfoServiceImpl userInfoServiceImpl) {
-        this.userInfoTelegramChatsServiceImpl = userInfoTelegramChatsServiceImpl;
-        this.userDetailsService = userDetailsService;
-        this.userInfoServiceImpl = userInfoServiceImpl;
+    public SantaTelegramBot(UserInfoTelegramChatsService userInfoTelegramChatsService,
+                            UserInfoService userInfoService) {
+        this.userInfoTelegramChatsService = userInfoTelegramChatsService;
+        this.userInfoService = userInfoService;
+
     }
 
+    /**
+     * Метод который обрабатывает принимамое сообщение от пользователя в тг и запоминает id чата в телеграм
+     * у нового пользователя
+     *
+     * @param update Входящее сообщение
+     */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
 
             Long idChat = update.getMessage().getChatId();
-            if (userInfoTelegramChatsServiceImpl.getRegisterUserByIdChats(idChat) == null) {
+            if (userInfoTelegramChatsService.getRegisterUserByIdChats(idChat) == null) {
                 String telegram = update.getMessage().getFrom().getUserName();
-                UserInfoDTO currentUser = userInfoServiceImpl.getUsersInfoByTelegram(telegram);
+                UserInfoDTO currentUser = userInfoService.getUsersInfoByTelegram(telegram);
                 if (currentUser == null) {
                     sendMessage(idChat, "Не зарегистрирован");
                     throw new IllegalArgumentException("не зарегистрирован");
@@ -44,12 +50,9 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
                 UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
                 userInfoTelegramChatsDTO.setIdChat(idChat);
                 userInfoTelegramChatsDTO.setUserInfoDTO(currentUser);
-                userInfoTelegramChatsServiceImpl.create(userInfoTelegramChatsDTO);
+                userInfoTelegramChatsService.create(userInfoTelegramChatsDTO);
             }
-            String messageText = update.getMessage().getText();
-            String telegram = update.getMessage().getFrom().getUserName();
 
-            System.out.println(messageText + "  " + idChat + " " + telegram + " ");
         }
 
 
@@ -76,6 +79,12 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
         return BOT_TOKEN;
     }
 
+    /**
+     * Метод отправки сообщения пользователю в тг
+     *
+     * @param idChat Идентификатор чата
+     * @param message Отправляемое сообщение
+     */
     public void sendMessage(Long idChat, String message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(idChat);

@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Сервис для работы с пользовательскими данными
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -22,6 +25,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userInfoRepository = userRepository;
     }
 
+    /**
+     * Метод поиска пользователя по имени
+     *
+     * @param name Имя пользователя
+     * @return Полльзователь
+     */
     public UserInfoDTO findUserByName(String name) {
         List<UserInfoEntity> allUsers = userInfoRepository.findAll();
         return UserInfoMapper.toUserInfoDTO(allUsers.stream()
@@ -31,6 +40,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
+    /**
+     * Метод для загрузки данных по имени пользователя
+     *
+     * @param name Имя пользователя
+     * @return Информацию о пользоватле
+     * @throws UsernameNotFoundException Если пользователь не найден
+     */
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         UserInfoDTO userInfo = findUserByName(name);

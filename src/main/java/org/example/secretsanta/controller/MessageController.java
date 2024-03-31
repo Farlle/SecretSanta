@@ -3,8 +3,8 @@ package org.example.secretsanta.controller;
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.example.secretsanta.service.serviceinterface.MessageService;
-import org.example.secretsanta.service.serviceinterface.UserInfoService;
+import org.example.secretsanta.service.MessageService;
+import org.example.secretsanta.service.UserInfoService;
 import org.example.secretsanta.utils.DateUtils;
 import org.example.secretsanta.wrapper.DialogWrapper;
 import org.springframework.stereotype.Controller;
@@ -19,6 +19,9 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+/**
+ * Контроллер для отправки сообщений пользователями
+ */
 @Controller
 @RequestMapping("/message")
 public class MessageController {
@@ -34,6 +37,13 @@ public class MessageController {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Метод для получения страницы с диалогами пользователя
+     *
+     * @param model Модель для передачи данных на страницу
+     * @param principal Представляет текущегог пользователя
+     * @return Страница с диалогами
+     */
     @GetMapping("/dialogs")
     public String getDialogs(Model model, Principal principal) {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
@@ -44,12 +54,20 @@ public class MessageController {
             dialogs.add(new DialogWrapper(userInfoService.getUserInfoById(messageDTOS.get(i).getSender()
                     .getIdUserInfo()),
                     userInfoService.getUserInfoById(messageDTOS.get(i).getIdRecipient()),
-                    messageDTOS.get(i).getMessage().toString()));
+                    messageDTOS.get(i).getMessage()));
         }
         model.addAttribute("dialogs", dialogs);
         return "dialogs";
     }
 
+    /**
+     * Метод для переххода в диалог с пользователем
+     *
+     * @param idUserInfo  Идентификатор пользователя с которым ведется беседа
+     * @param model Модель для передачи данных в представление
+     * @param principal Представляет текущего пользователя
+     * @return Страница с беседой между пользователями
+     */
     @GetMapping("/conversation/{idUserInfo}")
     public String receiveMessages(@PathVariable("idUserInfo") int idUserInfo, Model model, Principal principal) {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
@@ -69,6 +87,14 @@ public class MessageController {
         return "conversation";
     }
 
+    /**
+     * Метод ядля отправки сообщения
+     *
+     * @param messageDTO Объект сообщения, которое надо отправить
+     * @param principal Представляет текущего пользователя
+     * @param idRecipient Идентификатор получателя сообщения
+     * @return Страница с беседой после отправки сообщени
+     */
     @PostMapping("/sendMessage")
     @Transactional
     public String sendMessage(@ModelAttribute("messageDto") MessageDTO messageDTO, Principal principal,

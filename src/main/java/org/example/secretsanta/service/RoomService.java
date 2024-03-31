@@ -22,15 +22,11 @@ public interface RoomService {
 
     UserInfoDTO getRoomOrganizer(RoomDTO dto);
 
-    RoomDTO findRoomByName(String name);
-
     List<Object[]> getUsersAndRolesByRoomId(int idRoom);
 
     List<RoomDTO> getRoomsWhereUserJoin(int idUserInfo);
 
     RoomDTO getRoomByName(String name);
-
-    List<RoomDTO> getRoomByUserName(String name);
 
     List<Integer> getUserInfoIdInRoom(int idRoom);
 

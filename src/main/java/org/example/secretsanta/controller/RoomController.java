@@ -2,8 +2,8 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.*;
 import org.example.secretsanta.model.enums.Role;
+import org.example.secretsanta.service.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.example.secretsanta.service.serviceinterface.*;
 import org.example.secretsanta.wrapper.RoomAndOrganizerWrapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +20,9 @@ import java.security.Principal;
 import java.util.List;
 
 
+/**
+ * Контроллер для обработки комнаты. Отвечает за взаимодействие с комнатой
+ */
 @Controller
 @RequestMapping("/room")
 public class RoomController {
@@ -44,6 +47,12 @@ public class RoomController {
         this.inviteService = inviteService;
     }
 
+    /**
+     * Метод получающий страцу для создания новой комнаты
+     *
+     * @param model Модель для передачи данных на страницу
+     * @return Страница с добавлением комнаты
+     */
     @GetMapping("/create")
     public String showAddRoomPage(Model model) {
         RoomDTO roomDTO = new RoomDTO();
@@ -62,6 +71,15 @@ public class RoomController {
         return "room-add-page";
     }
 
+    /**
+     * Метод для создания комнаты
+     *
+     * @param dto Объект комнаты, которую необходимо создать
+     * @param model Модель для передачи данных в атрибут
+     * @param redirectAttributes Атрибуты для передачи информации на страницу
+     * @return Перенаправляет на страницу для присоединения к комнате после ее создания, либо на страницу с созданием,
+     * если дата жеребьевки позже даты дарения
+     */
     @PostMapping("/create")
     public String createRoom(@ModelAttribute RoomDTO dto, Model model, RedirectAttributes redirectAttributes) {
         if (!dto.getTossDate().after(dto.getDrawDate())) {
@@ -73,6 +91,14 @@ public class RoomController {
         return "redirect:/room/" + room.getIdRoom() + "/join";
     }
 
+    /**
+     * Получение страницы с информацией о комнате
+     *
+     * @param idRoom Идентификатор команты
+     * @param model модель для передачи данных на страинцу
+     * @param principal представляет текущего пользователя
+     * @return страницу с информацией о комнате
+     */
     @GetMapping("/show/{idRoom}")
     public String getRoomById(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
 
@@ -88,6 +114,14 @@ public class RoomController {
         return "room-show";
     }
 
+    /**
+     * Метод для получения страицы с присоединением к комнате
+     *
+     * @param idRoom Идентификатор команаты
+     * @param model Моедль для передачи данных на страницу
+     * @param principal Представляет текущего пользователя
+     * @return Страинца для присоединения к комнате
+     */
     @GetMapping("/{id}/join")
     public String joinRoomForm(@PathVariable("id") int idRoom, Model model, Principal principal) {
         UserInfoDTO currentUser = userDetailsService.findUserByName(principal.getName());
@@ -110,6 +144,15 @@ public class RoomController {
         return "join-room-page";
     }
 
+    /**
+     * Метод присоедиения к комнате
+     *
+     * @param idRoom Идентификатор комнаты
+     * @param wishDto Объект желания котороый надо создать
+     * @param model Модель для передачи данных на страницу
+     * @param principal Представляет текущего пользователя
+     * @return Перенаправляет на страницу с информацией о комнате, после создания желания
+     */
     @PostMapping("/{id}/join")
     @Transactional
     public String joinRoom(@PathVariable("id") int idRoom, @ModelAttribute WishDTO wishDto,
@@ -131,19 +174,27 @@ public class RoomController {
         userRoleWishRoomDTO.setUserInfoDTO(currentUser);
         userRoleWishRoomDTO.setWishDTO(savedWish);
         userRoleWishRoomDTO.setRoleDTO(roleDTO);
-        userRoleWishRoomDTO.setRoomDTO(roomService.findRoomByName(roomDTO.getName()));
+        userRoleWishRoomDTO.setRoomDTO(roomService.getRoomByName(roomDTO.getName()));
 
         userRoleWishRoomService.create(userRoleWishRoomDTO);
 
         model.addAttribute("room", roomService.readAll());
 
         if ((roomService.getRoomOrganizer(roomDTO).getIdUserInfo()) != currentUser.getIdUserInfo()) {
-            inviteService.UserAcceptInvite(currentUser.getTelegram(), idRoom);
+            inviteService.userAcceptInvite(currentUser.getTelegram(), idRoom);
         }
 
         return "redirect:/room/show/" + idRoom;
     }
 
+    /**
+     * Метод возвращающий страницу с информацией о пользователях и их ролях в комнате
+     *
+     * @param idRoom Идентификатор комнаты
+     * @param model Модель для передачи данных в атрибут
+     * @param principal Представляет текущего пользователя
+     * @return Страница с информацией о пользователях в комнате
+     */
     @GetMapping("/{idRoom}/users-and-roles")
     public String getUsersAndRoles(@PathVariable("idRoom") int idRoom, Model model, Principal principal) {
         UserInfoDTO userInfoDTO = userDetailsService.findUserByName(principal.getName());
@@ -158,6 +209,15 @@ public class RoomController {
         return "user-in-room";
     }
 
+    /**
+     * Метод для получения страницы со списком комнат к которым присоединен пользователь
+     *
+     * @param model Модель для передачи данных на страницу
+     * @param principal Представляет текущего пользователя
+     * @param page Номер страницы для пагинации
+     * @param size Размер страницы для пагинации
+     * @return Страница со списком комнат к которым присоединен пользователь
+     */
     @GetMapping("/show/participant")
     public String getRoomWhereJoin(Model model, Principal principal,
                                    @RequestParam(value = "page", defaultValue = "0") int page,
@@ -171,6 +231,16 @@ public class RoomController {
         return "room-list";
     }
 
+    /**
+     * Метод для удаления участника из комнаты
+     *
+     * @param nameRoom Имя команты
+     * @param userInfoName Имя пользователя для удаления
+     * @param principal Предсавляет текущего пользователя
+     * @param redirectAttributes Атрибуты для передачи информации на страницу
+     * @return Перенаправляет на страницу со всеми пользователя в комнате. Если пытается удалить не организатор, то
+     * перенаправление на страницу с информацией о пользователях в комнате и сообщением об ошибке
+     */
     @PostMapping("/{nameRoom}/users/{UserInfoName}")
     public String deleteUserFromRoom(@PathVariable("nameRoom") String nameRoom,
                                      @PathVariable("UserInfoName") String userInfoName, Principal principal,
@@ -180,7 +250,7 @@ public class RoomController {
         RoomDTO roomDTO = roomService.getRoomByName(nameRoom);
         UserInfoDTO loginUser = userDetailsService.findUserByName(principal.getName());
 
-        if (!(roomService.getRoomOrganizer(roomDTO).getIdUserInfo() == loginUser.getIdUserInfo())) {
+        if ((roomService.getRoomOrganizer(roomDTO).getIdUserInfo() != loginUser.getIdUserInfo())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Не можешь удалять");
             return "redirect:/room/" + roomDTO.getIdRoom() + "/users-and-roles";
         }

@@ -22,7 +22,7 @@ public interface InviteService {
 
     List<InviteDTO> getAllUsersInvite(String telegram);
 
-    void UserAcceptInvite(String telegram, int idRoom);
+    void userAcceptInvite(String telegram, int idRoom);
 
     String generatedTextInvite(int idRoom);
 

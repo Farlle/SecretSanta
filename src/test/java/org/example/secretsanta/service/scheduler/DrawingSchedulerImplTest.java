@@ -30,7 +30,7 @@ class DrawingSchedulerTest {
     private DrawingScheduler drawingScheduler;
 
     @Test
-    public void testScheduleDrawings() {
+    void testScheduleDrawings() {
         RoomEntity room1 = new RoomEntity();
         RoomEntity room2 = new RoomEntity();
         List<RoomEntity> roomsToDraw = Arrays.asList(room1, room2);

@@ -3,8 +3,17 @@ package org.example.secretsanta.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Вспомогательный класс для работы с URL
+ */
 public class UrlUtils {
 
+    /**
+     * Метод для извлечения номера комнаты из URL
+     *
+     * @param url URL
+     * @return Номер комнаты
+     */
     public static String extractRoomNumberFromUrl(String url) {
 
         Pattern pattern = Pattern.compile("room/(\\d+)/join");
