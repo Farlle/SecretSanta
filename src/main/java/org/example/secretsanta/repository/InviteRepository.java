@@ -10,12 +10,25 @@ import java.util.List;
 @Repository
 public interface InviteRepository extends JpaRepository<InviteEntity, Integer> {
 
+    /**
+     * Запрос получает все приглашения в комнате по его тг
+     *
+     * @param telegram Ник в телеграме пользователя
+     * @return Список приглашений пользователя
+     */
     @Query("select invite " +
             "from UserInfoEntity  userInfo join InviteEntity invite " +
             "on userInfo.idUserInfo = invite.userInfo.idUserInfo " +
             "where userInfo.telegram =:telegram")
     List<InviteEntity> getAllUsersInvite(String telegram);
 
+    /**
+     * Запрос возвращает все приглашения пользователя в определенную комнату
+     *
+     * @param telegram Ник пользователя в телеграм
+     * @param inviteText Текст приглашения ппользователя в тг
+     * @return Все приглашения пользователя в определенную комнату
+     */
     @Query("select invite " +
             "from UserInfoEntity  userInfo join InviteEntity invite " +
             "on userInfo.idUserInfo = invite.userInfo.idUserInfo " +

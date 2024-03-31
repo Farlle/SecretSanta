@@ -9,6 +9,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WishRepository extends JpaRepository<WishEntity, Integer> {
 
+    /**
+     * Запрос возвращает желание пользователя в комнате
+     *
+     * @param idRoom Идентификатор комнаты
+     * @param idUserInfo Идентификатор пользователя
+     * @return Желание пользователя в комнате
+     */
     @Query("SELECT wishEntity FROM WishEntity wishEntity " +
             "JOIN UserRoleWishRoomEntity userRoleWishRoomEntity " +
             "ON wishEntity.idWish = userRoleWishRoomEntity.wish.idWish " +

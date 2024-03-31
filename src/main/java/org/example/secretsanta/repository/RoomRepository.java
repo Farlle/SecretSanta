@@ -22,8 +22,6 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
             "where room.idRoom= :idRoom")
     List<Object[]> findUserRoleInRoom(@Param("idRoom") int idRoom);
 
-
-
     @Query("select user_info.idUserInfo " +
             "from RoomEntity room join UserRoleWishRoomEntity user_role_wish_room on" +
             " room.idRoom = user_role_wish_room.room.idRoom " +
@@ -43,15 +41,7 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
             "where user_info.idUserInfo= :idUserInfo")
     Page<RoomEntity> findRoomsWhereUserJoinPage(@Param("idUserInfo") int idUserInfo, Pageable pageable);
 
-
-
     List<RoomEntity> findByDrawDateLessThanEqual(Date drawDate);
-
-    @Query("SELECT room FROM RoomEntity room " +
-            "JOIN UserRoleWishRoomEntity userRoleWishRoom ON room.idRoom = userRoleWishRoom.room.idRoom " +
-            "JOIN UserInfoEntity userInfo ON userRoleWishRoom.userInfoEntity.idUserInfo = userInfo.idUserInfo " +
-            "WHERE userInfo.name = :userName")
-    List<RoomEntity> findRoomsByUserName(@Param("userName") String userName);
 
     RoomEntity findRoomEntitiesByName(String name);
 
