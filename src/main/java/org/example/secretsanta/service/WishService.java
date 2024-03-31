@@ -1,4 +1,4 @@
-package org.example.secretsanta.service.serviceinterface;
+package org.example.secretsanta.service;
 
 import org.example.secretsanta.dto.WishDTO;
 

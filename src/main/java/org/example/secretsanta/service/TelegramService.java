@@ -1,4 +1,4 @@
-package org.example.secretsanta.service.serviceinterface;
+package org.example.secretsanta.service;
 
 public interface TelegramService {
 

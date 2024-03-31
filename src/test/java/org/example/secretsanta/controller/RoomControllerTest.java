@@ -2,8 +2,8 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.*;
 import org.example.secretsanta.model.enums.Role;
+import org.example.secretsanta.service.*;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.example.secretsanta.service.serviceinterface.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -83,7 +83,7 @@ class RoomControllerTest {
     }
 
     @Test
-    public void testCreateRoomWithValidDate() throws Exception {
+    void testCreateRoomWithValidDate() throws Exception {
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setName("test");
         roomDTO.setPlace("test");
@@ -218,7 +218,7 @@ class RoomControllerTest {
         RoleDTO roleDTO = new RoleDTO();
         roleDTO.setRole(Role.ORGANIZER);
 
-        when(wishService.create(eq(wishDto))).thenReturn(savedWish);
+        when(wishService.create(wishDto)).thenReturn(savedWish);
         when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
         when(userDetailsService.findUserByName(anyString())).thenReturn(currentUser);
         when(roomService.getRoomOrganizer(roomDTO)).thenReturn(currentUser);

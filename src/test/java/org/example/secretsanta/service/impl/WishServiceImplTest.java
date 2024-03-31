@@ -32,7 +32,7 @@ class WishServiceImplTest {
     }
 
     @Test
-    void createTest() {
+    void testCreate() {
         WishDTO dto = new WishDTO();
         dto.setWish("Test Wish");
 
@@ -49,7 +49,7 @@ class WishServiceImplTest {
     }
 
     @Test
-    void readAllTest() {
+    void testReadAll() {
         List<WishEntity> entities = Arrays.asList(new WishEntity(), new WishEntity());
         when(wishRepository.findAll()).thenReturn(entities);
 
@@ -60,7 +60,7 @@ class WishServiceImplTest {
     }
 
     @Test
-    void updateTest() {
+    void testUpdate() {
         int id = 1;
         WishDTO dto = new WishDTO();
         dto.setWish("Updated Wish");
@@ -80,7 +80,7 @@ class WishServiceImplTest {
     }
 
     @Test
-    void getUserWishInRoomTest() {
+    void testGetUserWishInRoom() {
         int idRoom = 1;
         int idUserInfo = 2;
         WishEntity entity = new WishEntity();

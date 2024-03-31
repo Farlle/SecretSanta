@@ -48,7 +48,7 @@ class RoleServiceImplTest {
     }
 
     @Test
-    public void testReadAll() {
+    void testReadAll() {
         RoleEntity roleEntity1 = new RoleEntity();
         roleEntity1.setIdRole(1);
         roleEntity1.setRole(Role.PARTICIPANT);
@@ -65,7 +65,7 @@ class RoleServiceImplTest {
     }
 
     @Test
-    public void testUpdate() {
+    void testUpdate() {
         int id = 1;
         RoleDTO dto = new RoleDTO();
         dto.setRole(Role.PARTICIPANT);
@@ -94,7 +94,7 @@ class RoleServiceImplTest {
     }
 
     @Test
-    public void testDelete() {
+    void testDelete() {
         int id = 1;
 
         roleService.delete(id);

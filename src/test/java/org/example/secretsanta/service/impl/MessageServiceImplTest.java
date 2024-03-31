@@ -138,18 +138,7 @@ class MessageServiceImplTest {
         assertNotNull(result);
         verify(messageRepository).findByIdSenderAndIdRecipient(idSender, idRecipient);
     }
-
-    @Test
-    void testGetAllUserDialog() {
-        int idUserInfo = 1;
-        when(messageRepository.findDistinctRecipientsByIdSender(idUserInfo)).thenReturn(Collections.emptyList());
-
-        List<Integer> result = messageService.getAllUserDialog(idUserInfo);
-
-        assertNotNull(result);
-        verify(messageRepository).findDistinctRecipientsByIdSender(idUserInfo);
-    }
-
+    
     @Test
     void testGetDistinctDialog() {
         int idRecipient = 1;

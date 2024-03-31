@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DateUtilsTest {
 
     @Test
-    public void testConvertDateToSqlDate() {
+     void testConvertDateToSqlDate() {
         LocalDateTime localDateTime1 = LocalDateTime.of(2024, 1, 1, 0, 0);
         LocalDateTime localDateTime2 = LocalDateTime.of(2024, 12, 31, 23, 59);
 

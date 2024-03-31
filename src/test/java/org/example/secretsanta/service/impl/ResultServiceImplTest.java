@@ -48,7 +48,7 @@ class ResultServiceImplTest {
     }
 
     @Test
-    void createTest() {
+    void testCreate() {
         ResultDTO dto = new ResultDTO();
 
         ResultEntity result = new ResultEntity();
@@ -62,7 +62,7 @@ class ResultServiceImplTest {
     }
 
     @Test
-    void readAllTest() {
+    void testReadAll() {
         List<ResultEntity> results = new ArrayList<>();
 
         when(resultRepository.findAll()).thenReturn(results);
@@ -74,7 +74,7 @@ class ResultServiceImplTest {
     }
 
     @Test
-    void updateTest() {
+    void testUpdate() {
         int id = 1;
         ResultDTO dto = new ResultDTO();
 
@@ -91,7 +91,7 @@ class ResultServiceImplTest {
     }
 
     @Test
-    void deleteTest() {
+    void testDelete() {
         int id = 1;
 
         resultService.delete(id);
@@ -100,7 +100,7 @@ class ResultServiceImplTest {
     }
 
     @Test
-    void performDrawTest() {
+    void testPerformDraw() {
         RoomDTO room = new RoomDTO();
         UserInfoDTO user1 = new UserInfoDTO(1, "name1", "pas1", "tg1");
         UserInfoDTO user2 = new UserInfoDTO(2, "name2", "pas2", "tg2");
@@ -114,7 +114,7 @@ class ResultServiceImplTest {
         List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = new ArrayList<>();
 
         when(userInfoServiceImpl.getUsersInfoById(anyList())).thenReturn(users);
-        when(userInfoTelegramChatsServiceImpl.getAllIdChatsUsersWhoNeedNotify(anyInt()))
+        when(userInfoTelegramChatsServiceImpl.getAllUserChatsWhoNeedNotify(anyInt()))
                 .thenReturn(userInfoTelegramChatsDTO);
         when(resultRepository.findByRoomIdRoom(anyInt())).thenReturn(new ArrayList<>());
         when(resultRepository.save(any(ResultEntity.class))).thenReturn(new ResultEntity());
@@ -122,7 +122,7 @@ class ResultServiceImplTest {
         resultService.performDraw(room);
 
         verify(userInfoServiceImpl, times(1)).getUsersInfoById(anyList());
-        verify(userInfoTelegramChatsServiceImpl, times(1)).getAllIdChatsUsersWhoNeedNotify(anyInt());
+        verify(userInfoTelegramChatsServiceImpl, times(1)).getAllUserChatsWhoNeedNotify(anyInt());
         verify(resultRepository, times(users.size())).save(any(ResultEntity.class));
         verify(telegramServiceImpl, times(userInfoTelegramChatsDTO.size())).sendMessage(anyLong(), anyString());
         assertEquals("Была проведена жеребьевка, смотри результат по сслыке " +
@@ -130,7 +130,7 @@ class ResultServiceImplTest {
     }
 
     @Test
-    void showDrawInRoomTest() {
+    void testShowDrawInRoom() {
         int idRoom = 1;
         RoomDTO roomDTO = new RoomDTO(1, "name", 1, new Date(864000L), new Date(764000L), "qwe");
         ResultDTO result = new ResultDTO(1, 1, 2, roomDTO);

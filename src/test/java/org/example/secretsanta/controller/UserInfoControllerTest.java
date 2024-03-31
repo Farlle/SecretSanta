@@ -2,7 +2,7 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.example.secretsanta.service.serviceinterface.UserInfoService;
+import org.example.secretsanta.service.UserInfoService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ class UserInfoControllerTest {
     }
 
     @Test
-    void testUpdateUserInfoTest() throws Exception {
+    void testUpdateUserInfo() throws Exception {
         int id = 1;
         UserInfoDTO dto = new UserInfoDTO(id, "test", "password", "telegram");
         UserInfoDTO dtoNew = new UserInfoDTO(id, "test2", "password2", "telegram2");
@@ -84,7 +84,7 @@ class UserInfoControllerTest {
     }
 
     @Test
-    void getAllUsersInfoTest() throws Exception {
+    void testGetAllUsersInfo() throws Exception {
         List<UserInfoDTO> userInfoList = Arrays.asList(
                 new UserInfoDTO(1, "test", "1223", "test"),
                 new UserInfoDTO(2, "test2", "1223", "test2")
@@ -100,7 +100,7 @@ class UserInfoControllerTest {
     }
 
     @Test
-    void deleteUserInfoTest() throws Exception {
+    void testDeleteUserInfo() throws Exception {
         int id = 1;
 
         mockMvc.perform(post("/userInfo/delete/{id}", id).with(user("username").password("password")))

@@ -4,8 +4,6 @@ import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.service.UserInfoService;
 import org.example.secretsanta.service.UserInfoTelegramChatsService;
-import org.example.secretsanta.service.impl.UserInfoServiceImpl;
-import org.example.secretsanta.service.impl.UserInfoTelegramChatsServiceImpl;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -60,7 +58,6 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdatesReceived(List<Update> updates) {
-
         super.onUpdatesReceived(updates);
     }
 

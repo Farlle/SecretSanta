@@ -1,2 +1,5 @@
-package org.example.secretsanta.service.scheduler;public class DrawingScheduler {
+package org.example.secretsanta.service.scheduler;
+
+public interface DrawingScheduler {
+    void scheduleDrawings();
 }

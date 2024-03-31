@@ -37,7 +37,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void getUserInfoByIdTest() {
+    void testGetUserInfoById() {
         int id = 1;
         UserInfoEntity userInfoEntity = new UserInfoEntity();
 
@@ -50,7 +50,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void updateTest() {
+    void testUpdate() {
         int id = 1;
         UserInfoDTO dto = new UserInfoDTO();
 
@@ -69,7 +69,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void createTest() {
+    void testCreate() {
         UserInfoDTO dto = new UserInfoDTO();
 
         UserInfoEntity userInfoEntity = new UserInfoEntity();
@@ -83,7 +83,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void readAllTest() {
+    void testReadAll() {
         List<UserInfoEntity> userInfoEntities = Arrays.asList(new UserInfoEntity(), new UserInfoEntity());
         when(userInfoRepository.findAll()).thenReturn(userInfoEntities);
 
@@ -94,7 +94,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void deleteTest() {
+    void testDelete() {
         int id = 1;
 
         userInfoService.delete(id);
@@ -103,7 +103,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void registerNewUserInfoAccountTest() {
+    void testRegisterNewUserInfoAccount() {
         UserInfoDTO dto = new UserInfoDTO();
         dto.setName("New User");
         dto.setTelegram("123");
@@ -121,7 +121,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void testRegisterNewUserInfoAccount_UserAlreadyExistsTest() {
+    void testRegisterNewUserInfoAccount_UserAlreadyExists() {
         UserInfoDTO dto = new UserInfoDTO();
         dto.setName("New User");
         dto.setTelegram("123");
@@ -139,7 +139,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void getUsersInfoByIdTest() {
+    void testGetUsersInfoById() {
         List<Integer> usersIds = Arrays.asList(1, 2);
         List<UserInfoEntity> userInfoEntities = Arrays.asList(new UserInfoEntity(), new UserInfoEntity());
         when(userInfoRepository.findAllById(usersIds)).thenReturn(userInfoEntities);
@@ -151,7 +151,7 @@ class UserInfoServiceImplTest {
     }
 
     @Test
-    void getUsersInfoByTelegramTest() {
+    void testGetUsersInfoByTelegram() {
         String telegram = "test_telegram";
         UserInfoEntity userInfoEntity = new UserInfoEntity();
 

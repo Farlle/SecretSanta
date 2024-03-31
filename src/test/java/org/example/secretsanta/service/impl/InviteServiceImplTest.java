@@ -5,10 +5,12 @@ import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.InviteMapper;
 import org.example.secretsanta.model.entity.InviteEntity;
-import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.enums.Status;
 import org.example.secretsanta.repository.InviteRepository;
-import org.example.secretsanta.repository.RoomRepository;
+import org.example.secretsanta.service.InviteService;
+import org.example.secretsanta.service.RoomService;
+import org.example.secretsanta.service.TelegramService;
+import org.example.secretsanta.service.UserInfoTelegramChatsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,11 +33,11 @@ class InviteServiceImplTest {
     @Mock
     private InviteRepository inviteRepository;
     @Mock
-    private TelegramServiceImpl telegramService;
+    private TelegramService telegramService;
     @Mock
-    private RoomServiceImpl roomService;
+    private RoomService roomService;
     @Mock
-    private UserInfoTelegramChatsServiceImpl userInfoTelegramChatsService;
+    private UserInfoTelegramChatsService userInfoTelegramChatsService;
 
     @InjectMocks
     private InviteServiceImpl inviteService;
@@ -46,9 +48,9 @@ class InviteServiceImplTest {
     }
 
     @Test
-    void create() {
+    void testCreate() {
         InviteDTO dto = new InviteDTO();
-
+        dto.setUserInfoDTO(new UserInfoDTO());
         when(inviteRepository.save(any(InviteEntity.class))).thenReturn(InviteMapper.toInviteEntity(dto));
         InviteDTO result = inviteService.create(dto);
 
@@ -57,7 +59,7 @@ class InviteServiceImplTest {
     }
 
     @Test
-    void readAll() {
+    void testReadAll() {
         List<InviteEntity> inviteEntities = Arrays.asList(new InviteEntity(), new InviteEntity());
         when(inviteRepository.findAll()).thenReturn(inviteEntities);
 
@@ -68,7 +70,7 @@ class InviteServiceImplTest {
     }
 
     @Test
-    void update() {
+    void testUpdate() {
         int id = 1;
         InviteDTO dto = new InviteDTO();
 
@@ -85,14 +87,14 @@ class InviteServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void testDelete() {
         int id = 1;
         inviteService.delete(id);
         verify(inviteRepository, times(1)).deleteById(id);
     }
 
     @Test
-    void getAllUsersInvite() {
+    void testGetAllUsersInvite() {
         String telegram = "testTelegram";
         List<InviteEntity> inviteEntities = Arrays.asList(new InviteEntity(), new InviteEntity());
         when(inviteRepository.getAllUsersInvite(telegram)).thenReturn(inviteEntities);
@@ -104,7 +106,7 @@ class InviteServiceImplTest {
     }
 
     @Test
-    public void testSendInvite() {
+    void testSendInvite() {
         int idRoom = 1;
         RoomDTO roomDTO = new RoomDTO(1, "room", 1, new Date(864000L), new Date(764000L), "asd");
         String telegram = "test_user";
@@ -123,7 +125,7 @@ class InviteServiceImplTest {
     }
 
     @Test
-    public void testCheckInvite_InviteExists() {
+    void testCheckInvite_InviteExists() {
         InviteDTO inviteDTO = new InviteDTO(1, new UserInfoDTO(), "qwe", Status.SENT,
                 "Тебя пригласили в комнату room присоединяйся по ссылке http://localhost:8080/room/1/join");
         InviteDTO inviteDTO1 = new InviteDTO(1, new UserInfoDTO(), "qwe", Status.SENT,
@@ -136,7 +138,7 @@ class InviteServiceImplTest {
     }
 
     @Test
-    public void testCheckInvite_InviteDoesNotExist() {
+    void testCheckInvite_InviteDoesNotExist() {
         InviteDTO inviteDTO = new InviteDTO(1, new UserInfoDTO(), "qwe", Status.SENT,
                 "Тебя пригласили в комнату room присоединяйся по ссылке http://localhost:8080/room/1/join");
         InviteDTO inviteDTO1 = new InviteDTO(1, new UserInfoDTO(), "qwe", Status.SENT,
@@ -149,7 +151,7 @@ class InviteServiceImplTest {
     }
 
     @Test
-    public void testUserAcceptInvite() {
+    void testUserAcceptInvite() {
         String telegram = "qwe";
         int idRoom = 1;
         RoomDTO roomDTO = new RoomDTO(1, "room", 1,
@@ -168,7 +170,7 @@ class InviteServiceImplTest {
         when(inviteRepository.findById(2)).thenReturn(Optional.of(inviteEntity2));
         when(roomService.getRoomById(idRoom)).thenReturn(roomDTO);
 
-        inviteService.UserAcceptInvite(telegram, idRoom);
+        inviteService.userAcceptInvite(telegram, idRoom);
 
         verify(inviteRepository, times(2)).save(any(InviteEntity.class));
         assertEquals(Status.ACCEPTED, inviteEntity1.getStatus());

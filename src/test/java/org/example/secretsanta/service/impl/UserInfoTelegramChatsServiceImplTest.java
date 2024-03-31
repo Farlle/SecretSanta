@@ -31,7 +31,7 @@ class UserInfoTelegramChatsServiceImplTest {
     }
 
     @Test
-    void createTest() {
+    void testCreate() {
         UserInfoTelegramChatsDTO dto = new UserInfoTelegramChatsDTO();
 
         UserInfoTelegramChatsEntity entity = new UserInfoTelegramChatsEntity();
@@ -46,7 +46,7 @@ class UserInfoTelegramChatsServiceImplTest {
     }
 
     @Test
-    void readAllTest() {
+    void testReadAll() {
         List<UserInfoTelegramChatsEntity> entities = Arrays.asList(new UserInfoTelegramChatsEntity(),
                 new UserInfoTelegramChatsEntity());
         when(userInfoTelegramChatsRepository.findAll()).thenReturn(entities);
@@ -58,7 +58,7 @@ class UserInfoTelegramChatsServiceImplTest {
     }
 
     @Test
-    void updateTest() {
+    void testUpdate() {
         int id = 1;
         UserInfoTelegramChatsDTO dto = new UserInfoTelegramChatsDTO();
 
@@ -76,7 +76,7 @@ class UserInfoTelegramChatsServiceImplTest {
     }
 
     @Test
-    void deleteTest() {
+    void testDelete() {
         int id = 1;
 
         userInfoTelegramChatsService.delete(id);
@@ -85,7 +85,7 @@ class UserInfoTelegramChatsServiceImplTest {
     }
 
     @Test
-    void getRegisterUserByIdChatsTest() {
+    void testGetRegisterUserByIdChats() {
         Long idChat = 1L;
         UserInfoTelegramChatsEntity entity = new UserInfoTelegramChatsEntity();
 
@@ -98,19 +98,19 @@ class UserInfoTelegramChatsServiceImplTest {
     }
 
     @Test
-    void getAllIdChatsUsersWhoNeedNotifyTest() {
+    void testGetAllIdChatsUsersWhoNeedNotify() {
         int idRoom = 1;
         List<UserInfoTelegramChatsEntity> entities = Arrays.asList(new UserInfoTelegramChatsEntity(), new UserInfoTelegramChatsEntity());
-        when(userInfoTelegramChatsRepository.findAllUserIdChatsWhoNeedNotify(idRoom)).thenReturn(entities);
+        when(userInfoTelegramChatsRepository.findAllUserChatsWhoNeedNotify(idRoom)).thenReturn(entities);
 
-        List<UserInfoTelegramChatsDTO> result = userInfoTelegramChatsService.getAllIdChatsUsersWhoNeedNotify(idRoom);
+        List<UserInfoTelegramChatsDTO> result = userInfoTelegramChatsService.getAllUserChatsWhoNeedNotify(idRoom);
 
-        verify(userInfoTelegramChatsRepository, times(1)).findAllUserIdChatsWhoNeedNotify(idRoom);
+        verify(userInfoTelegramChatsRepository, times(1)).findAllUserChatsWhoNeedNotify(idRoom);
         assertEquals(entities.size(), result.size());
     }
 
     @Test
-    void getIdChatByTelegramNameTest() {
+    void testGetIdChatByTelegramName() {
         String telegramName = "test_user";
         Long idChat = 1L;
         when(userInfoTelegramChatsRepository.getIdChatByTelegramName(telegramName)).thenReturn(idChat);

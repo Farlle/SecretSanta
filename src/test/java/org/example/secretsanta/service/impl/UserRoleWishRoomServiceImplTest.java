@@ -32,7 +32,7 @@ class UserRoleWishRoomServiceImplTest {
     }
 
     @Test
-    void createTest() {
+    void testCreate() {
         UserRoleWishRoomDTO dto = new UserRoleWishRoomDTO();
 
         UserRoleWishRoomEntity entity = new UserRoleWishRoomEntity();
@@ -46,7 +46,7 @@ class UserRoleWishRoomServiceImplTest {
     }
 
     @Test
-    void readAllTest() {
+    void testReadAll() {
         List<UserRoleWishRoomEntity> entities = Arrays.asList(new UserRoleWishRoomEntity(), new UserRoleWishRoomEntity());
         when(userRoleWishRoomRepository.findAll()).thenReturn(entities);
 
@@ -57,7 +57,7 @@ class UserRoleWishRoomServiceImplTest {
     }
 
     @Test
-    void updateTest() {
+    void testUpdate() {
         int id = 1;
         UserRoleWishRoomDTO dto = new UserRoleWishRoomDTO();
 
@@ -74,7 +74,7 @@ class UserRoleWishRoomServiceImplTest {
     }
 
     @Test
-    void deleteTest() {
+    void testDelete() {
         int id = 1;
 
         userRoleWishRoomService.delete(id);
@@ -83,7 +83,7 @@ class UserRoleWishRoomServiceImplTest {
     }
 
     @Test
-    void deleteUserFromRoomTest() {
+    void testDeleteUserFromRoom() {
         int idRoom = 1;
         int idUserInfo = 2;
         UserRoleWishRoomEntity entity = new UserRoleWishRoomEntity();

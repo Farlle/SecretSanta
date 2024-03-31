@@ -1,4 +1,4 @@
-package org.example.secretsanta.aspect;
+package org.example.secretsanta.logger;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;

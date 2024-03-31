@@ -2,7 +2,7 @@ package org.example.secretsanta.controller;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.service.security.CustomUserDetailsService;
-import org.example.secretsanta.service.serviceinterface.UserInfoService;
+import org.example.secretsanta.service.UserInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
