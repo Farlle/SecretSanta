@@ -17,7 +17,7 @@ git clone https://github.com/Farlle/SecretSanta.git
 
 ### 3. Запустить docker-compose.yml в директории проекта
 ```
-docker-compose up
+docker-compose up --build
 ```
 ### 4. Открыть в браузере: <a href="http://localhost:8080/home">8080/home<a>
 
