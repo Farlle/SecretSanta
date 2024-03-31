@@ -30,13 +30,14 @@ public class CustomUserDetailsService implements UserDetailsService {
      *
      * @param name Имя пользователя
      * @return Полльзователь
+     * @throws UsernameNotFoundException Если пользователь не найден
      */
     public UserInfoDTO findUserByName(String name) {
         List<UserInfoEntity> allUsers = userInfoRepository.findAll();
         return UserInfoMapper.toUserInfoDTO(allUsers.stream()
                 .filter(user -> user.getName().equals(name))
                 .findFirst()
-                .orElse(null));
+                .orElseThrow(() -> new UsernameNotFoundException("UserInfo not found with name:" + name)));
     }
 
 
@@ -45,14 +46,10 @@ public class CustomUserDetailsService implements UserDetailsService {
      *
      * @param name Имя пользователя
      * @return Информацию о пользоватле
-     * @throws UsernameNotFoundException Если пользователь не найден
      */
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String name) {
         UserInfoDTO userInfo = findUserByName(name);
-        if (userInfo == null) {
-            throw new UsernameNotFoundException("UserInfo not found with name:" + name);
-        }
         return new User(userInfo.getName(), userInfo.getPassword(), new ArrayList<>());
     }
 }
