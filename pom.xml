@@ -8,7 +8,7 @@
         <version>2.3.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>org.example</groupId>
+    <groupId>ru.sberschool</groupId>
     <artifactId>SecretSanta</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SecretSanta</name>
