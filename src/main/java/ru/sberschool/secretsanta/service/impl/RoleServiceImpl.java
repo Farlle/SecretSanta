@@ -1,11 +1,11 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.RoleDTO;
 import ru.sberschool.secretsanta.mapper.RoleMapper;
 import ru.sberschool.secretsanta.model.entity.RoleEntity;
 import ru.sberschool.secretsanta.repository.RoleRepository;
 import ru.sberschool.secretsanta.service.RoleService;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -51,7 +51,7 @@ public class RoleServiceImpl implements RoleService {
     /**
      * Метод для обновления роли
      *
-     * @param id Идентификатор роли
+     * @param id  Идентификатор роли
      * @param dto Объект для обновления
      * @return Обновленный объект
      */

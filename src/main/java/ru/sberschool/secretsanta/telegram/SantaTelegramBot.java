@@ -1,15 +1,15 @@
 package ru.sberschool.secretsanta.telegram;
 
-import ru.sberschool.secretsanta.controller.CustomErrorController;
-import ru.sberschool.secretsanta.dto.UserInfoDTO;
-import ru.sberschool.secretsanta.dto.UserInfoTelegramChatsDTO;
-import ru.sberschool.secretsanta.service.UserInfoService;
-import ru.sberschool.secretsanta.service.UserInfoTelegramChatsService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.sberschool.secretsanta.controller.CustomErrorController;
+import ru.sberschool.secretsanta.dto.UserInfoDTO;
+import ru.sberschool.secretsanta.dto.UserInfoTelegramChatsDTO;
+import ru.sberschool.secretsanta.service.UserInfoService;
+import ru.sberschool.secretsanta.service.UserInfoTelegramChatsService;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -83,7 +83,7 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
     /**
      * Метод отправки сообщения пользователю в тг
      *
-     * @param idChat Идентификатор чата
+     * @param idChat  Идентификатор чата
      * @param message Отправляемое сообщение
      */
     public void sendMessage(Long idChat, String message) {

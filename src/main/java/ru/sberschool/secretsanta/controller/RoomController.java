@@ -1,10 +1,5 @@
 package ru.sberschool.secretsanta.controller;
 
-import ru.sberschool.secretsanta.dto.*;
-import ru.sberschool.secretsanta.model.enums.Role;
-import ru.sberschool.secretsanta.service.*;
-import ru.sberschool.secretsanta.service.security.CustomUserDetailsService;
-import ru.sberschool.secretsanta.wrapper.RoomAndOrganizerWrapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.sberschool.secretsanta.dto.*;
+import ru.sberschool.secretsanta.model.enums.Role;
+import ru.sberschool.secretsanta.service.*;
+import ru.sberschool.secretsanta.service.security.CustomUserDetailsService;
+import ru.sberschool.secretsanta.wrapper.RoomAndOrganizerWrapper;
 
 import java.security.Principal;
 import java.util.List;
@@ -74,8 +74,8 @@ public class RoomController {
     /**
      * Метод для создания комнаты
      *
-     * @param dto Объект комнаты, которую необходимо создать
-     * @param model Модель для передачи данных в атрибут
+     * @param dto                Объект комнаты, которую необходимо создать
+     * @param model              Модель для передачи данных в атрибут
      * @param redirectAttributes Атрибуты для передачи информации на страницу
      * @return Перенаправляет на страницу для присоединения к комнате после ее создания, либо на страницу с созданием,
      * если дата жеребьевки позже даты дарения
@@ -94,8 +94,8 @@ public class RoomController {
     /**
      * Получение страницы с информацией о комнате
      *
-     * @param idRoom Идентификатор команты
-     * @param model модель для передачи данных на страинцу
+     * @param idRoom    Идентификатор команты
+     * @param model     модель для передачи данных на страинцу
      * @param principal представляет текущего пользователя
      * @return страницу с информацией о комнате
      */
@@ -117,8 +117,8 @@ public class RoomController {
     /**
      * Метод для получения страицы с присоединением к комнате
      *
-     * @param idRoom Идентификатор команаты
-     * @param model Моедль для передачи данных на страницу
+     * @param idRoom    Идентификатор команаты
+     * @param model     Моедль для передачи данных на страницу
      * @param principal Представляет текущего пользователя
      * @return Страинца для присоединения к комнате
      */
@@ -147,9 +147,9 @@ public class RoomController {
     /**
      * Метод присоедиения к комнате
      *
-     * @param idRoom Идентификатор комнаты
-     * @param wishDto Объект желания котороый надо создать
-     * @param model Модель для передачи данных на страницу
+     * @param idRoom    Идентификатор комнаты
+     * @param wishDto   Объект желания котороый надо создать
+     * @param model     Модель для передачи данных на страницу
      * @param principal Представляет текущего пользователя
      * @return Перенаправляет на страницу с информацией о комнате, после создания желания
      */
@@ -190,8 +190,8 @@ public class RoomController {
     /**
      * Метод возвращающий страницу с информацией о пользователях и их ролях в комнате
      *
-     * @param idRoom Идентификатор комнаты
-     * @param model Модель для передачи данных в атрибут
+     * @param idRoom    Идентификатор комнаты
+     * @param model     Модель для передачи данных в атрибут
      * @param principal Представляет текущего пользователя
      * @return Страница с информацией о пользователях в комнате
      */
@@ -212,10 +212,10 @@ public class RoomController {
     /**
      * Метод для получения страницы со списком комнат к которым присоединен пользователь
      *
-     * @param model Модель для передачи данных на страницу
+     * @param model     Модель для передачи данных на страницу
      * @param principal Представляет текущего пользователя
-     * @param page Номер страницы для пагинации
-     * @param size Размер страницы для пагинации
+     * @param page      Номер страницы для пагинации
+     * @param size      Размер страницы для пагинации
      * @return Страница со списком комнат к которым присоединен пользователь
      */
     @GetMapping("/show/participant")
@@ -234,9 +234,9 @@ public class RoomController {
     /**
      * Метод для удаления участника из комнаты
      *
-     * @param nameRoom Имя команты
-     * @param userInfoName Имя пользователя для удаления
-     * @param principal Предсавляет текущего пользователя
+     * @param nameRoom           Имя команты
+     * @param userInfoName       Имя пользователя для удаления
+     * @param principal          Предсавляет текущего пользователя
      * @param redirectAttributes Атрибуты для передачи информации на страницу
      * @return Перенаправляет на страницу со всеми пользователя в комнате. Если пытается удалить не организатор, то
      * перенаправление на страницу с информацией о пользователях в комнате и сообщением об ошибке

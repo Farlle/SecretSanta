@@ -1,11 +1,11 @@
 package ru.sberschool.secretsanta.controller;
 
-import ru.sberschool.secretsanta.dto.UserInfoDTO;
-import ru.sberschool.secretsanta.service.UserInfoService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.sberschool.secretsanta.dto.UserInfoDTO;
+import ru.sberschool.secretsanta.service.UserInfoService;
 
 /**
  * Контроллер отвечающйи за действия над пользователем. Использовался для разработки программы
@@ -36,7 +36,7 @@ public class UserInfoController {
     /**
      * Метод создания пользователя
      *
-     * @param dto Объект пользователя, который необходимо создать
+     * @param dto   Объект пользователя, который необходимо создать
      * @param model Модель для передачи данных на страницу
      * @return Перенаправляет на страницу с информацией обо всех пользователях
      */
@@ -50,7 +50,7 @@ public class UserInfoController {
     /**
      * Метод для получения страницы с информацией о пользователе
      *
-     * @param id Идентификатор пользователя
+     * @param id    Идентификатор пользователя
      * @param model Модель для передачи данных на страницу
      * @return Страница для обновления пользователя
      */
@@ -64,8 +64,8 @@ public class UserInfoController {
     /**
      * Метод для обновления пользователя
      *
-     * @param id Идентификатор пользователя
-     * @param dto Объект пользователя который надо обновить
+     * @param id    Идентификатор пользователя
+     * @param dto   Объект пользователя который надо обновить
      * @param model Модель для передачи данных на страницу
      * @return Пренаправляет на страницу с информацией о всех пользователях
      */

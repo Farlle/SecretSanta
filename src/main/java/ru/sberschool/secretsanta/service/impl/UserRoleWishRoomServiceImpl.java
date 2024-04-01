@@ -1,12 +1,12 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sberschool.secretsanta.dto.UserRoleWishRoomDTO;
 import ru.sberschool.secretsanta.mapper.*;
 import ru.sberschool.secretsanta.model.entity.UserRoleWishRoomEntity;
 import ru.sberschool.secretsanta.repository.UserRoleWishRoomRepository;
 import ru.sberschool.secretsanta.service.UserRoleWishRoomService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -63,7 +63,7 @@ public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
     /**
      * Метод для обновления пользоватлей в комнате
      *
-     * @param id Идентификатор объекта
+     * @param id  Идентификатор объекта
      * @param dto Объект который требуется обновить
      * @return Обновленный объект
      */
@@ -93,7 +93,7 @@ public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
     /**
      * Метод для удаления пользователя из комнаты
      *
-     * @param idRoom Идентификатор комнаты
+     * @param idRoom     Идентификатор комнаты
      * @param idUserInfo Идентификар пользователя
      */
     @Override

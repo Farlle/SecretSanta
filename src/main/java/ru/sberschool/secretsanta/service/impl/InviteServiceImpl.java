@@ -1,5 +1,7 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sberschool.secretsanta.dto.InviteDTO;
 import ru.sberschool.secretsanta.dto.RoomDTO;
 import ru.sberschool.secretsanta.mapper.InviteMapper;
@@ -12,8 +14,6 @@ import ru.sberschool.secretsanta.service.RoomService;
 import ru.sberschool.secretsanta.service.TelegramService;
 import ru.sberschool.secretsanta.service.UserInfoTelegramChatsService;
 import ru.sberschool.secretsanta.utils.UrlUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -76,7 +76,7 @@ public class InviteServiceImpl implements InviteService {
     /**
      * Метод для обновления информации о приглашении
      *
-     * @param id Идентификатор приглашения
+     * @param id  Идентификатор приглашения
      * @param dto Ообъект который необходимо сохранить
      * @return Сохраненный объект
      */
@@ -106,7 +106,7 @@ public class InviteServiceImpl implements InviteService {
     /**
      * Метод ядл отправки приглагения в телегарм
      *
-     * @param idRoom Идентификатор комнаты
+     * @param idRoom    Идентификатор комнаты
      * @param inviteDTO Приглашение, которое надо отправить
      */
     @Transactional
@@ -123,7 +123,7 @@ public class InviteServiceImpl implements InviteService {
      * Метод для проверки наличия приглашения в комнату
      *
      * @param telegram Ник пользователя в телеграм
-     * @param idRoom Идентификатор комнаты
+     * @param idRoom   Идентификатор комнаты
      * @return true если приглашений найден, false если не найдено
      */
     @Override
@@ -152,7 +152,7 @@ public class InviteServiceImpl implements InviteService {
      * Метод для поддтверждения принятия приглашеняи пользователем
      *
      * @param telegram Телеграм пользователя
-     * @param idRoom Идентификатор комнаты
+     * @param idRoom   Идентификатор комнаты
      */
     @Override
     public void userAcceptInvite(String telegram, int idRoom) {

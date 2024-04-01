@@ -1,8 +1,8 @@
 package ru.sberschool.secretsanta.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.sberschool.secretsanta.dto.UserInfoDTO;
 import ru.sberschool.secretsanta.model.entity.UserInfoEntity;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserInfoMapper {
 
-    public  UserInfoDTO toUserInfoDTO(UserInfoEntity userInfoEntity) {
+    public UserInfoDTO toUserInfoDTO(UserInfoEntity userInfoEntity) {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
 
         if (userInfoEntity == null) {
@@ -25,7 +25,7 @@ public class UserInfoMapper {
         return userInfoDTO;
     }
 
-    public  UserInfoEntity toUserInfoEntity(UserInfoDTO userInfoDTO) {
+    public UserInfoEntity toUserInfoEntity(UserInfoDTO userInfoDTO) {
         UserInfoEntity userInfoEntity = new UserInfoEntity();
 
         if (userInfoDTO == null) {
@@ -40,7 +40,7 @@ public class UserInfoMapper {
         return userInfoEntity;
     }
 
-    public  List<UserInfoDTO> toUserInfoDTOList(List<UserInfoEntity> userInfoEntityList) {
+    public List<UserInfoDTO> toUserInfoDTOList(List<UserInfoEntity> userInfoEntityList) {
         if (userInfoEntityList == null) {
             throw new IllegalArgumentException("UserInfoEntityList cannot be null");
         }

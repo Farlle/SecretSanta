@@ -1,14 +1,14 @@
 package ru.sberschool.secretsanta.service.security;
 
-import ru.sberschool.secretsanta.dto.UserInfoDTO;
-import ru.sberschool.secretsanta.mapper.UserInfoMapper;
-import ru.sberschool.secretsanta.model.entity.UserInfoEntity;
-import ru.sberschool.secretsanta.repository.UserInfoRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.sberschool.secretsanta.dto.UserInfoDTO;
+import ru.sberschool.secretsanta.mapper.UserInfoMapper;
+import ru.sberschool.secretsanta.model.entity.UserInfoEntity;
+import ru.sberschool.secretsanta.repository.UserInfoRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package ru.sberschool.secretsanta.service;
 
-import ru.sberschool.secretsanta.dto.InviteDTO;
 import org.springframework.transaction.annotation.Transactional;
+import ru.sberschool.secretsanta.dto.InviteDTO;
 
 import java.util.List;
 

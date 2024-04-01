@@ -1,8 +1,8 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.service.TelegramService;
 import ru.sberschool.secretsanta.telegram.SantaTelegramBot;
-import org.springframework.stereotype.Service;
 
 /**
  * Сервис для работы с телеграмом
@@ -18,7 +18,7 @@ public class TelegramServiceImpl implements TelegramService {
     /**
      * Метод отправляющий сообщение пользователю
      *
-     * @param idChat Идентификатор чата
+     * @param idChat  Идентификатор чата
      * @param message Сообщение
      */
     @Override

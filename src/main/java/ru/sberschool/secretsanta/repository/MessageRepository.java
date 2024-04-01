@@ -1,10 +1,10 @@
 package ru.sberschool.secretsanta.repository;
 
-import ru.sberschool.secretsanta.model.entity.MessageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
+import ru.sberschool.secretsanta.model.entity.MessageEntity;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Integer>
     /**
      * Запрос получает все сообщения между двумя пользователями
      *
-     * @param idSender Идентификатор отправителя
+     * @param idSender    Идентификатор отправителя
      * @param idRecipient Идентификатор получателя
      * @return Список сообщений
      */

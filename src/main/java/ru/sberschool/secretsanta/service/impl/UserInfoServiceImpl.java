@@ -1,13 +1,13 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.UserInfoDTO;
 import ru.sberschool.secretsanta.exception.UserAlreadyExistsException;
 import ru.sberschool.secretsanta.mapper.UserInfoMapper;
 import ru.sberschool.secretsanta.model.entity.UserInfoEntity;
 import ru.sberschool.secretsanta.repository.UserInfoRepository;
 import ru.sberschool.secretsanta.service.UserInfoService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -42,7 +42,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     /**
      * Метод для обновления пользователя
      *
-     * @param id Идентификатор пользователя
+     * @param id  Идентификатор пользователя
      * @param dto Объект который необходимо обновить
      * @return Обновленный объект
      */
@@ -140,7 +140,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public String getTelegramUser(int idUser) {
         UserInfoEntity userInfoEntity = userInfoRepository.findById(idUser).orElseThrow();
-        return  userInfoEntity.getTelegram();
+        return userInfoEntity.getTelegram();
     }
 
 }

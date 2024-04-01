@@ -1,5 +1,8 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.RoomDTO;
 import ru.sberschool.secretsanta.dto.UserInfoDTO;
 import ru.sberschool.secretsanta.mapper.RoomMapper;
@@ -7,13 +10,10 @@ import ru.sberschool.secretsanta.model.entity.RoomEntity;
 import ru.sberschool.secretsanta.repository.RoomRepository;
 import ru.sberschool.secretsanta.service.RoomService;
 import ru.sberschool.secretsanta.service.UserInfoService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.sql.Date;
+import java.util.List;
 
 
 /**
@@ -75,7 +75,7 @@ public class RoomServiceImpl implements RoomService {
     /**
      * Метод для обновления комнаты
      *
-     * @param id Идентификатор комнаты
+     * @param id  Идентификатор комнаты
      * @param dto Объект для обновления
      * @return Обновленную комнату
      */
@@ -185,7 +185,7 @@ public class RoomServiceImpl implements RoomService {
      * Метод получающий список комнат к которым присоединен пользователь с пагинацией
      *
      * @param idUserInfo Идентификатор пользователя
-     * @param pageable Параметры пагинцаии
+     * @param pageable   Параметры пагинцаии
      * @return Страница с комнатами
      */
     @Override

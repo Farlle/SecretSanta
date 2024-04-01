@@ -1,8 +1,8 @@
 package ru.sberschool.secretsanta.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.sberschool.secretsanta.dto.RoleDTO;
 import ru.sberschool.secretsanta.model.entity.RoleEntity;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;

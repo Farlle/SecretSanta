@@ -19,6 +19,7 @@ public class CustomErrorController {
 
     /**
      * Обрабатывет 500 исключение и производит логирование
+     *
      * @param throwable возникающее исключение
      * @return страницу с ошибкой
      */

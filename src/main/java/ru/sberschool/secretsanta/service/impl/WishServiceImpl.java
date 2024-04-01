@@ -1,11 +1,11 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.WishDTO;
 import ru.sberschool.secretsanta.mapper.WishMapper;
 import ru.sberschool.secretsanta.model.entity.WishEntity;
 import ru.sberschool.secretsanta.repository.WishRepository;
 import ru.sberschool.secretsanta.service.WishService;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -47,7 +47,7 @@ public class WishServiceImpl implements WishService {
     /**
      * Метод для обновления желания пользователя
      *
-     * @param id Идентификатор желания
+     * @param id  Идентификатор желания
      * @param dto Объект который надо обновить
      * @return Обновленный объект
      */
@@ -62,7 +62,7 @@ public class WishServiceImpl implements WishService {
     /**
      * Метод для получения желания пользователя в комнате
      *
-     * @param idRoom Идентификатор комнаты
+     * @param idRoom     Идентификатор комнаты
      * @param idUserInfo Идентификатор Пользователя
      * @return Желание пользователя в комнате
      */

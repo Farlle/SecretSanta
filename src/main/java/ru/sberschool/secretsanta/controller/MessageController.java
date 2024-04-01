@@ -1,16 +1,16 @@
 package ru.sberschool.secretsanta.controller;
 
-import ru.sberschool.secretsanta.dto.MessageDTO;
-import ru.sberschool.secretsanta.dto.UserInfoDTO;
-import ru.sberschool.secretsanta.service.security.CustomUserDetailsService;
-import ru.sberschool.secretsanta.service.MessageService;
-import ru.sberschool.secretsanta.service.UserInfoService;
-import ru.sberschool.secretsanta.utils.DateUtils;
-import ru.sberschool.secretsanta.wrapper.DialogWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.sberschool.secretsanta.dto.MessageDTO;
+import ru.sberschool.secretsanta.dto.UserInfoDTO;
+import ru.sberschool.secretsanta.service.MessageService;
+import ru.sberschool.secretsanta.service.UserInfoService;
+import ru.sberschool.secretsanta.service.security.CustomUserDetailsService;
+import ru.sberschool.secretsanta.utils.DateUtils;
+import ru.sberschool.secretsanta.wrapper.DialogWrapper;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -40,7 +40,7 @@ public class MessageController {
     /**
      * Метод для получения страницы с диалогами пользователя
      *
-     * @param model Модель для передачи данных на страницу
+     * @param model     Модель для передачи данных на страницу
      * @param principal Представляет текущегог пользователя
      * @return Страница с диалогами
      */
@@ -63,9 +63,9 @@ public class MessageController {
     /**
      * Метод для переххода в диалог с пользователем
      *
-     * @param idUserInfo  Идентификатор пользователя с которым ведется беседа
-     * @param model Модель для передачи данных в представление
-     * @param principal Представляет текущего пользователя
+     * @param idUserInfo Идентификатор пользователя с которым ведется беседа
+     * @param model      Модель для передачи данных в представление
+     * @param principal  Представляет текущего пользователя
      * @return Страница с беседой между пользователями
      */
     @GetMapping("/conversation/{idUserInfo}")
@@ -90,8 +90,8 @@ public class MessageController {
     /**
      * Метод ядля отправки сообщения
      *
-     * @param messageDTO Объект сообщения, которое надо отправить
-     * @param principal Представляет текущего пользователя
+     * @param messageDTO  Объект сообщения, которое надо отправить
+     * @param principal   Представляет текущего пользователя
      * @param idRecipient Идентификатор получателя сообщения
      * @return Страница с беседой после отправки сообщени
      */

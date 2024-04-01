@@ -1,12 +1,12 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.UserInfoTelegramChatsDTO;
 import ru.sberschool.secretsanta.mapper.UserInfoMapper;
 import ru.sberschool.secretsanta.mapper.UserInfoTelegramChatsMapper;
 import ru.sberschool.secretsanta.model.entity.UserInfoTelegramChatsEntity;
 import ru.sberschool.secretsanta.repository.UserInfoTelegramChatsRepository;
 import ru.sberschool.secretsanta.service.UserInfoTelegramChatsService;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -20,6 +20,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
     private final UserInfoTelegramChatsRepository userInfoTelegramChatsRepository;
     private final UserInfoTelegramChatsMapper userInfoTelegramChatsMapper;
     private final UserInfoMapper userInfoMapper;
+
     public UserInfoTelegramChatsServiceImpl(UserInfoTelegramChatsRepository userInfoTelegramChatsRepository, UserInfoTelegramChatsMapper userInfoTelegramChatsMapper, UserInfoMapper userInfoMapper) {
         this.userInfoTelegramChatsRepository = userInfoTelegramChatsRepository;
         this.userInfoTelegramChatsMapper = userInfoTelegramChatsMapper;
@@ -55,7 +56,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
     /**
      * Метод для обновления чата пользователя в телеграм
      *
-     * @param id Идентификатор чато
+     * @param id  Идентификатор чато
      * @param dto Обект для обновления
      * @return Обновленный чат
      */

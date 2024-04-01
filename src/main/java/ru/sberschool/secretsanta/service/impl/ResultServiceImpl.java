@@ -1,5 +1,6 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.ResultDTO;
 import ru.sberschool.secretsanta.dto.RoomDTO;
 import ru.sberschool.secretsanta.dto.UserInfoDTO;
@@ -11,7 +12,6 @@ import ru.sberschool.secretsanta.mapper.RoomMapper;
 import ru.sberschool.secretsanta.model.entity.ResultEntity;
 import ru.sberschool.secretsanta.repository.ResultRepository;
 import ru.sberschool.secretsanta.service.*;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
@@ -77,7 +77,7 @@ public class ResultServiceImpl implements ResultService {
     /**
      * Метод для обновления результата
      *
-     * @param id Идентификатор объекта который необходимо обновить
+     * @param id  Идентификатор объекта который необходимо обновить
      * @param dto Объект который необходимо обновить
      * @return Обновленный объект
      */
@@ -159,7 +159,8 @@ public class ResultServiceImpl implements ResultService {
                 .collect(Collectors.toList());
     }
 
-    /** Метод для генерации уведомления в телеграм о проведении жеребьевки
+    /**
+     * Метод для генерации уведомления в телеграм о проведении жеребьевки
      *
      * @param idRoom Идентификатор комнаты
      * @return Текст уведомления

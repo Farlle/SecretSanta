@@ -1,23 +1,23 @@
 package ru.sberschool.secretsanta.controller;
 
-import ru.sberschool.secretsanta.dto.ResultDTO;
-import ru.sberschool.secretsanta.dto.RoomDTO;
-import ru.sberschool.secretsanta.dto.UserInfoDTO;
-import ru.sberschool.secretsanta.dto.WishDTO;
-import ru.sberschool.secretsanta.exception.DrawingAlreadyPerformedException;
-import ru.sberschool.secretsanta.exception.NotEnoughUsersException;
-import ru.sberschool.secretsanta.service.security.CustomUserDetailsService;
-import ru.sberschool.secretsanta.service.ResultService;
-import ru.sberschool.secretsanta.service.RoomService;
-import ru.sberschool.secretsanta.service.UserInfoService;
-import ru.sberschool.secretsanta.service.WishService;
-import ru.sberschool.secretsanta.wrapper.ResultWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.sberschool.secretsanta.dto.ResultDTO;
+import ru.sberschool.secretsanta.dto.RoomDTO;
+import ru.sberschool.secretsanta.dto.UserInfoDTO;
+import ru.sberschool.secretsanta.dto.WishDTO;
+import ru.sberschool.secretsanta.exception.DrawingAlreadyPerformedException;
+import ru.sberschool.secretsanta.exception.NotEnoughUsersException;
+import ru.sberschool.secretsanta.service.ResultService;
+import ru.sberschool.secretsanta.service.RoomService;
+import ru.sberschool.secretsanta.service.UserInfoService;
+import ru.sberschool.secretsanta.service.WishService;
+import ru.sberschool.secretsanta.service.security.CustomUserDetailsService;
+import ru.sberschool.secretsanta.wrapper.ResultWrapper;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -49,8 +49,8 @@ public class ResultController {
     /**
      * Метод для просмотра результатов
      *
-     * @param idRoom Идентификатор комнаты, в которой просматриваем результат
-     * @param model Модель для передачи данных в представление
+     * @param idRoom    Идентификатор комнаты, в которой просматриваем результат
+     * @param model     Модель для передачи данных в представление
      * @param principal Представляет текущего пользователя
      * @return Страница с результатами
      */
@@ -79,8 +79,8 @@ public class ResultController {
     /**
      * Метод для проведения жеребьевки в комнате
      *
-     * @param idRoom Индентификатор в комнате
-     * @param principal Представляет текущего пользователя
+     * @param idRoom             Индентификатор в комнате
+     * @param principal          Представляет текущего пользователя
      * @param redirectAttributes Атрибуты для передачи данных на страницу
      * @return Возвращает страницу просмотра результат после просмотра результат, либо страницу с информацией о комнате,
      * если недостаточно пользователей в комнате или текущий пользователь не организатор

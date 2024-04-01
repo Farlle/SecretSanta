@@ -1,11 +1,11 @@
 package ru.sberschool.secretsanta.service.scheduler;
 
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.RoomDTO;
 import ru.sberschool.secretsanta.service.ResultService;
 import ru.sberschool.secretsanta.service.RoomService;
 import ru.sberschool.secretsanta.utils.DateUtils;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +27,7 @@ public class DrawingSchedulerImpl implements DrawingScheduler {
     }
 
     /**
-     *Метод для проведения автоматической жеребьевки, когда придет ее время
+     * Метод для проведения автоматической жеребьевки, когда придет ее время
      */
     @Override
     @Scheduled(fixedDelay = PERIOD)

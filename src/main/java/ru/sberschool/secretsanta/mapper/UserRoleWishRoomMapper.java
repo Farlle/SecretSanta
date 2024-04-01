@@ -1,8 +1,8 @@
 package ru.sberschool.secretsanta.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.sberschool.secretsanta.dto.UserRoleWishRoomDTO;
 import ru.sberschool.secretsanta.model.entity.UserRoleWishRoomEntity;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;

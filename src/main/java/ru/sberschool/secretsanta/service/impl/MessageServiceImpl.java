@@ -1,5 +1,6 @@
 package ru.sberschool.secretsanta.service.impl;
 
+import org.springframework.stereotype.Service;
 import ru.sberschool.secretsanta.dto.MessageDTO;
 import ru.sberschool.secretsanta.mapper.MessageMapper;
 import ru.sberschool.secretsanta.mapper.UserInfoMapper;
@@ -9,7 +10,6 @@ import ru.sberschool.secretsanta.service.MessageService;
 import ru.sberschool.secretsanta.service.TelegramService;
 import ru.sberschool.secretsanta.service.UserInfoService;
 import ru.sberschool.secretsanta.service.UserInfoTelegramChatsService;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;

@@ -1,9 +1,9 @@
 package ru.sberschool.secretsanta.repository;
 
-import ru.sberschool.secretsanta.model.entity.InviteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.sberschool.secretsanta.model.entity.InviteEntity;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public interface InviteRepository extends JpaRepository<InviteEntity, Integer> {
     /**
      * Запрос возвращает все приглашения пользователя в определенную комнату
      *
-     * @param telegram Ник пользователя в телеграм
+     * @param telegram   Ник пользователя в телеграм
      * @param inviteText Текст приглашения ппользователя в тг
      * @return Все приглашения пользователя в определенную комнату
      */

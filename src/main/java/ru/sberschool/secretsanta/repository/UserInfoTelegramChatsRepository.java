@@ -1,9 +1,9 @@
 package ru.sberschool.secretsanta.repository;
 
-import ru.sberschool.secretsanta.model.entity.UserInfoTelegramChatsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.sberschool.secretsanta.model.entity.UserInfoTelegramChatsEntity;
 
 import java.util.List;
 
