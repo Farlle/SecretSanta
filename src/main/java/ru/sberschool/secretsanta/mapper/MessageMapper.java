@@ -4,7 +4,6 @@ import ru.sberschool.secretsanta.dto.MessageDTO;
 import ru.sberschool.secretsanta.model.entity.MessageEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

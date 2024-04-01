@@ -30,18 +30,18 @@
 <div th:include="navbar :: navbar"></div>
 
 <div class="container">
-    <h2>Conversation</h2>
+    <h2>Диалог</h2>
     <div th:if="${messages.isEmpty()}">
-        No messages found.
+            Сообщения не найдены
     </div>
     <div th:unless="${messages.isEmpty()}">
         <div class="table-container" id="tableContainer">
             <table class="table table-striped">
                 <thead class="table-primary">
                 <tr>
-                    <th>Sender</th>
-                    <th>Message</th>
-                    <th>Date</th>
+                    <th>Отправитель</th>
+                    <th>Сообщение</th>
+                    <th>Дата</th>
                 </tr>
                 </thead>
                 <tbody>

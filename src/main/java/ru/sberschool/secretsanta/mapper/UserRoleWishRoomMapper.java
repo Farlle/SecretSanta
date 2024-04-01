@@ -4,7 +4,6 @@ import ru.sberschool.secretsanta.dto.UserRoleWishRoomDTO;
 import ru.sberschool.secretsanta.model.entity.UserRoleWishRoomEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

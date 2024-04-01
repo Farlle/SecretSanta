@@ -4,7 +4,6 @@ import ru.sberschool.secretsanta.dto.RoomDTO;
 import ru.sberschool.secretsanta.model.entity.RoomEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

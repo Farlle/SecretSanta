@@ -196,14 +196,15 @@ class InviteServiceImplTest {
         when(inviteRepository.findById(1)).thenReturn(Optional.of(inviteEntity));
         inviteService.userAcceptInvite(telegram, idRoom);
 
-        verify(inviteRepository).getAllInviteUsersInRoom(telegram,"Тебя пригласили в комнату" +
+        verify(inviteRepository).getAllInviteUsersInRoom(telegram, "Тебя пригласили в комнату" +
                 " roomName присоединяйся по ссылке http://localhost:8080/room/1/join");
         verify(inviteMapper).toInviteDTOList(inviteEntities);
         verify(inviteRepository, times(1)).save(any(InviteEntity.class));
         assertEquals(Status.ACCEPTED, inviteEntity.getStatus());
     }
+
     @Test
-    public void testGeneratedTextInvite() {
+    void testGeneratedTextInvite() {
         int idRoom = 1;
         RoomDTO roomDTO = new RoomDTO();
         roomDTO.setIdRoom(idRoom);
@@ -215,6 +216,6 @@ class InviteServiceImplTest {
         verify(roomService).getRoomById(idRoom);
         String expectedText = "Тебя пригласили в комнату " + roomDTO.getName()
                 + " присоединяйся по ссылке " + "http://localhost:8080/room/" + roomDTO.getIdRoom() + "/join";
-        assert(textInvite.equals(expectedText));
+        assert (textInvite.equals(expectedText));
     }
 }

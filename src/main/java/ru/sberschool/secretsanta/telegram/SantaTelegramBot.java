@@ -43,7 +43,7 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
                 UserInfoDTO currentUser = userInfoService.getUsersInfoByTelegram(telegram);
                 if (currentUser == null) {
                     sendMessage(idChat, "Не зарегистрирован");
-                    throw new IllegalArgumentException("не зарегистрирован");
+                    throw new IllegalArgumentException("User is not registered");
                 }
                 UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
                 userInfoTelegramChatsDTO.setIdChat(idChat);
