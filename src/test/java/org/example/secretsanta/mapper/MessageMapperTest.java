@@ -4,49 +4,69 @@ import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.model.entity.MessageEntity;
 import org.example.secretsanta.model.entity.UserInfoEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 class MessageMapperTest {
 
+    @Mock
+    private UserInfoMapper userInfoMapper;
+    @InjectMocks
+    private MessageMapper messageMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     void testToMessageDTO() {
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        when(userInfoMapper.toUserInfoDTO(any())).thenReturn(userInfoDTO);
+
         MessageEntity messageEntity = new MessageEntity();
         messageEntity.setIdMessage(1);
-        messageEntity.setMessage("Test message");
+        messageEntity.setMessage("Test Message");
         messageEntity.setDepartureDate(new Date(1L));
-        messageEntity.setSender(new UserInfoEntity());
         messageEntity.setIdRecipient(2);
 
-        MessageDTO messageDTO = MessageMapper.toMessageDTO(messageEntity);
+        MessageDTO messageDTO = messageMapper.toMessageDTO(messageEntity);
 
         assertEquals(messageEntity.getIdMessage(), messageDTO.getIdMessage());
         assertEquals(messageEntity.getMessage(), messageDTO.getMessage());
         assertEquals(messageEntity.getDepartureDate(), messageDTO.getDepartureDate());
-        assertEquals(messageEntity.getSender(), UserInfoMapper.toUserInfoEntity(messageDTO.getSender()));
+        assertEquals(userInfoDTO, messageDTO.getSender());
         assertEquals(messageEntity.getIdRecipient(), messageDTO.getIdRecipient());
     }
 
     @Test
     void testToMessageEntity() {
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        when(userInfoMapper.toUserInfoEntity(any())).thenReturn(userInfoEntity);
+
         MessageDTO messageDTO = new MessageDTO();
         messageDTO.setIdMessage(1);
-        messageDTO.setMessage("Test message");
+        messageDTO.setMessage("Test Message");
         messageDTO.setDepartureDate(new Date(1L));
-        messageDTO.setSender(new UserInfoDTO());
         messageDTO.setIdRecipient(2);
 
-        MessageEntity messageEntity = MessageMapper.toMessageEntity(messageDTO);
+        MessageEntity messageEntity = messageMapper.toMessageEntity(messageDTO);
 
         assertEquals(messageDTO.getIdMessage(), messageEntity.getIdMessage());
         assertEquals(messageDTO.getMessage(), messageEntity.getMessage());
         assertEquals(messageDTO.getDepartureDate(), messageEntity.getDepartureDate());
-        assertEquals(messageDTO.getSender(), UserInfoMapper.toUserInfoDTO(messageEntity.getSender()));
+        assertEquals(userInfoEntity, messageEntity.getSender());
         assertEquals(messageDTO.getIdRecipient(), messageEntity.getIdRecipient());
     }
 
@@ -58,7 +78,7 @@ class MessageMapperTest {
         messageEntity2.setIdMessage(2);
         List<MessageEntity> messageEntityList = Arrays.asList(messageEntity1, messageEntity2);
 
-        List<MessageDTO> messageDTOList = MessageMapper.toMessageDTOList(messageEntityList);
+        List<MessageDTO> messageDTOList = messageMapper.toMessageDTOList(messageEntityList);
 
         assertEquals(messageEntityList.size(), messageDTOList.size());
         assertEquals(messageEntityList.get(0).getIdMessage(), messageDTOList.get(0).getIdMessage());
@@ -67,23 +87,23 @@ class MessageMapperTest {
 
     @Test
     void testToMessageDTO_Null() {
-        MessageDTO messageDTO = MessageMapper.toMessageDTO(null);
-
-        assertNotNull(messageDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            messageMapper.toMessageDTO(null);
+        });
     }
 
     @Test
     void testToMessageEntity_Null() {
-        MessageEntity messageEntity = MessageMapper.toMessageEntity(null);
-
-        assertNotNull(messageEntity);
+        assertThrows(IllegalArgumentException.class, () -> {
+            messageMapper.toMessageEntity(null);
+        });
     }
 
     @Test
     void testToMessageDTOList_Null() {
-        List<MessageDTO> messageDTOList = MessageMapper.toMessageDTOList(null);
-
-        assertNotNull(messageDTOList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            messageMapper.toMessageDTOList(null);
+        });
     }
 
 }

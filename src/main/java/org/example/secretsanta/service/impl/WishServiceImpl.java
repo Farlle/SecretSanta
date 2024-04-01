@@ -14,9 +14,11 @@ import java.util.List;
 public class WishServiceImpl implements WishService {
 
     private final WishRepository wishRepository;
+    private final WishMapper wishMapper;
 
-    public WishServiceImpl(WishRepository wishRepository) {
+    public WishServiceImpl(WishRepository wishRepository, WishMapper wishMapper) {
         this.wishRepository = wishRepository;
+        this.wishMapper = wishMapper;
     }
 
     /**
@@ -29,7 +31,7 @@ public class WishServiceImpl implements WishService {
     public WishDTO create(WishDTO dto) {
         WishEntity wish = new WishEntity();
         wish.setWish(dto.getWish());
-        return WishMapper.toWishDTO(wishRepository.save(wish));
+        return wishMapper.toWishDTO(wishRepository.save(wish));
     }
 
     /**
@@ -39,7 +41,7 @@ public class WishServiceImpl implements WishService {
      */
     @Override
     public List<WishDTO> readAll() {
-        return WishMapper.toWishDTOList(wishRepository.findAll());
+        return wishMapper.toWishDTOList(wishRepository.findAll());
     }
 
     /**
@@ -54,7 +56,7 @@ public class WishServiceImpl implements WishService {
         WishEntity wish = wishRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Wish not found with id: " + id));
         wish.setWish(dto.getWish());
-        return WishMapper.toWishDTO(wishRepository.save(wish));
+        return wishMapper.toWishDTO(wishRepository.save(wish));
     }
 
     /**
@@ -66,7 +68,7 @@ public class WishServiceImpl implements WishService {
      */
     @Override
     public WishDTO getUserWishInRoom(int idRoom, int idUserInfo) {
-        return WishMapper.toWishDTO(wishRepository.findWishesByRoomAndUser(idRoom, idUserInfo));
+        return wishMapper.toWishDTO(wishRepository.findWishesByRoomAndUser(idRoom, idUserInfo));
     }
 
 }

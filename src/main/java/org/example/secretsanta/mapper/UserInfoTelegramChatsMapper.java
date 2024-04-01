@@ -11,7 +11,13 @@ import java.util.stream.Collectors;
 @Component
 public class UserInfoTelegramChatsMapper {
 
-    public static UserInfoTelegramChatsDTO toUserInfoTelegramChatsDTO
+    private final UserInfoMapper userInfoMapper;
+
+    public UserInfoTelegramChatsMapper(UserInfoMapper userInfoMapper) {
+        this.userInfoMapper = userInfoMapper;
+    }
+
+    public UserInfoTelegramChatsDTO toUserInfoTelegramChatsDTO
             (UserInfoTelegramChatsEntity userInfoTelegramChatsEntity) {
         UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
 
@@ -20,13 +26,13 @@ public class UserInfoTelegramChatsMapper {
         }
 
         userInfoTelegramChatsDTO.setIdChat(userInfoTelegramChatsEntity.getIdChat());
-        userInfoTelegramChatsDTO.setUserInfoDTO(UserInfoMapper.toUserInfoDTO(userInfoTelegramChatsEntity.getUserInfo()));
+        userInfoTelegramChatsDTO.setUserInfoDTO(userInfoMapper.toUserInfoDTO(userInfoTelegramChatsEntity.getUserInfo()));
         userInfoTelegramChatsDTO.setIdUserInfoTelegramChat(userInfoTelegramChatsEntity.getIdUserInfoTelegramChat());
 
         return userInfoTelegramChatsDTO;
     }
 
-    public static UserInfoTelegramChatsEntity toUserInfoTelegramChatsEntity
+    public UserInfoTelegramChatsEntity toUserInfoTelegramChatsEntity
             (UserInfoTelegramChatsDTO userInfoTelegramChatsDTO) {
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
 
@@ -35,7 +41,7 @@ public class UserInfoTelegramChatsMapper {
         }
 
         userInfoTelegramChatsEntity.setIdChat(userInfoTelegramChatsDTO.getIdChat());
-        userInfoTelegramChatsEntity.setUserInfo(UserInfoMapper
+        userInfoTelegramChatsEntity.setUserInfo(userInfoMapper
                 .toUserInfoEntity(userInfoTelegramChatsDTO.getUserInfoDTO()));
         userInfoTelegramChatsEntity.setIdUserInfoTelegramChat(userInfoTelegramChatsDTO.getIdUserInfoTelegramChat());
 
@@ -43,7 +49,7 @@ public class UserInfoTelegramChatsMapper {
     }
 
 
-    public static List<UserInfoTelegramChatsDTO> toUserInfoTelegramChatsDTOList
+    public List<UserInfoTelegramChatsDTO> toUserInfoTelegramChatsDTOList
             (List<UserInfoTelegramChatsEntity> userInfoTelegramChatsEntityList) {
 
         if (userInfoTelegramChatsEntityList == null) {
@@ -51,7 +57,7 @@ public class UserInfoTelegramChatsMapper {
         }
 
         return userInfoTelegramChatsEntityList.stream()
-                .map(UserInfoTelegramChatsMapper::toUserInfoTelegramChatsDTO)
+                .map(this::toUserInfoTelegramChatsDTO)
                 .collect(Collectors.toList());
 
     }

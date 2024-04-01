@@ -11,7 +11,13 @@ import java.util.stream.Collectors;
 @Component
 public class InviteMapper {
 
-    public static InviteDTO toInviteDTO(InviteEntity inviteEntity) {
+    private final UserInfoMapper userInfoMapper;
+
+    public InviteMapper(UserInfoMapper userInfoMapper) {
+        this.userInfoMapper = userInfoMapper;
+    }
+
+    public InviteDTO toInviteDTO(InviteEntity inviteEntity) {
         InviteDTO inviteDTO = new InviteDTO();
 
         if (inviteEntity == null) {
@@ -21,13 +27,13 @@ public class InviteMapper {
         inviteDTO.setIdInvite(inviteEntity.getIdInvite());
         inviteDTO.setStatus(inviteEntity.getStatus());
         inviteDTO.setTelegram(inviteEntity.getTelegram());
-        inviteDTO.setUserInfoDTO(UserInfoMapper.toUserInfoDTO(inviteEntity.getUserInfo()));
+        inviteDTO.setUserInfoDTO(userInfoMapper.toUserInfoDTO(inviteEntity.getUserInfo()));
         inviteDTO.setText(inviteEntity.getText());
 
         return inviteDTO;
     }
 
-    public static InviteEntity toInviteEntity(InviteDTO inviteDTO) {
+    public InviteEntity toInviteEntity(InviteDTO inviteDTO) {
         InviteEntity inviteEntity = new InviteEntity();
 
         if (inviteDTO == null) {
@@ -37,30 +43,30 @@ public class InviteMapper {
         inviteEntity.setIdInvite(inviteDTO.getIdInvite());
         inviteEntity.setStatus(inviteDTO.getStatus());
         inviteEntity.setTelegram(inviteDTO.getTelegram());
-        inviteEntity.setUserInfo(UserInfoMapper.toUserInfoEntity(inviteDTO.getUserInfoDTO()));
+        inviteEntity.setUserInfo(userInfoMapper.toUserInfoEntity(inviteDTO.getUserInfoDTO()));
         inviteEntity.setText(inviteDTO.getText());
 
         return inviteEntity;
     }
 
-    public static List<InviteDTO> toInviteDTOList(List<InviteEntity> inviteEntitiesList) {
+    public List<InviteDTO> toInviteDTOList(List<InviteEntity> inviteEntitiesList) {
         if (inviteEntitiesList == null) {
             throw new IllegalArgumentException("InviteEntityList cannot be null");
         }
 
         return inviteEntitiesList.stream()
-                .map(InviteMapper::toInviteDTO)
+                .map(this::toInviteDTO)
                 .collect(Collectors.toList());
 
     }
 
-    public static List<InviteEntity> toInviteEntityList(List<InviteDTO> inveteDTOList) {
+    public List<InviteEntity> toInviteEntityList(List<InviteDTO> inveteDTOList) {
         if (inveteDTOList == null) {
             throw new IllegalArgumentException("InviteDTOList cannot be null");
         }
 
         return inveteDTOList.stream()
-                .map(InviteMapper::toInviteEntity)
+                .map(this::toInviteEntity)
                 .collect(Collectors.toList());
 
     }

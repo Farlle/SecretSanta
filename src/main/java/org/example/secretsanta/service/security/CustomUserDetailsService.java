@@ -20,9 +20,11 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserInfoRepository userInfoRepository;
+    private final UserInfoMapper userInfoMapper;
 
-    public CustomUserDetailsService(UserInfoRepository userRepository) {
+    public CustomUserDetailsService(UserInfoRepository userRepository, UserInfoMapper userInfoMapper) {
         this.userInfoRepository = userRepository;
+        this.userInfoMapper = userInfoMapper;
     }
 
     /**
@@ -34,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     public UserInfoDTO findUserByName(String name) {
         List<UserInfoEntity> allUsers = userInfoRepository.findAll();
-        return UserInfoMapper.toUserInfoDTO(allUsers.stream()
+        return userInfoMapper.toUserInfoDTO(allUsers.stream()
                 .filter(user -> user.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new UsernameNotFoundException("UserInfo not found with name:" + name)));

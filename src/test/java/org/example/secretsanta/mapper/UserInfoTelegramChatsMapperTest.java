@@ -4,47 +4,61 @@ import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.dto.UserInfoTelegramChatsDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.entity.UserInfoTelegramChatsEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 class UserInfoTelegramChatsMapperTest {
 
+    @Mock
+    private UserInfoMapper userInfoMapper;
+    @InjectMocks
+    private UserInfoTelegramChatsMapper userInfoTelegramChatsMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     void testToUserInfoTelegramChatsDTO() {
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        when(userInfoMapper.toUserInfoDTO(any())).thenReturn(userInfoDTO);
+
         UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = new UserInfoTelegramChatsEntity();
         userInfoTelegramChatsEntity.setIdChat(1L);
-        userInfoTelegramChatsEntity.setUserInfo(new UserInfoEntity());
         userInfoTelegramChatsEntity.setIdUserInfoTelegramChat(2);
 
-        UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = UserInfoTelegramChatsMapper
-                .toUserInfoTelegramChatsDTO(userInfoTelegramChatsEntity);
+        UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = userInfoTelegramChatsMapper.toUserInfoTelegramChatsDTO(userInfoTelegramChatsEntity);
 
         assertEquals(userInfoTelegramChatsEntity.getIdChat(), userInfoTelegramChatsDTO.getIdChat());
-        assertEquals(userInfoTelegramChatsEntity.getUserInfo(), UserInfoMapper
-                .toUserInfoEntity(userInfoTelegramChatsDTO.getUserInfoDTO()));
-        assertEquals(userInfoTelegramChatsEntity.getIdUserInfoTelegramChat(),
-                userInfoTelegramChatsDTO.getIdUserInfoTelegramChat());
+        assertEquals(userInfoDTO, userInfoTelegramChatsDTO.getUserInfoDTO());
+        assertEquals(userInfoTelegramChatsEntity.getIdUserInfoTelegramChat(), userInfoTelegramChatsDTO.getIdUserInfoTelegramChat());
     }
 
     @Test
     void testToUserInfoTelegramChatsEntity() {
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        when(userInfoMapper.toUserInfoEntity(any())).thenReturn(userInfoEntity);
+
         UserInfoTelegramChatsDTO userInfoTelegramChatsDTO = new UserInfoTelegramChatsDTO();
         userInfoTelegramChatsDTO.setIdChat(1L);
-        userInfoTelegramChatsDTO.setUserInfoDTO(new UserInfoDTO());
         userInfoTelegramChatsDTO.setIdUserInfoTelegramChat(2);
 
-        UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = UserInfoTelegramChatsMapper
-                .toUserInfoTelegramChatsEntity(userInfoTelegramChatsDTO);
+        UserInfoTelegramChatsEntity userInfoTelegramChatsEntity = userInfoTelegramChatsMapper.toUserInfoTelegramChatsEntity(userInfoTelegramChatsDTO);
 
-        assertEquals(userInfoTelegramChatsDTO.getIdChat(), userInfoTelegramChatsEntity.getIdChat());
-        assertEquals(userInfoTelegramChatsDTO.getUserInfoDTO(),
-                UserInfoMapper.toUserInfoDTO(userInfoTelegramChatsEntity.getUserInfo()));
-        assertEquals(userInfoTelegramChatsDTO.getIdUserInfoTelegramChat(), userInfoTelegramChatsEntity
-                .getIdUserInfoTelegramChat());
+       assertEquals(userInfoTelegramChatsDTO.getIdChat(), userInfoTelegramChatsEntity.getIdChat());
+       assertEquals(userInfoEntity, userInfoTelegramChatsEntity.getUserInfo());
+       assertEquals(userInfoTelegramChatsDTO.getIdUserInfoTelegramChat(), userInfoTelegramChatsEntity.getIdUserInfoTelegramChat());
     }
 
     @Test
@@ -57,7 +71,7 @@ class UserInfoTelegramChatsMapperTest {
                 Arrays.asList(userInfoTelegramChatsEntity1, userInfoTelegramChatsEntity2);
 
         List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTOList =
-                UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(userInfoTelegramChatsEntityList);
+                userInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(userInfoTelegramChatsEntityList);
 
         assertEquals(userInfoTelegramChatsEntityList.size(), userInfoTelegramChatsDTOList.size());
         assertEquals(userInfoTelegramChatsEntityList.get(0).getIdChat(), userInfoTelegramChatsDTOList.get(0).getIdChat());
@@ -66,25 +80,22 @@ class UserInfoTelegramChatsMapperTest {
 
     @Test
     void testToUserInfoTelegramChatsDTO_Null() {
-        UserInfoTelegramChatsDTO userInfoTelegramChatsDTO
-                = UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTO(null);
-
-        assertNotNull(userInfoTelegramChatsDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            userInfoTelegramChatsMapper.toUserInfoTelegramChatsDTO(null);
+        });
     }
 
     @Test
     void testToUserInfoTelegramChatsEntity_Null() {
-        UserInfoTelegramChatsEntity userInfoTelegramChatsEntity
-                = UserInfoTelegramChatsMapper.toUserInfoTelegramChatsEntity(null);
-
-        assertNotNull(userInfoTelegramChatsEntity);
+        assertThrows(IllegalArgumentException.class, () -> {
+            userInfoTelegramChatsMapper.toUserInfoTelegramChatsEntity(null);
+        });
     }
 
     @Test
     void testToUserInfoTelegramChatsDTOList_Null() {
-        List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTOList
-                = UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(null);
-
-        assertNotNull(userInfoTelegramChatsDTOList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            userInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(null);
+        });
     }
 }

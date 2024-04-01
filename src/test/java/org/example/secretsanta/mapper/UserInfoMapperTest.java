@@ -2,7 +2,11 @@ package org.example.secretsanta.mapper;
 
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.model.entity.UserInfoEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +14,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserInfoMapperTest {
+
+    @InjectMocks
+    private UserInfoMapper userInfoMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void testToUserInfoDTO() {
@@ -19,7 +31,7 @@ class UserInfoMapperTest {
         userInfoEntity.setPassword("password");
         userInfoEntity.setTelegram("@testuser");
 
-        UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(userInfoEntity);
+        UserInfoDTO userInfoDTO = userInfoMapper.toUserInfoDTO(userInfoEntity);
 
         assertEquals(userInfoEntity.getId(), userInfoDTO.getIdUserInfo());
         assertEquals(userInfoEntity.getName(), userInfoDTO.getName());
@@ -35,7 +47,7 @@ class UserInfoMapperTest {
         userInfoDTO.setPassword("password");
         userInfoDTO.setTelegram("@testuser");
 
-        UserInfoEntity userInfoEntity = UserInfoMapper.toUserInfoEntity(userInfoDTO);
+        UserInfoEntity userInfoEntity = userInfoMapper.toUserInfoEntity(userInfoDTO);
 
         assertEquals(userInfoDTO.getIdUserInfo(), userInfoEntity.getId());
         assertEquals(userInfoDTO.getName(), userInfoEntity.getName());
@@ -51,7 +63,7 @@ class UserInfoMapperTest {
         userInfoEntity2.setId(2);
         List<UserInfoEntity> userInfoEntityList = Arrays.asList(userInfoEntity1, userInfoEntity2);
 
-        List<UserInfoDTO> userInfoDTOList = UserInfoMapper.toUserInfoDTOList(userInfoEntityList);
+        List<UserInfoDTO> userInfoDTOList = userInfoMapper.toUserInfoDTOList(userInfoEntityList);
 
         assertEquals(userInfoEntityList.size(), userInfoDTOList.size());
         assertEquals(userInfoEntityList.get(0).getId(), userInfoDTOList.get(0).getIdUserInfo());
@@ -60,23 +72,23 @@ class UserInfoMapperTest {
 
     @Test
     void testToUserInfoDTO_Null() {
-        UserInfoDTO userInfoDTO = UserInfoMapper.toUserInfoDTO(null);
-
-        assertNotNull(userInfoDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            userInfoMapper.toUserInfoDTO(null);
+        });
     }
 
     @Test
     void testToUserInfoEntity_Null() {
-        UserInfoEntity userInfoEntity = UserInfoMapper.toUserInfoEntity(null);
-
-        assertNotNull(userInfoEntity);
+        assertThrows(IllegalArgumentException.class, () -> {
+            userInfoMapper.toUserInfoEntity(null);
+        });
     }
 
     @Test
     void testToUserInfoDTOList_Null() {
-        List<UserInfoDTO> userInfoDTOList = UserInfoMapper.toUserInfoDTOList(null);
-
-        assertNotNull(userInfoDTOList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            userInfoMapper.toUserInfoDTOList(null);
+        });
     }
 
 }

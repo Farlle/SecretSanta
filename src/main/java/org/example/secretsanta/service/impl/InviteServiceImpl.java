@@ -28,6 +28,8 @@ public class InviteServiceImpl implements InviteService {
     private final RoomService roomService;
     private final TelegramService telegramService;
     private final UserInfoTelegramChatsService userInfoTelegramChatsService;
+    private final UserInfoMapper userInfoMapper;
+    private final InviteMapper inviteMapper;
     private static final String HOST = "http://localhost:8080/room/";
     private static final String YOU_INVITE = "Тебя пригласили в комнату ";
     private static final String ACCEPT = " присоединяйся по ссылке ";
@@ -35,11 +37,13 @@ public class InviteServiceImpl implements InviteService {
 
     public InviteServiceImpl(InviteRepository inviteRepository, RoomService roomService,
                              TelegramService telegramService,
-                             UserInfoTelegramChatsService userInfoTelegramChatsService) {
+                             UserInfoTelegramChatsService userInfoTelegramChatsService, UserInfoMapper userInfoMapper, InviteMapper inviteMapper) {
         this.inviteRepository = inviteRepository;
         this.roomService = roomService;
         this.telegramService = telegramService;
         this.userInfoTelegramChatsService = userInfoTelegramChatsService;
+        this.userInfoMapper = userInfoMapper;
+        this.inviteMapper = inviteMapper;
     }
 
     /**
@@ -53,10 +57,10 @@ public class InviteServiceImpl implements InviteService {
         InviteEntity invite = new InviteEntity();
         invite.setTelegram(dto.getTelegram());
         invite.setStatus(dto.getStatus());
-        invite.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
+        invite.setUserInfo(userInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         invite.setText(dto.getText());
 
-        return InviteMapper.toInviteDTO(inviteRepository.save(invite));
+        return inviteMapper.toInviteDTO(inviteRepository.save(invite));
     }
 
     /**
@@ -66,7 +70,7 @@ public class InviteServiceImpl implements InviteService {
      */
     @Override
     public List<InviteDTO> readAll() {
-        return InviteMapper.toInviteDTOList(inviteRepository.findAll());
+        return inviteMapper.toInviteDTOList(inviteRepository.findAll());
     }
 
     /**
@@ -81,12 +85,12 @@ public class InviteServiceImpl implements InviteService {
         InviteEntity inviteEntity = inviteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Invite not found with id: " + id));
 
-        inviteEntity.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
+        inviteEntity.setUserInfo(userInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         inviteEntity.setStatus(dto.getStatus());
         inviteEntity.setTelegram(dto.getTelegram());
         inviteEntity.setText(dto.getText());
 
-        return InviteMapper.toInviteDTO(inviteRepository.save(inviteEntity));
+        return inviteMapper.toInviteDTO(inviteRepository.save(inviteEntity));
     }
 
     /**
@@ -108,7 +112,6 @@ public class InviteServiceImpl implements InviteService {
     @Transactional
     @Override
     public void sendInvite(int idRoom, InviteDTO inviteDTO) {
-
         inviteDTO.setStatus(Status.SENT);
         inviteDTO.setText(generatedTextInvite(idRoom));
         telegramService.sendMessage(userInfoTelegramChatsService
@@ -142,7 +145,7 @@ public class InviteServiceImpl implements InviteService {
      */
     @Override
     public List<InviteDTO> getAllUsersInvite(String telegram) {
-        return InviteMapper.toInviteDTOList(inviteRepository.getAllUsersInvite(telegram));
+        return inviteMapper.toInviteDTOList(inviteRepository.getAllUsersInvite(telegram));
     }
 
     /**
@@ -153,7 +156,7 @@ public class InviteServiceImpl implements InviteService {
      */
     @Override
     public void userAcceptInvite(String telegram, int idRoom) {
-        List<InviteDTO> inviteDTOs = InviteMapper.toInviteDTOList(
+        List<InviteDTO> inviteDTOs = inviteMapper.toInviteDTOList(
                 inviteRepository.getAllInviteUsersInRoom(telegram, generatedTextInvite(idRoom)));
         for (InviteDTO inviteDTO : inviteDTOs) {
             inviteDTO.setStatus(Status.ACCEPTED);

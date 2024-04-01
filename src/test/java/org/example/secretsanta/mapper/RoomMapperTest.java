@@ -2,7 +2,10 @@ package org.example.secretsanta.mapper;
 
 import org.example.secretsanta.dto.RoomDTO;
 import org.example.secretsanta.model.entity.RoomEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -11,6 +14,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoomMapperTest {
+
+    @InjectMocks
+    private RoomMapper roomMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void testToRoomDTO() {
@@ -22,7 +33,7 @@ class RoomMapperTest {
         roomEntity.setDrawDate(new Date(864000));
         roomEntity.setTossDate(new Date(764000));
 
-        RoomDTO roomDTO = RoomMapper.toRoomDTO(roomEntity);
+        RoomDTO roomDTO = roomMapper.toRoomDTO(roomEntity);
 
         assertEquals(roomEntity.getIdRoom(), roomDTO.getIdRoom());
         assertEquals(roomEntity.getIdOrganizer(), roomDTO.getIdOrganizer());
@@ -40,7 +51,7 @@ class RoomMapperTest {
         roomEntity2.setIdRoom(2);
         List<RoomEntity> roomEntities = Arrays.asList(roomEntity1, roomEntity2);
 
-        List<RoomDTO> roomDTOList = RoomMapper.toRoomDTOList(roomEntities);
+        List<RoomDTO> roomDTOList = roomMapper.toRoomDTOList(roomEntities);
 
         assertEquals(roomEntities.size(), roomDTOList.size());
         assertEquals(roomEntities.get(0).getIdRoom(), roomDTOList.get(0).getIdRoom());
@@ -57,7 +68,7 @@ class RoomMapperTest {
         roomDTO.setDrawDate(new Date(864000));
         roomDTO.setTossDate(new Date(764000));
 
-        RoomEntity roomEntity = RoomMapper.toRoomEntity(roomDTO);
+        RoomEntity roomEntity = roomMapper.toRoomEntity(roomDTO);
 
         assertEquals(roomDTO.getIdRoom(), roomEntity.getIdRoom());
         assertEquals(roomDTO.getIdOrganizer(), roomEntity.getIdOrganizer());
@@ -69,23 +80,23 @@ class RoomMapperTest {
 
     @Test
     void testToRoomDTO_Null() {
-        RoomDTO roomDTO = RoomMapper.toRoomDTO(null);
-
-        assertNotNull(roomDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            roomMapper.toRoomDTO(null);
+        });
     }
 
     @Test
     void testToRoomDTOList_Null() {
-        List<RoomDTO> roomDTOList = RoomMapper.toRoomDTOList(null);
-
-        assertNotNull(roomDTOList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            roomMapper.toRoomDTOList(null);
+        });
     }
 
     @Test
     void testToRoomEntity_Null() {
-        RoomEntity roomEntity = RoomMapper.toRoomEntity(null);
-
-        assertNotNull(roomEntity);
+        assertThrows(IllegalArgumentException.class, () -> {
+            roomMapper.toRoomEntity(null);
+        });
     }
 
 }

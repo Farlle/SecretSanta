@@ -2,7 +2,10 @@ package org.example.secretsanta.mapper;
 
 import org.example.secretsanta.dto.WishDTO;
 import org.example.secretsanta.model.entity.WishEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,13 +14,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WishMapperTest {
 
+    @InjectMocks
+    private WishMapper wishMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     void testToWishDTO() {
         WishEntity wishEntity = new WishEntity();
         wishEntity.setIdWish(1);
         wishEntity.setWish("Test Wish");
 
-        WishDTO wishDTO = WishMapper.toWishDTO(wishEntity);
+        WishDTO wishDTO = wishMapper.toWishDTO(wishEntity);
 
         assertEquals(wishEntity.getIdWish(), wishDTO.getIdWish());
         assertEquals(wishEntity.getWish(), wishDTO.getWish());
@@ -29,7 +40,7 @@ class WishMapperTest {
         wishDTO.setIdWish(1);
         wishDTO.setWish("Test Wish");
 
-        WishEntity wishEntity = WishMapper.toWishEntity(wishDTO);
+        WishEntity wishEntity = wishMapper.toWishEntity(wishDTO);
 
         assertEquals(wishDTO.getIdWish(), wishEntity.getIdWish());
         assertEquals(wishDTO.getWish(), wishEntity.getWish());
@@ -43,7 +54,7 @@ class WishMapperTest {
         wishEntity2.setIdWish(2);
         List<WishEntity> wishEntitiesList = Arrays.asList(wishEntity1, wishEntity2);
 
-        List<WishDTO> wishDTOList = WishMapper.toWishDTOList(wishEntitiesList);
+        List<WishDTO> wishDTOList = wishMapper.toWishDTOList(wishEntitiesList);
 
         assertEquals(wishEntitiesList.size(), wishDTOList.size());
         assertEquals(wishEntitiesList.get(0).getIdWish(), wishDTOList.get(0).getIdWish());
@@ -52,23 +63,23 @@ class WishMapperTest {
 
     @Test
     void testToWishDTO_Null() {
-        WishDTO wishDTO = WishMapper.toWishDTO(null);
-
-        assertNotNull(wishDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            wishMapper.toWishDTO(null);
+        });
     }
 
     @Test
     void testToWishEntity_Null() {
-        WishEntity wishEntity = WishMapper.toWishEntity(null);
-
-        assertNotNull(wishEntity);
+        assertThrows(IllegalArgumentException.class, () -> {
+            wishMapper.toWishEntity(null);
+        });
     }
 
     @Test
     void testToWishDTOList_Null() {
-        List<WishDTO> wishDTOList = WishMapper.toWishDTOList(null);
-
-        assertNotNull(wishDTOList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            wishMapper.toWishDTOList(null);
+        });
     }
 
 }

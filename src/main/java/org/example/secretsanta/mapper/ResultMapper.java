@@ -11,7 +11,13 @@ import java.util.stream.Collectors;
 @Component
 public class ResultMapper {
 
-    public static ResultDTO toResultDTO(ResultEntity resultEntity) {
+    private final RoomMapper roomMapper;
+
+    public ResultMapper(RoomMapper roomMapper) {
+        this.roomMapper = roomMapper;
+    }
+
+    public ResultDTO toResultDTO(ResultEntity resultEntity) {
         ResultDTO resultDTO = new ResultDTO();
 
         if (resultEntity == null) {
@@ -21,12 +27,12 @@ public class ResultMapper {
         resultDTO.setIdResult(resultEntity.getIdResult());
         resultDTO.setIdSanta(resultEntity.getIdSanta());
         resultDTO.setIdWard(resultEntity.getIdWard());
-        resultDTO.setRoomDTO(RoomMapper.toRoomDTO(resultEntity.getRoom()));
+        resultDTO.setRoomDTO(roomMapper.toRoomDTO(resultEntity.getRoom()));
 
         return resultDTO;
     }
 
-    public static ResultEntity toResultEntity(ResultDTO resultDTO) {
+    public ResultEntity toResultEntity(ResultDTO resultDTO) {
         ResultEntity resultEntity = new ResultEntity();
 
         if (resultDTO == null) {
@@ -36,19 +42,19 @@ public class ResultMapper {
         resultEntity.setIdResult(resultDTO.getIdResult());
         resultEntity.setIdSanta(resultDTO.getIdSanta());
         resultEntity.setIdWard(resultDTO.getIdWard());
-        resultEntity.setRoom(RoomMapper.toRoomEntity(resultDTO.getRoomDTO()));
+        resultEntity.setRoom(roomMapper.toRoomEntity(resultDTO.getRoomDTO()));
 
         return resultEntity;
     }
 
 
-    public static List<ResultDTO> toResultDTOList(List<ResultEntity> resultEntitiesList) {
+    public List<ResultDTO> toResultDTOList(List<ResultEntity> resultEntitiesList) {
         if (resultEntitiesList == null) {
             throw new IllegalArgumentException("ResultEntityList cannot be null");
         }
 
         return resultEntitiesList.stream()
-                .map(ResultMapper::toResultDTO)
+                .map(this::toResultDTO)
                 .collect(Collectors.toList());
 
     }

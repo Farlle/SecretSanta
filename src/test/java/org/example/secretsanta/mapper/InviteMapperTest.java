@@ -5,49 +5,69 @@ import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.model.entity.InviteEntity;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.model.enums.Status;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 class InviteMapperTest {
+    @Mock
+    private UserInfoMapper userInfoMapper;
+
+    @InjectMocks
+    private InviteMapper inviteMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     void testToInviteDTOTest() {
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        when(userInfoMapper.toUserInfoDTO(Mockito.any())).thenReturn(userInfoDTO);
+
         InviteEntity inviteEntity = new InviteEntity();
         inviteEntity.setIdInvite(1);
         inviteEntity.setStatus(Status.SENT);
-        inviteEntity.setTelegram("telegram");
-        inviteEntity.setUserInfo(new UserInfoEntity());
-        inviteEntity.setText("text");
+        inviteEntity.setTelegram("Test Telegram");
+        inviteEntity.setText("Test Text");
 
-        InviteDTO inviteDTO = InviteMapper.toInviteDTO(inviteEntity);
+        InviteDTO inviteDTO = inviteMapper.toInviteDTO(inviteEntity);
 
         assertEquals(inviteEntity.getIdInvite(), inviteDTO.getIdInvite());
         assertEquals(inviteEntity.getStatus(), inviteDTO.getStatus());
         assertEquals(inviteEntity.getTelegram(), inviteDTO.getTelegram());
-        assertEquals(inviteEntity.getUserInfo(), UserInfoMapper.toUserInfoEntity(inviteDTO.getUserInfoDTO()));
+        assertEquals(userInfoDTO, inviteDTO.getUserInfoDTO());
         assertEquals(inviteEntity.getText(), inviteDTO.getText());
     }
 
     @Test
     void testToInviteEntity() {
+        UserInfoEntity userInfoEntity = new UserInfoEntity();
+        Mockito.when(userInfoMapper.toUserInfoEntity(Mockito.any())).thenReturn(userInfoEntity);
+
         InviteDTO inviteDTO = new InviteDTO();
         inviteDTO.setIdInvite(1);
         inviteDTO.setStatus(Status.SENT);
-        inviteDTO.setTelegram("telegram");
-        inviteDTO.setUserInfoDTO(new UserInfoDTO());
-        inviteDTO.setText("text");
+        inviteDTO.setTelegram("Test Telegram");
+        inviteDTO.setText("Test Text");
 
-        InviteEntity inviteEntity = InviteMapper.toInviteEntity(inviteDTO);
+        InviteEntity inviteEntity = inviteMapper.toInviteEntity(inviteDTO);
 
-        assertEquals(inviteDTO.getIdInvite(), inviteEntity.getIdInvite());
-        assertEquals(inviteDTO.getStatus(), inviteEntity.getStatus());
-        assertEquals(inviteDTO.getTelegram(), inviteEntity.getTelegram());
-        assertEquals(inviteDTO.getUserInfoDTO(), UserInfoMapper.toUserInfoDTO(inviteEntity.getUserInfo()));
-        assertEquals(inviteDTO.getText(), inviteEntity.getText());
+       assertEquals(inviteDTO.getIdInvite(), inviteEntity.getIdInvite());
+       assertEquals(inviteDTO.getStatus(), inviteEntity.getStatus());
+       assertEquals(inviteDTO.getTelegram(), inviteEntity.getTelegram());
+       assertEquals(userInfoEntity, inviteEntity.getUserInfo());
+       assertEquals(inviteDTO.getText(), inviteEntity.getText());
     }
 
     @Test
@@ -58,7 +78,7 @@ class InviteMapperTest {
         inviteEntity2.setIdInvite(2);
         List<InviteEntity> inviteEntitiesList = Arrays.asList(inviteEntity1, inviteEntity2);
 
-        List<InviteDTO> inviteDTOList = InviteMapper.toInviteDTOList(inviteEntitiesList);
+        List<InviteDTO> inviteDTOList = inviteMapper.toInviteDTOList(inviteEntitiesList);
 
         assertEquals(inviteEntitiesList.size(), inviteDTOList.size());
         assertEquals(inviteEntitiesList.get(0).getIdInvite(), inviteDTOList.get(0).getIdInvite());
@@ -73,7 +93,7 @@ class InviteMapperTest {
         inviteDTO2.setIdInvite(2);
         List<InviteDTO> inviteDTOList = Arrays.asList(inviteDTO1, inviteDTO2);
 
-        List<InviteEntity> inviteEntityList = InviteMapper.toInviteEntityList(inviteDTOList);
+        List<InviteEntity> inviteEntityList = inviteMapper.toInviteEntityList(inviteDTOList);
 
         assertEquals(inviteDTOList.size(), inviteEntityList.size());
         assertEquals(inviteDTOList.get(0).getIdInvite(), inviteEntityList.get(0).getIdInvite());
@@ -82,30 +102,30 @@ class InviteMapperTest {
 
     @Test
     void testToInviteDTO_Null() {
-        InviteDTO inviteDTO = InviteMapper.toInviteDTO(null);
-
-        assertNotNull(inviteDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            inviteMapper.toInviteDTO(null);
+        });
     }
 
     @Test
     void testToInviteEntity_Null() {
-        InviteEntity inviteEntity = InviteMapper.toInviteEntity(null);
-
-        assertNotNull(inviteEntity);
+        assertThrows(IllegalArgumentException.class, () -> {
+            inviteMapper.toInviteEntity(null);
+        });
     }
 
     @Test
     void testToInviteDTOList_Null() {
-        List<InviteDTO> inviteDTOList = InviteMapper.toInviteDTOList(null);
-
-        assertNotNull(inviteDTOList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            inviteMapper.toInviteDTOList(null);
+        });
     }
 
     @Test
     void testToInviteEntityList_Null() {
-        List<InviteEntity> inviteEntityList = InviteMapper.toInviteEntityList(null);
-
-        assertNotNull(inviteEntityList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            inviteMapper.toInviteEntityList(null);
+        });
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class WishMapper {
 
-    public static WishDTO toWishDTO(WishEntity wishEntity) {
+    public WishDTO toWishDTO(WishEntity wishEntity) {
         WishDTO wishDTO = new WishDTO();
 
         if (wishEntity == null) {
@@ -23,7 +23,7 @@ public class WishMapper {
         return wishDTO;
     }
 
-    public static WishEntity toWishEntity(WishDTO wishDTO) {
+    public WishEntity toWishEntity(WishDTO wishDTO) {
         WishEntity wishEntity = new WishEntity();
 
         if (wishDTO == null) {
@@ -35,13 +35,13 @@ public class WishMapper {
         return wishEntity;
     }
 
-    public static List<WishDTO> toWishDTOList(List<WishEntity> wishEntitiesList) {
+    public List<WishDTO> toWishDTOList(List<WishEntity> wishEntitiesList) {
         if (wishEntitiesList == null) {
             throw new IllegalArgumentException("WishEntityList cannot be null");
         }
 
         return wishEntitiesList.stream()
-                .map(WishMapper::toWishDTO)
+                .map(this::toWishDTO)
                 .collect(Collectors.toList());
 
     }

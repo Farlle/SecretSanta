@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class RoomMapper {
 
-    public static RoomDTO toRoomDTO(RoomEntity roomEntity) {
+    public RoomDTO toRoomDTO(RoomEntity roomEntity) {
         RoomDTO roomDTO = new RoomDTO();
 
         if (roomEntity == null) {
@@ -28,19 +28,19 @@ public class RoomMapper {
         return roomDTO;
     }
 
-    public static List<RoomDTO> toRoomDTOList(List<RoomEntity> roomEntities) {
+    public List<RoomDTO> toRoomDTOList(List<RoomEntity> roomEntities) {
         if (roomEntities == null) {
             throw new IllegalArgumentException("RoomEntityList cannot be null");
         }
 
         return roomEntities.stream()
-                .map(RoomMapper::toRoomDTO)
+                .map(this::toRoomDTO)
                 .collect(Collectors.toList());
 
     }
 
 
-    public static RoomEntity toRoomEntity(RoomDTO roomDTO) {
+    public RoomEntity toRoomEntity(RoomDTO roomDTO) {
         RoomEntity roomEntity = new RoomEntity();
 
         if (roomDTO == null) {

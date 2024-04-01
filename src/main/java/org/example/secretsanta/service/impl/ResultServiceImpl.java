@@ -29,17 +29,23 @@ public class ResultServiceImpl implements ResultService {
     private final UserInfoTelegramChatsService userInfoTelegramChatsService;
     private final TelegramService telegramService;
     private final RoomService roomService;
+    private final ResultMapper resultMapper;
+    private final RoomMapper roomMapper;
     private static final String MESSAGE_DRAW = "Была проведена жеребьевка, смотри результат по сслыке ";
     private static final String HOST = " http://localhost:8080/result/";
     private static final String SHOW = "show/";
 
 
-    public ResultServiceImpl(ResultRepository resultRepository, UserInfoService userInfoService, UserInfoTelegramChatsService userInfoTelegramChatsService, TelegramService telegramService, RoomService roomService) {
+    public ResultServiceImpl(ResultRepository resultRepository, UserInfoService userInfoService,
+                             UserInfoTelegramChatsService userInfoTelegramChatsService,
+                             TelegramService telegramService, RoomService roomService, ResultMapper resultMapper, RoomMapper roomMapper) {
         this.resultRepository = resultRepository;
         this.userInfoService = userInfoService;
         this.userInfoTelegramChatsService = userInfoTelegramChatsService;
         this.telegramService = telegramService;
         this.roomService = roomService;
+        this.resultMapper = resultMapper;
+        this.roomMapper = roomMapper;
     }
 
     /**
@@ -53,9 +59,9 @@ public class ResultServiceImpl implements ResultService {
         ResultEntity result = new ResultEntity();
         result.setIdSanta(dto.getIdSanta());
         result.setIdWard(dto.getIdWard());
-        result.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
+        result.setRoom(roomMapper.toRoomEntity(dto.getRoomDTO()));
 
-        return ResultMapper.toResultDTO(resultRepository.save(result));
+        return resultMapper.toResultDTO(resultRepository.save(result));
     }
 
     /**
@@ -65,7 +71,7 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public List<ResultDTO> readAll() {
-        return ResultMapper.toResultDTOList(resultRepository.findAll());
+        return resultMapper.toResultDTOList(resultRepository.findAll());
     }
 
     /**
@@ -82,9 +88,9 @@ public class ResultServiceImpl implements ResultService {
 
         result.setIdSanta(dto.getIdSanta());
         result.setIdWard(dto.getIdWard());
-        result.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
+        result.setRoom(roomMapper.toRoomEntity(dto.getRoomDTO()));
 
-        return ResultMapper.toResultDTO(resultRepository.save(result));
+        return resultMapper.toResultDTO(resultRepository.save(result));
     }
 
     /**
@@ -110,7 +116,7 @@ public class ResultServiceImpl implements ResultService {
         List<UserInfoTelegramChatsDTO> userInfoTelegramChatsDTO = userInfoTelegramChatsService
                 .getAllUserChatsWhoNeedNotify(room.getIdRoom());
 
-        List<ResultDTO> existingResults = ResultMapper.toResultDTOList(
+        List<ResultDTO> existingResults = resultMapper.toResultDTOList(
                 resultRepository.findByRoomIdRoom(room.getIdRoom()));
 
         if (!existingResults.isEmpty()) {
@@ -130,7 +136,7 @@ public class ResultServiceImpl implements ResultService {
             result.setIdSanta(santa.getIdUserInfo());
             result.setIdWard(ward.getIdUserInfo());
             result.setRoomDTO(room);
-            resultRepository.save(ResultMapper.toResultEntity(result));
+            resultRepository.save(resultMapper.toResultEntity(result));
         }
         for (UserInfoTelegramChatsDTO dto : userInfoTelegramChatsDTO) {
             telegramService.sendMessage(dto.getIdChat(), generatedMessageDraw(room.getIdRoom()));
@@ -146,7 +152,7 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public List<ResultDTO> showDrawInRoom(int idRoom) {
-        List<ResultDTO> results = ResultMapper.toResultDTOList(resultRepository.findAll());
+        List<ResultDTO> results = resultMapper.toResultDTOList(resultRepository.findAll());
         return results
                 .stream()
                 .filter(result -> result.getRoomDTO().getIdRoom() == idRoom)

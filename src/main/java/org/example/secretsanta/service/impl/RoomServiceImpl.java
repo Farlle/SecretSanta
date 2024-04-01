@@ -24,10 +24,12 @@ public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final UserInfoService userInfoService;
+    private final RoomMapper roomMapper;
 
-    public RoomServiceImpl(RoomRepository roomRepository, UserInfoService userInfoService) {
+    public RoomServiceImpl(RoomRepository roomRepository, UserInfoService userInfoService, RoomMapper roomMapper) {
         this.roomRepository = roomRepository;
         this.userInfoService = userInfoService;
+        this.roomMapper = roomMapper;
     }
 
     /**
@@ -39,7 +41,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Page<RoomDTO> readAllRoom(Pageable pageable) {
         return roomRepository.findAll(pageable)
-                .map(RoomMapper::toRoomDTO);
+                .map(roomMapper::toRoomDTO);
     }
 
     /**
@@ -57,7 +59,7 @@ public class RoomServiceImpl implements RoomService {
         room.setIdOrganizer(dto.getIdOrganizer());
         room.setTossDate(dto.getTossDate());
 
-        return RoomMapper.toRoomDTO(roomRepository.save(room));
+        return roomMapper.toRoomDTO(roomRepository.save(room));
     }
 
     /**
@@ -67,7 +69,7 @@ public class RoomServiceImpl implements RoomService {
      */
     @Override
     public List<RoomDTO> readAll() {
-        return RoomMapper.toRoomDTOList(roomRepository.findAll());
+        return roomMapper.toRoomDTOList(roomRepository.findAll());
     }
 
     /**
@@ -88,7 +90,7 @@ public class RoomServiceImpl implements RoomService {
         room.setIdOrganizer(dto.getIdOrganizer());
         room.setTossDate(dto.getTossDate());
 
-        return RoomMapper.toRoomDTO(roomRepository.save(room));
+        return roomMapper.toRoomDTO(roomRepository.save(room));
     }
 
     /**
@@ -109,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
      */
     @Override
     public RoomDTO getRoomById(int id) {
-        return RoomMapper.toRoomDTO(roomRepository.findById(id).orElseThrow());
+        return roomMapper.toRoomDTO(roomRepository.findById(id).orElseThrow());
     }
 
 
@@ -143,7 +145,7 @@ public class RoomServiceImpl implements RoomService {
      */
     @Override
     public List<RoomDTO> getRoomsWhereUserJoin(int idUserInfo) {
-        return RoomMapper.toRoomDTOList(roomRepository.findAllById(roomRepository.findRoomsWhereUserJoin(idUserInfo)));
+        return roomMapper.toRoomDTOList(roomRepository.findAllById(roomRepository.findRoomsWhereUserJoin(idUserInfo)));
     }
 
     /**
@@ -154,7 +156,7 @@ public class RoomServiceImpl implements RoomService {
      */
     @Override
     public RoomDTO getRoomByName(String name) {
-        return RoomMapper.toRoomDTO(roomRepository.findRoomEntitiesByName(name));
+        return roomMapper.toRoomDTO(roomRepository.findRoomEntitiesByName(name));
     }
 
     /**
@@ -176,7 +178,7 @@ public class RoomServiceImpl implements RoomService {
      */
     @Override
     public List<RoomDTO> getByDrawDateLessThanEqual(Date date) {
-        return RoomMapper.toRoomDTOList(roomRepository.findByDrawDateLessThanEqual(date));
+        return roomMapper.toRoomDTOList(roomRepository.findByDrawDateLessThanEqual(date));
     }
 
     /**
@@ -188,7 +190,7 @@ public class RoomServiceImpl implements RoomService {
      */
     @Override
     public Page<RoomDTO> getRoomsWhereUserJoin(int idUserInfo, Pageable pageable) {
-        return (roomRepository.findRoomsWhereUserJoinPage(idUserInfo, pageable)).map(RoomMapper::toRoomDTO);
+        return (roomRepository.findRoomsWhereUserJoinPage(idUserInfo, pageable)).map(roomMapper::toRoomDTO);
     }
 
 

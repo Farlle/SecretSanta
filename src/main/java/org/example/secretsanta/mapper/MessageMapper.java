@@ -11,7 +11,13 @@ import java.util.stream.Collectors;
 @Component
 public class MessageMapper {
 
-    public static MessageDTO toMessageDTO(MessageEntity messageEntity) {
+    private final UserInfoMapper userInfoMapper;
+
+    public MessageMapper(UserInfoMapper userInfoMapper) {
+        this.userInfoMapper = userInfoMapper;
+    }
+
+    public MessageDTO toMessageDTO(MessageEntity messageEntity) {
         MessageDTO messageDTO = new MessageDTO();
 
         if (messageEntity == null) {
@@ -21,13 +27,13 @@ public class MessageMapper {
         messageDTO.setIdMessage(messageEntity.getIdMessage());
         messageDTO.setMessage(messageEntity.getMessage());
         messageDTO.setDepartureDate(messageEntity.getDepartureDate());
-        messageDTO.setSender(UserInfoMapper.toUserInfoDTO(messageEntity.getSender()));
+        messageDTO.setSender(userInfoMapper.toUserInfoDTO(messageEntity.getSender()));
         messageDTO.setIdRecipient(messageEntity.getIdRecipient());
 
         return messageDTO;
     }
 
-    public static MessageEntity toMessageEntity(MessageDTO messageDTO) {
+    public MessageEntity toMessageEntity(MessageDTO messageDTO) {
         MessageEntity messageEntity = new MessageEntity();
 
         if (messageDTO == null) {
@@ -37,19 +43,19 @@ public class MessageMapper {
         messageEntity.setIdMessage(messageDTO.getIdMessage());
         messageEntity.setMessage(messageDTO.getMessage());
         messageEntity.setDepartureDate(messageDTO.getDepartureDate());
-        messageEntity.setSender(UserInfoMapper.toUserInfoEntity(messageDTO.getSender()));
+        messageEntity.setSender(userInfoMapper.toUserInfoEntity(messageDTO.getSender()));
         messageEntity.setIdRecipient(messageDTO.getIdRecipient());
 
         return messageEntity;
     }
 
-    public static List<MessageDTO> toMessageDTOList(List<MessageEntity> messageEntityList) {
+    public List<MessageDTO> toMessageDTOList(List<MessageEntity> messageEntityList) {
         if (messageEntityList == null) {
             throw new IllegalArgumentException("MessageEntityList cannot be null");
         }
 
         return messageEntityList.stream()
-                .map(MessageMapper::toMessageDTO)
+                .map(this::toMessageDTO)
                 .collect(Collectors.toList());
 
     }

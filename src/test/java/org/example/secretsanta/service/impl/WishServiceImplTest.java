@@ -22,9 +22,10 @@ class WishServiceImplTest {
 
     @Mock
     private WishRepository wishRepository;
-
     @InjectMocks
     private WishServiceImpl wishService;
+    @Mock
+    private WishMapper wishMapper;
 
     @BeforeEach
     public void setUp() {
@@ -45,18 +46,25 @@ class WishServiceImplTest {
         WishDTO result = wishService.create(dto);
 
         verify(wishRepository, times(1)).save(any(WishEntity.class));
-        assertEquals(WishMapper.toWishDTO(entity), result);
+        assertEquals(wishMapper.toWishDTO(entity), result);
     }
 
     @Test
     void testReadAll() {
-        List<WishEntity> entities = Arrays.asList(new WishEntity(), new WishEntity());
-        when(wishRepository.findAll()).thenReturn(entities);
+        List<WishEntity> wishEntities = Arrays.asList(
+                new WishEntity(),
+                new WishEntity()
+        );
+        when(wishRepository.findAll()).thenReturn(wishEntities);
+
+        List<WishDTO> wishDTOs = Arrays.asList(
+                new WishDTO(),
+                new WishDTO()
+        );
+        when(wishMapper.toWishDTOList(wishEntities)).thenReturn(wishDTOs);
 
         List<WishDTO> result = wishService.readAll();
-
-        verify(wishRepository, times(1)).findAll();
-        assertEquals(entities.size(), result.size());
+        assertEquals(wishDTOs, result);
     }
 
     @Test
@@ -76,7 +84,7 @@ class WishServiceImplTest {
 
         verify(wishRepository, times(1)).findById(id);
         verify(wishRepository, times(1)).save(any(WishEntity.class));
-        assertEquals(WishMapper.toWishDTO(entity), result);
+        assertEquals(wishMapper.toWishDTO(entity), result);
     }
 
     @Test
@@ -92,6 +100,6 @@ class WishServiceImplTest {
         WishDTO result = wishService.getUserWishInRoom(idRoom, idUserInfo);
 
         verify(wishRepository, times(1)).findWishesByRoomAndUser(idRoom, idUserInfo);
-        assertEquals(WishMapper.toWishDTO(entity), result);
+        assertEquals(wishMapper.toWishDTO(entity), result);
     }
 }

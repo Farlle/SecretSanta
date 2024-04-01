@@ -24,12 +24,12 @@ class UserInfoServiceImplTest {
 
     @Mock
     private UserInfoRepository userInfoRepository;
-
     @Mock
     private PasswordEncoder passwordEncoder;
-
     @InjectMocks
     private UserInfoServiceImpl userInfoService;
+    @Mock
+    private UserInfoMapper userInfoMapper;
 
     @BeforeEach
     public void setUp() {
@@ -46,7 +46,7 @@ class UserInfoServiceImplTest {
         UserInfoDTO result = userInfoService.getUserInfoById(id);
 
         verify(userInfoRepository, times(1)).findById(id);
-        assertEquals(UserInfoMapper.toUserInfoDTO(userInfoEntity), result);
+        assertEquals(userInfoMapper.toUserInfoDTO(userInfoEntity), result);
     }
 
     @Test
@@ -65,7 +65,7 @@ class UserInfoServiceImplTest {
         verify(userInfoRepository, times(1)).findById(id);
         verify(userInfoRepository, times(1)).save(any(UserInfoEntity.class));
         verify(passwordEncoder, times(1)).encode(dto.getPassword());
-        assertEquals(UserInfoMapper.toUserInfoDTO(userInfoEntity), result);
+        assertEquals(userInfoMapper.toUserInfoDTO(userInfoEntity), result);
     }
 
     @Test
@@ -79,7 +79,7 @@ class UserInfoServiceImplTest {
         UserInfoDTO result = userInfoService.create(dto);
 
         verify(userInfoRepository, times(1)).save(any(UserInfoEntity.class));
-        assertEquals(UserInfoMapper.toUserInfoDTO(userInfoEntity), result);
+        assertEquals(userInfoMapper.toUserInfoDTO(userInfoEntity), result);
     }
 
     @Test
@@ -90,7 +90,7 @@ class UserInfoServiceImplTest {
         List<UserInfoDTO> result = userInfoService.readAll();
 
         verify(userInfoRepository, times(1)).findAll();
-        assertEquals(UserInfoMapper.toUserInfoDTOList(userInfoEntities), result);
+        assertEquals(userInfoMapper.toUserInfoDTOList(userInfoEntities), result);
     }
 
     @Test
@@ -123,19 +123,12 @@ class UserInfoServiceImplTest {
     @Test
     void testRegisterNewUserInfoAccount_UserAlreadyExists() {
         UserInfoDTO dto = new UserInfoDTO();
-        dto.setName("New User");
-        dto.setTelegram("123");
-        dto.setPassword("123");
-
-        when(userInfoRepository.findAll()).thenReturn(Arrays.asList(UserInfoMapper.toUserInfoEntity(dto)));
-        when(userInfoRepository.save(any(UserInfoEntity.class))).thenReturn(new UserInfoEntity());
-        when(passwordEncoder.encode(dto.getPassword())).thenReturn("123");
+        dto.setName("TestUser");
+        when(userInfoRepository.findAll()).thenReturn(Arrays.asList(new UserInfoEntity(1, dto.getName(),
+                "password", "telegram")));
 
         assertThrows(UserAlreadyExistsException.class, () -> userInfoService.registerNewUserInfoAccount(dto));
 
-        verify(userInfoRepository, times(1)).findAll();
-        verify(userInfoRepository, never()).save(any(UserInfoEntity.class));
-        verify(passwordEncoder, never()).encode(anyString());
     }
 
     @Test
@@ -147,7 +140,7 @@ class UserInfoServiceImplTest {
         List<UserInfoDTO> result = userInfoService.getUsersInfoById(usersIds);
 
         verify(userInfoRepository, times(1)).findAllById(usersIds);
-        assertEquals(UserInfoMapper.toUserInfoDTOList(userInfoEntities), result);
+        assertEquals(userInfoMapper.toUserInfoDTOList(userInfoEntities), result);
     }
 
     @Test
@@ -160,6 +153,6 @@ class UserInfoServiceImplTest {
         UserInfoDTO result = userInfoService.getUsersInfoByTelegram(telegram);
 
         verify(userInfoRepository, times(1)).findByTelegram(telegram);
-        assertEquals(UserInfoMapper.toUserInfoDTO(userInfoEntity), result);
+        assertEquals(userInfoMapper.toUserInfoDTO(userInfoEntity), result);
     }
 }

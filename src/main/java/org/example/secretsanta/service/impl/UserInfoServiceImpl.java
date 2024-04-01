@@ -20,10 +20,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserInfoMapper userInfoMapper;
 
-    public UserInfoServiceImpl(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder) {
+    public UserInfoServiceImpl(UserInfoRepository userInfoRepository, PasswordEncoder passwordEncoder, UserInfoMapper userInfoMapper) {
         this.userInfoRepository = userInfoRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userInfoMapper = userInfoMapper;
     }
 
     /**
@@ -34,7 +36,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public UserInfoDTO getUserInfoById(int id) {
-        return UserInfoMapper.toUserInfoDTO(userInfoRepository.findById(id).orElseThrow());
+        return userInfoMapper.toUserInfoDTO(userInfoRepository.findById(id).orElseThrow());
     }
 
     /**
@@ -53,7 +55,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoEntity.setTelegram(dto.getTelegram());
         userInfoEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        return UserInfoMapper.toUserInfoDTO(userInfoRepository.save(userInfoEntity));
+        return userInfoMapper.toUserInfoDTO(userInfoRepository.save(userInfoEntity));
     }
 
     /**
@@ -68,7 +70,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setName(dto.getName());
         userInfo.setPassword(dto.getPassword());
         userInfo.setTelegram(dto.getTelegram());
-        return UserInfoMapper.toUserInfoDTO(userInfoRepository.save(userInfo));
+        return userInfoMapper.toUserInfoDTO(userInfoRepository.save(userInfo));
     }
 
     /**
@@ -78,7 +80,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public List<UserInfoDTO> readAll() {
-        return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAll());
+        return userInfoMapper.toUserInfoDTOList(userInfoRepository.findAll());
     }
 
     /**
@@ -115,7 +117,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public List<UserInfoDTO> getUsersInfoById(List<Integer> idUsers) {
-        return UserInfoMapper.toUserInfoDTOList(userInfoRepository.findAllById(idUsers));
+        return userInfoMapper.toUserInfoDTOList(userInfoRepository.findAllById(idUsers));
     }
 
     /**
@@ -126,7 +128,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public UserInfoDTO getUsersInfoByTelegram(String telegram) {
-        return UserInfoMapper.toUserInfoDTO(userInfoRepository.findByTelegram(telegram));
+        return userInfoMapper.toUserInfoDTO(userInfoRepository.findByTelegram(telegram));
     }
 
     /**

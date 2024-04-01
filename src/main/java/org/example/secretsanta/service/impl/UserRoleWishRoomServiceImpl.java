@@ -18,9 +18,19 @@ import java.util.List;
 public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
 
     private final UserRoleWishRoomRepository userRoleWishRoomRepository;
+    private final UserInfoMapper userInfoMapper;
+    private final RoleMapper roleMapper;
+    private final RoomMapper roomMapper;
+    private final WishMapper wishMapper;
+    private final UserRoleWishRoomMapper userRoleWishRoomMapper;
 
-    public UserRoleWishRoomServiceImpl(UserRoleWishRoomRepository userRoleWishRoomRepository) {
+    public UserRoleWishRoomServiceImpl(UserRoleWishRoomRepository userRoleWishRoomRepository, UserInfoMapper userInfoMapper, RoleMapper roleMapper, RoomMapper roomMapper, WishMapper wishMapper, UserRoleWishRoomMapper userRoleWishRoomMapper) {
         this.userRoleWishRoomRepository = userRoleWishRoomRepository;
+        this.userInfoMapper = userInfoMapper;
+        this.roleMapper = roleMapper;
+        this.roomMapper = roomMapper;
+        this.wishMapper = wishMapper;
+        this.userRoleWishRoomMapper = userRoleWishRoomMapper;
     }
 
     /**
@@ -32,12 +42,12 @@ public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
     @Override
     public UserRoleWishRoomDTO create(UserRoleWishRoomDTO dto) {
         UserRoleWishRoomEntity userRoleWishRoom = new UserRoleWishRoomEntity();
-        userRoleWishRoom.setRole(RoleMapper.toRoleEntity(dto.getRoleDTO()));
-        userRoleWishRoom.setWish(WishMapper.toWishEntity(dto.getWishDTO()));
-        userRoleWishRoom.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
-        userRoleWishRoom.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
+        userRoleWishRoom.setRole(roleMapper.toRoleEntity(dto.getRoleDTO()));
+        userRoleWishRoom.setWish(wishMapper.toWishEntity(dto.getWishDTO()));
+        userRoleWishRoom.setRoom(roomMapper.toRoomEntity(dto.getRoomDTO()));
+        userRoleWishRoom.setUserInfoEntity(userInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
 
-        return UserRoleWishRoomMapper.toUserRoleWishRoomDTO(userRoleWishRoomRepository.save(userRoleWishRoom));
+        return userRoleWishRoomMapper.toUserRoleWishRoomDTO(userRoleWishRoomRepository.save(userRoleWishRoom));
     }
 
     /**
@@ -47,7 +57,7 @@ public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
      */
     @Override
     public List<UserRoleWishRoomDTO> readAll() {
-        return UserRoleWishRoomMapper.toUserRoleWishRoomDTOList(userRoleWishRoomRepository.findAll());
+        return userRoleWishRoomMapper.toUserRoleWishRoomDTOList(userRoleWishRoomRepository.findAll());
     }
 
     /**
@@ -62,12 +72,12 @@ public class UserRoleWishRoomServiceImpl implements UserRoleWishRoomService {
         UserRoleWishRoomEntity userRoleWishRoom = userRoleWishRoomRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("userRoleWishRoom not found with id: " + id));
 
-        userRoleWishRoom.setRole(RoleMapper.toRoleEntity(dto.getRoleDTO()));
-        userRoleWishRoom.setWish(WishMapper.toWishEntity(dto.getWishDTO()));
-        userRoleWishRoom.setRoom(RoomMapper.toRoomEntity(dto.getRoomDTO()));
-        userRoleWishRoom.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
+        userRoleWishRoom.setRole(roleMapper.toRoleEntity(dto.getRoleDTO()));
+        userRoleWishRoom.setWish(wishMapper.toWishEntity(dto.getWishDTO()));
+        userRoleWishRoom.setRoom(roomMapper.toRoomEntity(dto.getRoomDTO()));
+        userRoleWishRoom.setUserInfoEntity(userInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
 
-        return UserRoleWishRoomMapper.toUserRoleWishRoomDTO(userRoleWishRoomRepository.save(userRoleWishRoom));
+        return userRoleWishRoomMapper.toUserRoleWishRoomDTO(userRoleWishRoomRepository.save(userRoleWishRoom));
     }
 
     /**

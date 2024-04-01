@@ -11,7 +11,20 @@ import java.util.stream.Collectors;
 @Component
 public class UserRoleWishRoomMapper {
 
-    public static UserRoleWishRoomDTO toUserRoleWishRoomDTO(UserRoleWishRoomEntity userRoleWishRoomEntity) {
+    private final WishMapper wishMapper;
+    private final UserInfoMapper userInfoMapper;
+    private final RoleMapper roleMapper;
+    private final RoomMapper roomMapper;
+
+    public UserRoleWishRoomMapper(WishMapper wishMapper, UserInfoMapper userInfoMapper, RoleMapper roleMapper, RoomMapper roomMapper) {
+
+        this.wishMapper = wishMapper;
+        this.userInfoMapper = userInfoMapper;
+        this.roleMapper = roleMapper;
+        this.roomMapper = roomMapper;
+    }
+
+    public UserRoleWishRoomDTO toUserRoleWishRoomDTO(UserRoleWishRoomEntity userRoleWishRoomEntity) {
         UserRoleWishRoomDTO userRoleWishRoomDTO = new UserRoleWishRoomDTO();
 
         if (userRoleWishRoomEntity == null) {
@@ -19,14 +32,14 @@ public class UserRoleWishRoomMapper {
         }
 
         userRoleWishRoomDTO.setIdUserRoleWishRoom(userRoleWishRoomEntity.getIdUserRoleWishRoom());
-        userRoleWishRoomDTO.setUserInfoDTO(UserInfoMapper.toUserInfoDTO(userRoleWishRoomEntity.getUserInfoEntity()));
-        userRoleWishRoomDTO.setRoleDTO(RoleMapper.toRoleDTO(userRoleWishRoomEntity.getRole()));
-        userRoleWishRoomDTO.setRoomDTO(RoomMapper.toRoomDTO(userRoleWishRoomEntity.getRoom()));
-        userRoleWishRoomDTO.setWishDTO(WishMapper.toWishDTO(userRoleWishRoomEntity.getWish()));
+        userRoleWishRoomDTO.setUserInfoDTO(userInfoMapper.toUserInfoDTO(userRoleWishRoomEntity.getUserInfoEntity()));
+        userRoleWishRoomDTO.setRoleDTO(roleMapper.toRoleDTO(userRoleWishRoomEntity.getRole()));
+        userRoleWishRoomDTO.setRoomDTO(roomMapper.toRoomDTO(userRoleWishRoomEntity.getRoom()));
+        userRoleWishRoomDTO.setWishDTO(wishMapper.toWishDTO(userRoleWishRoomEntity.getWish()));
         return userRoleWishRoomDTO;
     }
 
-    public static UserRoleWishRoomEntity toUserRoleWishRoomEntity(UserRoleWishRoomDTO userRoleWishRoomDTO) {
+    public UserRoleWishRoomEntity toUserRoleWishRoomEntity(UserRoleWishRoomDTO userRoleWishRoomDTO) {
         UserRoleWishRoomEntity userRoleWishRoomEntity = new UserRoleWishRoomEntity();
 
         if (userRoleWishRoomDTO == null) {
@@ -34,20 +47,20 @@ public class UserRoleWishRoomMapper {
         }
 
         userRoleWishRoomEntity.setIdUserRoleWishRoom(userRoleWishRoomDTO.getIdUserRoleWishRoom());
-        userRoleWishRoomEntity.setUserInfoEntity(UserInfoMapper.toUserInfoEntity(userRoleWishRoomDTO.getUserInfoDTO()));
-        userRoleWishRoomEntity.setRole(RoleMapper.toRoleEntity(userRoleWishRoomDTO.getRoleDTO()));
-        userRoleWishRoomEntity.setRoom(RoomMapper.toRoomEntity(userRoleWishRoomDTO.getRoomDTO()));
-        userRoleWishRoomEntity.setWish(WishMapper.toWishEntity(userRoleWishRoomDTO.getWishDTO()));
+        userRoleWishRoomEntity.setUserInfoEntity(userInfoMapper.toUserInfoEntity(userRoleWishRoomDTO.getUserInfoDTO()));
+        userRoleWishRoomEntity.setRole(roleMapper.toRoleEntity(userRoleWishRoomDTO.getRoleDTO()));
+        userRoleWishRoomEntity.setRoom(roomMapper.toRoomEntity(userRoleWishRoomDTO.getRoomDTO()));
+        userRoleWishRoomEntity.setWish(wishMapper.toWishEntity(userRoleWishRoomDTO.getWishDTO()));
         return userRoleWishRoomEntity;
     }
 
-    public static List<UserRoleWishRoomDTO> toUserRoleWishRoomDTOList(List<UserRoleWishRoomEntity> userRoleWishRoomEntityList) {
+    public List<UserRoleWishRoomDTO> toUserRoleWishRoomDTOList(List<UserRoleWishRoomEntity> userRoleWishRoomEntityList) {
         if (userRoleWishRoomEntityList == null) {
             throw new IllegalArgumentException("UserRoleWishRoomEntityList cannot be null");
         }
 
         return userRoleWishRoomEntityList.stream()
-                .map(UserRoleWishRoomMapper::toUserRoleWishRoomDTO)
+                .map(this::toUserRoleWishRoomDTO)
                 .collect(Collectors.toList());
     }
 }

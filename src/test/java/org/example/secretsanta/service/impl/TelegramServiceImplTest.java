@@ -13,7 +13,6 @@ import static org.mockito.Mockito.verify;
 class TelegramServiceImplTest {
     @Mock
     private SantaTelegramBot bot;
-
     @InjectMocks
     private TelegramServiceImpl telegramService;
 

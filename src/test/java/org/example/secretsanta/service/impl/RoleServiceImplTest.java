@@ -23,6 +23,8 @@ import static org.mockito.Mockito.when;
 class RoleServiceImplTest {
     @Mock
     private RoleRepository roleRepository;
+    @Mock
+    private RoleMapper roleMapper;
 
     @InjectMocks
     private RoleServiceImpl roleService;
@@ -34,34 +36,25 @@ class RoleServiceImplTest {
 
     @Test
     void testCreate() {
-        RoleEntity roleEntity = new RoleEntity();
-        roleEntity.setRole(Role.PARTICIPANT);
+        RoleDTO dto = new RoleDTO();
+        RoleEntity entity = new RoleEntity();
+        when(roleRepository.save(any(RoleEntity.class))).thenReturn(entity);
+        when(roleMapper.toRoleDTO(entity)).thenReturn(dto);
 
-        RoleDTO savedRoleDTO = new RoleDTO();
-        savedRoleDTO.setRole(Role.PARTICIPANT);
-
-        when(roleRepository.save(any(RoleEntity.class))).thenReturn(roleEntity);
-
-        RoleDTO result = roleService.create(savedRoleDTO);
-
-        assertEquals(savedRoleDTO, result);
+        RoleDTO result = roleService.create(dto);
+        assertEquals(dto, result);
+        verify(roleRepository).save(any(RoleEntity.class));
     }
 
     @Test
     void testReadAll() {
-        RoleEntity roleEntity1 = new RoleEntity();
-        roleEntity1.setIdRole(1);
-        roleEntity1.setRole(Role.PARTICIPANT);
-        RoleEntity roleEntity2 = new RoleEntity();
-        roleEntity2.setIdRole(2);
-        roleEntity2.setRole(Role.ORGANIZER);
-        when(roleRepository.findAll()).thenReturn(Arrays.asList(roleEntity1, roleEntity2));
+        List<RoleEntity> entities = Arrays.asList(new RoleEntity(), new RoleEntity());
+        List<RoleDTO> dtos = Arrays.asList(new RoleDTO(), new RoleDTO());
+        when(roleRepository.findAll()).thenReturn(entities);
+        when(roleMapper.toRoleDTOList(entities)).thenReturn(dtos);
 
-        List<RoleDTO> roleDTOs = roleService.readAll();
-
-        assertEquals(2, roleDTOs.size());
-        assertEquals(RoleMapper.toRoleDTO(roleEntity1), roleDTOs.get(0));
-        assertEquals(RoleMapper.toRoleDTO(roleEntity2), roleDTOs.get(1));
+        List<RoleDTO> result = roleService.readAll();
+        assertEquals(dtos, result);
     }
 
     @Test
@@ -77,7 +70,7 @@ class RoleServiceImplTest {
 
         RoleDTO updatedRoleDTO = roleService.update(id, dto);
 
-        assertEquals(RoleMapper.toRoleDTO(roleEntity), updatedRoleDTO);
+        assertEquals(roleMapper.toRoleDTO(roleEntity), updatedRoleDTO);
     }
 
 
@@ -90,7 +83,7 @@ class RoleServiceImplTest {
 
         RoleDTO roleDTO = roleService.getRoleById(id);
 
-        assertEquals(RoleMapper.toRoleDTO(roleEntity), roleDTO);
+        assertEquals(roleMapper.toRoleDTO(roleEntity), roleDTO);
     }
 
     @Test

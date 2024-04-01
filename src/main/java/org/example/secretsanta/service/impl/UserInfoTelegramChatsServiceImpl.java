@@ -18,9 +18,12 @@ import java.util.List;
 public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsService {
 
     private final UserInfoTelegramChatsRepository userInfoTelegramChatsRepository;
-
-    public UserInfoTelegramChatsServiceImpl(UserInfoTelegramChatsRepository userInfoTelegramChatsRepository) {
+    private final UserInfoTelegramChatsMapper userInfoTelegramChatsMapper;
+    private final UserInfoMapper userInfoMapper;
+    public UserInfoTelegramChatsServiceImpl(UserInfoTelegramChatsRepository userInfoTelegramChatsRepository, UserInfoTelegramChatsMapper userInfoTelegramChatsMapper, UserInfoMapper userInfoMapper) {
         this.userInfoTelegramChatsRepository = userInfoTelegramChatsRepository;
+        this.userInfoTelegramChatsMapper = userInfoTelegramChatsMapper;
+        this.userInfoMapper = userInfoMapper;
     }
 
     /**
@@ -32,10 +35,10 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
     @Override
     public UserInfoTelegramChatsDTO create(UserInfoTelegramChatsDTO dto) {
         UserInfoTelegramChatsEntity userInfoTelegramChats = new UserInfoTelegramChatsEntity();
-        userInfoTelegramChats.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
+        userInfoTelegramChats.setUserInfo(userInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         userInfoTelegramChats.setIdUserInfoTelegramChat(dto.getIdUserInfoTelegramChat());
         userInfoTelegramChats.setIdChat(dto.getIdChat());
-        return UserInfoTelegramChatsMapper
+        return userInfoTelegramChatsMapper
                 .toUserInfoTelegramChatsDTO(userInfoTelegramChatsRepository.save(userInfoTelegramChats));
     }
 
@@ -46,7 +49,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
      */
     @Override
     public List<UserInfoTelegramChatsDTO> readAll() {
-        return UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(userInfoTelegramChatsRepository.findAll());
+        return userInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(userInfoTelegramChatsRepository.findAll());
     }
 
     /**
@@ -62,10 +65,10 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
         UserInfoTelegramChatsEntity userInfoTelegramChats = userInfoTelegramChatsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("userInfoTelegramChats not found with id: " + id));
 
-        userInfoTelegramChats.setUserInfo(UserInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
+        userInfoTelegramChats.setUserInfo(userInfoMapper.toUserInfoEntity(dto.getUserInfoDTO()));
         userInfoTelegramChats.setIdUserInfoTelegramChat(dto.getIdUserInfoTelegramChat());
         userInfoTelegramChats.setIdChat(dto.getIdChat());
-        return UserInfoTelegramChatsMapper
+        return userInfoTelegramChatsMapper
                 .toUserInfoTelegramChatsDTO(userInfoTelegramChatsRepository.save(userInfoTelegramChats));
     }
 
@@ -87,7 +90,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
      */
     @Override
     public UserInfoTelegramChatsDTO getRegisterUserByIdChats(Long idChat) {
-        return UserInfoTelegramChatsMapper
+        return userInfoTelegramChatsMapper
                 .toUserInfoTelegramChatsDTO(userInfoTelegramChatsRepository
                         .findFirstUserInfoTelegramChatsEntitiesByIdChat(idChat));
     }
@@ -100,7 +103,7 @@ public class UserInfoTelegramChatsServiceImpl implements UserInfoTelegramChatsSe
      */
     @Override
     public List<UserInfoTelegramChatsDTO> getAllUserChatsWhoNeedNotify(int idRoom) {
-        return UserInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(
+        return userInfoTelegramChatsMapper.toUserInfoTelegramChatsDTOList(
                 userInfoTelegramChatsRepository.findAllUserChatsWhoNeedNotify(idRoom));
     }
 

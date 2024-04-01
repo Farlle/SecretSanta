@@ -17,9 +17,11 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
 
-    public RoleServiceImpl(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper) {
         this.roleRepository = roleRepository;
+        this.roleMapper = roleMapper;
     }
 
     /**
@@ -33,7 +35,7 @@ public class RoleServiceImpl implements RoleService {
         RoleEntity role = new RoleEntity();
         role.setRole(dto.getRole());
 
-        return RoleMapper.toRoleDTO(roleRepository.save(role));
+        return roleMapper.toRoleDTO(roleRepository.save(role));
     }
 
     /**
@@ -43,7 +45,7 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public List<RoleDTO> readAll() {
-        return RoleMapper.toRoleDTOList(roleRepository.findAll());
+        return roleMapper.toRoleDTOList(roleRepository.findAll());
     }
 
     /**
@@ -60,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
 
         role.setRole(dto.getRole());
 
-        return RoleMapper.toRoleDTO(roleRepository.save(role));
+        return roleMapper.toRoleDTO(roleRepository.save(role));
     }
 
     /**
@@ -83,7 +85,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleDTO getRoleById(int id) {
         RoleEntity role = roleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
-        return RoleMapper.toRoleDTO(role);
+        return roleMapper.toRoleDTO(role);
     }
 
 

@@ -22,13 +22,12 @@ import static org.mockito.Mockito.*;
 class RoomServiceImplTest {
     @Mock
     private RoomRepository roomRepository;
-
     @Mock
     private UserInfoServiceImpl userInfoServiceImpl;
-
     @InjectMocks
     private RoomServiceImpl roomService;
-
+    @Mock
+    private RoomMapper roomMapper;
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -47,7 +46,7 @@ class RoomServiceImplTest {
         RoomDTO result = roomService.create(dto);
 
         verify(roomRepository, times(1)).save(any(RoomEntity.class));
-        assertEquals(RoomMapper.toRoomDTO(room), result);
+        assertEquals(roomMapper.toRoomDTO(room), result);
     }
 
     @Test
@@ -58,7 +57,7 @@ class RoomServiceImplTest {
         List<RoomDTO> result = roomService.readAll();
 
         verify(roomRepository, times(1)).findAll();
-        assertEquals(RoomMapper.toRoomDTOList(roomEntities), result);
+        assertEquals(roomMapper.toRoomDTOList(roomEntities), result);
     }
 
     @Test
@@ -76,7 +75,7 @@ class RoomServiceImplTest {
 
         verify(roomRepository, times(1)).findById(id);
         verify(roomRepository, times(1)).save(any(RoomEntity.class));
-        assertEquals(RoomMapper.toRoomDTO(room), result);
+        assertEquals(roomMapper.toRoomDTO(room), result);
     }
 
     @Test
@@ -98,7 +97,7 @@ class RoomServiceImplTest {
         RoomDTO result = roomService.getRoomById(id);
 
         verify(roomRepository, times(1)).findById(id);
-        assertEquals(RoomMapper.toRoomDTO(room), result);
+        assertEquals(roomMapper.toRoomDTO(room), result);
     }
 
     @Test
@@ -140,7 +139,7 @@ class RoomServiceImplTest {
 
         verify(roomRepository, times(1)).findRoomsWhereUserJoin(idUserInfo);
         verify(roomRepository, times(1)).findAllById(roomIds);
-        assertEquals(RoomMapper.toRoomDTOList(roomEntities), result);
+        assertEquals(roomMapper.toRoomDTOList(roomEntities), result);
     }
 
     @Test
@@ -154,7 +153,7 @@ class RoomServiceImplTest {
         RoomDTO result = roomService.getRoomByName(name);
 
         verify(roomRepository, times(1)).findRoomEntitiesByName(name);
-        assertEquals(RoomMapper.toRoomDTO(room), result);
+        assertEquals(roomMapper.toRoomDTO(room), result);
     }
 
     @Test
@@ -178,6 +177,6 @@ class RoomServiceImplTest {
         List<RoomDTO> result = roomService.getByDrawDateLessThanEqual(date);
 
         verify(roomRepository, times(1)).findByDrawDateLessThanEqual(date);
-        assertEquals(RoomMapper.toRoomDTOList(roomEntities), result);
+        assertEquals(roomMapper.toRoomDTOList(roomEntities), result);
     }
 }

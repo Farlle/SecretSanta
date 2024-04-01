@@ -3,9 +3,13 @@ package org.example.secretsanta.service.impl;
 import org.example.secretsanta.dto.MessageDTO;
 import org.example.secretsanta.dto.UserInfoDTO;
 import org.example.secretsanta.mapper.MessageMapper;
+import org.example.secretsanta.mapper.UserInfoMapper;
 import org.example.secretsanta.model.entity.MessageEntity;
 import org.example.secretsanta.model.entity.UserInfoEntity;
 import org.example.secretsanta.repository.MessageRepository;
+import org.example.secretsanta.service.TelegramService;
+import org.example.secretsanta.service.UserInfoService;
+import org.example.secretsanta.service.UserInfoTelegramChatsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,11 +32,15 @@ class MessageServiceImplTest {
     @Mock
     private MessageRepository messageRepository;
     @Mock
-    private UserInfoServiceImpl userInfoServiceImpl;
+    private UserInfoService userInfoService;
     @Mock
-    private UserInfoTelegramChatsServiceImpl userInfoTelegramChatsServiceImpl;
+    private UserInfoTelegramChatsService userInfoTelegramChatsService;
     @Mock
-    private TelegramServiceImpl telegramServiceImpl;
+    private TelegramService telegramService;
+    @Mock
+    private MessageMapper messageMapper;
+    @Mock
+    private UserInfoMapper userInfoMapper;
 
     @InjectMocks
     private MessageServiceImpl messageService;
@@ -71,15 +79,17 @@ class MessageServiceImplTest {
         savedMessageEntity.setDepartureDate(departureDate);
         savedMessageEntity.setIdRecipient(idRecipient);
 
-        when(userInfoServiceImpl.getTelegramUser(idRecipient)).thenReturn(recipientTelegram);
-        when(userInfoTelegramChatsServiceImpl.getIdChatByTelegramName(recipientTelegram)).thenReturn(2L);
+        when(userInfoService.getTelegramUser(idRecipient)).thenReturn(recipientTelegram);
+        when(userInfoTelegramChatsService.getIdChatByTelegramName(recipientTelegram)).thenReturn(2L);
         when(messageRepository.save(any(MessageEntity.class))).thenReturn(savedMessageEntity);
+        when(userInfoMapper.toUserInfoEntity(senderDTO)).thenReturn(senderEntity);
+        when(messageMapper.toMessageDTO(savedMessageEntity)).thenReturn(messageDTO);
 
         MessageDTO result = messageService.create(messageDTO);
 
-        verify(telegramServiceImpl).sendMessage(2L, message);
+        verify(telegramService).sendMessage(2L, message);
         verify(messageRepository).save(any(MessageEntity.class));
-        assertEquals(MessageMapper.toMessageDTO(savedMessageEntity), result);
+        assertEquals(messageDTO, result);
     }
 
     @Test
@@ -96,15 +106,47 @@ class MessageServiceImplTest {
     void testUpdate() {
         int id = 1;
         MessageDTO dto = new MessageDTO();
+        dto.setMessage("Updated message");
+        dto.setDepartureDate(new Date(1L));
+        dto.setIdRecipient(2);
+
+        UserInfoDTO senderDTO = new UserInfoDTO();
+        senderDTO.setTelegram("sender");
+        dto.setSender(senderDTO);
+
+        UserInfoEntity senderEntity = new UserInfoEntity();
+        senderEntity.setTelegram("sender");
+
         MessageEntity existingMessage = new MessageEntity();
+        existingMessage.setIdMessage(id);
+        existingMessage.setMessage("Original message");
+        existingMessage.setDepartureDate(new Date(1L));
+        existingMessage.setIdRecipient(1);
+        existingMessage.setSender(senderEntity);
+
+        MessageEntity updatedMessage = new MessageEntity();
+        updatedMessage.setIdMessage(id);
+        updatedMessage.setMessage(dto.getMessage());
+        updatedMessage.setDepartureDate(dto.getDepartureDate());
+        updatedMessage.setIdRecipient(dto.getIdRecipient());
+        updatedMessage.setSender(userInfoMapper.toUserInfoEntity(dto.getSender()));
+
+        MessageDTO updatedDTO = new MessageDTO();
+        updatedDTO.setMessage(dto.getMessage());
+        updatedDTO.setDepartureDate(dto.getDepartureDate());
+        updatedDTO.setIdRecipient(dto.getIdRecipient());
+        updatedDTO.setSender(dto.getSender());
+
         when(messageRepository.findById(id)).thenReturn(Optional.of(existingMessage));
-        when(messageRepository.save(any(MessageEntity.class))).thenReturn(existingMessage);
+        when(messageRepository.save(any(MessageEntity.class))).thenReturn(updatedMessage);
+        when(messageMapper.toMessageDTO(updatedMessage)).thenReturn(updatedDTO);
+        when(userInfoMapper.toUserInfoEntity(senderDTO)).thenReturn(senderEntity);
 
         MessageDTO result = messageService.update(id, dto);
 
-        assertNotNull(result);
         verify(messageRepository).findById(id);
-        verify(messageRepository).save(existingMessage);
+        verify(messageRepository).save(any(MessageEntity.class));
+        assertEquals(updatedDTO, result);
     }
 
     @Test

@@ -3,7 +3,10 @@ package org.example.secretsanta.mapper;
 import org.example.secretsanta.dto.RoleDTO;
 import org.example.secretsanta.model.entity.RoleEntity;
 import org.example.secretsanta.model.enums.Role;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,13 +15,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoleMapperTest {
 
+    @InjectMocks
+    private RoleMapper roleMapper;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     void testToRoleDTO() {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setIdRole(2);
         roleEntity.setRole(Role.ORGANIZER);
 
-        RoleDTO roleDTO = RoleMapper.toRoleDTO(roleEntity);
+        RoleDTO roleDTO = roleMapper.toRoleDTO(roleEntity);
 
         assertEquals(roleEntity.getIdRole(), roleDTO.getIdRole());
         assertEquals(roleEntity.getRole(), roleDTO.getRole());
@@ -30,7 +41,7 @@ class RoleMapperTest {
         roleDTO.setIdRole(2);
         roleDTO.setRole(Role.ORGANIZER);
 
-        RoleEntity roleEntity = RoleMapper.toRoleEntity(roleDTO);
+        RoleEntity roleEntity = roleMapper.toRoleEntity(roleDTO);
 
         assertEquals(roleDTO.getIdRole(), roleEntity.getIdRole());
         assertEquals(roleDTO.getRole(), roleEntity.getRole());
@@ -44,7 +55,7 @@ class RoleMapperTest {
         roleEntity2.setIdRole(2);
         List<RoleEntity> roleEntitiesList = Arrays.asList(roleEntity1, roleEntity2);
 
-        List<RoleDTO> roleDTOList = RoleMapper.toRoleDTOList(roleEntitiesList);
+        List<RoleDTO> roleDTOList = roleMapper.toRoleDTOList(roleEntitiesList);
 
         assertEquals(roleEntitiesList.size(), roleDTOList.size());
         assertEquals(roleEntitiesList.get(0).getIdRole(), roleDTOList.get(0).getIdRole());
@@ -53,22 +64,22 @@ class RoleMapperTest {
 
     @Test
     void testToRoleDTO_Null() {
-        RoleDTO roleDTO = RoleMapper.toRoleDTO(null);
-
-        assertNotNull(roleDTO);
+        assertThrows(IllegalArgumentException.class, () -> {
+            roleMapper.toRoleDTO(null);
+        });
     }
 
     @Test
     void testToRoleEntity_Null() {
-        RoleEntity roleEntity = RoleMapper.toRoleEntity(null);
-
-        assertNotNull(roleEntity);
+        assertThrows(IllegalArgumentException.class, () -> {
+            roleMapper.toRoleEntity(null);
+        });
     }
 
     @Test
     void testToRoleDTOList_Null() {
-        List<RoleDTO> roleDTOList = RoleMapper.toRoleDTOList(null);
-
-        assertNotNull(roleDTOList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            roleMapper.toRoleDTOList(null);
+        });
     }
 }

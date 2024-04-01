@@ -24,16 +24,20 @@ public class MessageServiceImpl implements MessageService {
     private final UserInfoService userInfoService;
     private final UserInfoTelegramChatsService userInfoTelegramChatsService;
     private final TelegramService telegramService;
+    private final MessageMapper messageMapper;
+    private final UserInfoMapper userInfoMapper;
     private static final String MESSAGE = "Тебе пришло новое сообщение";
 
 
     public MessageServiceImpl(UserInfoService userInfoService, MessageRepository messageRepository,
-                              UserInfoTelegramChatsService userInfoTelegramChatsService, TelegramService telegramService) {
+                              UserInfoTelegramChatsService userInfoTelegramChatsService,
+                              TelegramService telegramService, MessageMapper messageMapper, UserInfoMapper userInfoMapper) {
         this.messageRepository = messageRepository;
         this.userInfoService = userInfoService;
         this.userInfoTelegramChatsService = userInfoTelegramChatsService;
         this.telegramService = telegramService;
-
+        this.messageMapper = messageMapper;
+        this.userInfoMapper = userInfoMapper;
     }
 
     /**
@@ -46,7 +50,7 @@ public class MessageServiceImpl implements MessageService {
     public MessageDTO create(MessageDTO dto) {
         MessageEntity message = new MessageEntity();
         message.setMessage(dto.getMessage());
-        message.setSender(UserInfoMapper.toUserInfoEntity(dto.getSender()));
+        message.setSender(userInfoMapper.toUserInfoEntity(dto.getSender()));
         message.setDepartureDate(dto.getDepartureDate());
         message.setIdRecipient(dto.getIdRecipient());
         Long idChat = userInfoTelegramChatsService.getIdChatByTelegramName(
@@ -55,7 +59,7 @@ public class MessageServiceImpl implements MessageService {
             telegramService.sendMessage(idChat, MESSAGE);
         }
 
-        return MessageMapper.toMessageDTO(messageRepository.save(message));
+        return messageMapper.toMessageDTO(messageRepository.save(message));
     }
 
     /**
@@ -65,7 +69,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public List<MessageDTO> readAll() {
-        return MessageMapper.toMessageDTOList(messageRepository.findAll());
+        return messageMapper.toMessageDTOList(messageRepository.findAll());
     }
 
     /**
@@ -81,11 +85,11 @@ public class MessageServiceImpl implements MessageService {
                 .orElseThrow(() -> new EntityNotFoundException("Message not found with id: " + id));
 
         message.setMessage(dto.getMessage());
-        message.setSender(UserInfoMapper.toUserInfoEntity(dto.getSender()));
+        message.setSender(userInfoMapper.toUserInfoEntity(dto.getSender()));
         message.setDepartureDate(dto.getDepartureDate());
         message.setIdRecipient(dto.getIdRecipient());
 
-        return MessageMapper.toMessageDTO(messageRepository.save(message));
+        return messageMapper.toMessageDTO(messageRepository.save(message));
     }
 
     /**
@@ -106,7 +110,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public List<MessageDTO> getMessages(int idRecipient) {
-        return MessageMapper.toMessageDTOList(messageRepository.findByIdRecipient(idRecipient));
+        return messageMapper.toMessageDTOList(messageRepository.findByIdRecipient(idRecipient));
     }
 
     /**
@@ -118,7 +122,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public List<MessageDTO> getConversation(int idSender, int idRecipient) {
-        return MessageMapper.toMessageDTOList(messageRepository.findByIdSenderAndIdRecipient(idSender, idRecipient));
+        return messageMapper.toMessageDTOList(messageRepository.findByIdSenderAndIdRecipient(idSender, idRecipient));
     }
 
     /**
@@ -129,7 +133,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public List<MessageDTO> getDistinctDialog(int idRecipient) {
-        return MessageMapper.toMessageDTOList(messageRepository.findDistinctDialog(idRecipient));
+        return messageMapper.toMessageDTOList(messageRepository.findDistinctDialog(idRecipient));
     }
 
 }

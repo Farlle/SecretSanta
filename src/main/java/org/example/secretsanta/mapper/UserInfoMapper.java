@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserInfoMapper {
 
-    public static UserInfoDTO toUserInfoDTO(UserInfoEntity userInfoEntity) {
+    public  UserInfoDTO toUserInfoDTO(UserInfoEntity userInfoEntity) {
         UserInfoDTO userInfoDTO = new UserInfoDTO();
 
         if (userInfoEntity == null) {
@@ -26,7 +26,7 @@ public class UserInfoMapper {
         return userInfoDTO;
     }
 
-    public static UserInfoEntity toUserInfoEntity(UserInfoDTO userInfoDTO) {
+    public  UserInfoEntity toUserInfoEntity(UserInfoDTO userInfoDTO) {
         UserInfoEntity userInfoEntity = new UserInfoEntity();
 
         if (userInfoDTO == null) {
@@ -41,13 +41,13 @@ public class UserInfoMapper {
         return userInfoEntity;
     }
 
-    public static List<UserInfoDTO> toUserInfoDTOList(List<UserInfoEntity> userInfoEntityList) {
+    public  List<UserInfoDTO> toUserInfoDTOList(List<UserInfoEntity> userInfoEntityList) {
         if (userInfoEntityList == null) {
             throw new IllegalArgumentException("UserInfoEntityList cannot be null");
         }
 
         return userInfoEntityList.stream()
-                .map(UserInfoMapper::toUserInfoDTO)
+                .map(this::toUserInfoDTO)
                 .collect(Collectors.toList());
 
     }

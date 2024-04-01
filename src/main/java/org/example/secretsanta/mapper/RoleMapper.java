@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class RoleMapper {
 
-    public static RoleDTO toRoleDTO(RoleEntity roleEntity) {
+    public RoleDTO toRoleDTO(RoleEntity roleEntity) {
         RoleDTO roleDTO = new RoleDTO();
 
         if (roleEntity == null) {
@@ -23,7 +23,7 @@ public class RoleMapper {
         return roleDTO;
     }
 
-    public static RoleEntity toRoleEntity(RoleDTO roleDTO) {
+    public RoleEntity toRoleEntity(RoleDTO roleDTO) {
         RoleEntity roleEntity = new RoleEntity();
 
         if (roleDTO == null) {
@@ -35,13 +35,13 @@ public class RoleMapper {
         return roleEntity;
     }
 
-    public static List<RoleDTO> toRoleDTOList(List<RoleEntity> roleEntitiesList) {
+    public List<RoleDTO> toRoleDTOList(List<RoleEntity> roleEntitiesList) {
         if (roleEntitiesList == null) {
             throw new IllegalArgumentException("RoleEntity cannot be null");
         }
 
         return roleEntitiesList.stream()
-                .map(RoleMapper::toRoleDTO)
+                .map(this::toRoleDTO)
                 .collect(Collectors.toList());
 
     }
