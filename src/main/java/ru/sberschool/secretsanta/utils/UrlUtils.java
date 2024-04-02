@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
  */
 public class UrlUtils {
 
+    private UrlUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Метод для извлечения номера комнаты из URL
      *
@@ -15,7 +19,9 @@ public class UrlUtils {
      * @return Номер комнаты
      */
     public static String extractRoomNumberFromUrl(String url) {
-
+        if (url == null) {
+            throw new IllegalArgumentException("URL cannot be null");
+        }
         Pattern pattern = Pattern.compile("room/(\\d+)/join");
         Matcher matcher = pattern.matcher(url);
 

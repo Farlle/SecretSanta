@@ -9,6 +9,10 @@ import java.time.ZoneId;
  */
 public class DateUtils {
 
+    private DateUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Метод для конвретации даты в sql.Date формат
      *
@@ -16,6 +20,9 @@ public class DateUtils {
      * @return Конвретированная дата
      */
     public static Date convertDateToSqlDate(LocalDateTime now) {
+        if (now == null) {
+            throw new IllegalArgumentException("LocalDateTime cannot be null");
+        }
         java.util.Date currentDate = java.util.Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
         return new Date(currentDate.getTime());
     }
