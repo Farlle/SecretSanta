@@ -53,7 +53,7 @@ public class AuthController {
      */
     @PostMapping("/register")
     public String registrationUserInfo(@ModelAttribute("userInfo") UserInfoDTO dto,
-                                       RedirectAttributes redirectAttributes) throws Exception {
+                                       RedirectAttributes redirectAttributes) throws UserAlreadyExistsException {
         try {
             userInfoService.registerNewUserInfoAccount(dto);
         } catch (UserAlreadyExistsException e) {
