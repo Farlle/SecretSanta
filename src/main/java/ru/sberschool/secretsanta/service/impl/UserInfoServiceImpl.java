@@ -100,7 +100,7 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @throws Exception Если пользователь использует занятое имя
      */
     @Override
-    public void registerNewUserInfoAccount(UserInfoDTO dto) throws Exception {
+    public void registerNewUserInfoAccount(UserInfoDTO dto) throws UserAlreadyExistsException {
         if (userInfoRepository.findAll().stream().anyMatch(userInfo -> userInfo.getName().equals(dto.getName()))) {
             throw new UserAlreadyExistsException("User already exists with this name:" + dto.getName());
         }

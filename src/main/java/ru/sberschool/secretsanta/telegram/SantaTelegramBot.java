@@ -5,7 +5,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.sberschool.secretsanta.controller.CustomErrorController;
 import ru.sberschool.secretsanta.dto.UserInfoDTO;
 import ru.sberschool.secretsanta.dto.UserInfoTelegramChatsDTO;
 import ru.sberschool.secretsanta.service.UserInfoService;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
 public class SantaTelegramBot extends TelegramLongPollingBot {
     private final UserInfoTelegramChatsService userInfoTelegramChatsService;
     private final UserInfoService userInfoService;
-    private static final Logger logger = Logger.getLogger(CustomErrorController.class.getName());
+    private static final Logger logger = Logger.getLogger(SantaTelegramBot.class.getName());
 
     private static final String BOT_TOKEN = System.getenv("token");
     private static final String BOT_USERNAME = "HomeSecretSantaBot";
@@ -56,8 +55,6 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
             }
 
         }
-
-
     }
 
     @Override
@@ -94,7 +91,7 @@ public class SantaTelegramBot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            logger.log(Level.SEVERE, "Произошла ошибка на сервере", e);
+            logger.log(Level.SEVERE, "Произошла ошибка при отправки сообщения в телеграм", e);
         }
     }
 

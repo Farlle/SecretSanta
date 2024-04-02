@@ -1,6 +1,7 @@
 package ru.sberschool.secretsanta.service;
 
 import ru.sberschool.secretsanta.dto.UserInfoDTO;
+import ru.sberschool.secretsanta.exception.UserAlreadyExistsException;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface UserInfoService {
 
     void delete(int id);
 
-    void registerNewUserInfoAccount(UserInfoDTO dto) throws Exception;
+    void registerNewUserInfoAccount(UserInfoDTO dto) throws UserAlreadyExistsException;
 
     List<UserInfoDTO> getUsersInfoById(List<Integer> idUsers);
 

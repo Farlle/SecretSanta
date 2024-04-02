@@ -1,15 +1,12 @@
 package ru.sberschool.secretsanta;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-
-@SpringBootApplication
+@SpringBootTest
 class SecretSantaApplicationTest {
 
     @Test
-    void main() {
+    void contextLoads() {
     }
 }
